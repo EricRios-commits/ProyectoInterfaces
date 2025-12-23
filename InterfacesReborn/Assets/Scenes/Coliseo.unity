@@ -1156,6 +1156,71 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &1958319052
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1958319054}
+  - component: {fileID: 1958319053}
+  m_Layer: 0
+  m_Name: Whisper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1958319053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1958319052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9370225a2ca94276b870d5f87b0db55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  logLevel: 1
+  modelPath: Whisper/ggml-tiny.bin
+  isModelPathInStreamingAssets: 1
+  initOnAwake: 1
+  useGpu: 0
+  flashAttention: 0
+  language: auto
+  translateToEnglish: 0
+  strategy: 0
+  noContext: 1
+  singleSegment: 1
+  enableTokens: 0
+  initialPrompt: 
+  stepSec: 3
+  keepSec: 0.2
+  lengthSec: 10
+  updatePrompt: 1
+  dropOldBuffer: 0
+  useVad: 1
+  tokensTimestamps: 0
+  audioCtx: 0
+--- !u!4 &1958319054
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1958319052}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1958945515
 GameObject:
   m_ObjectHideFlags: 0
@@ -1302,6 +1367,56 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!1 &2062469166
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2062469167}
+  - component: {fileID: 2062469168}
+  m_Layer: 0
+  m_Name: VoiceManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2062469167
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062469166}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.46033126, y: -9.574963, z: 14.425801}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2062469168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062469166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5ddbecfe744da24bb82b2f9b4383606, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  whisper: {fileID: 1958319053}
+  microphoneRecord: {fileID: 0}
+  streamSegments: 1
+  printLanguage: 1
+  recordButton: 1
+  controller: 2
 --- !u!1 &2086918267
 GameObject:
   m_ObjectHideFlags: 0
@@ -1444,3 +1559,5 @@ SceneRoots:
   - {fileID: 1875292334}
   - {fileID: 66820037}
   - {fileID: 2114496853}
+  - {fileID: 2062469167}
+  - {fileID: 1958319054}
