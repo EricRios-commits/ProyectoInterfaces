@@ -1191,7 +1191,7 @@ MonoBehaviour:
   initOnAwake: 1
   useGpu: 0
   flashAttention: 0
-  language: auto
+  language: en
   translateToEnglish: 0
   strategy: 0
   noContext: 1
@@ -1377,6 +1377,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2062469167}
   - component: {fileID: 2062469168}
+  - component: {fileID: 2062469169}
   m_Layer: 0
   m_Name: VoiceManager
   m_TagString: Untagged
@@ -1412,11 +1413,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   whisper: {fileID: 1958319053}
-  microphoneRecord: {fileID: 0}
+  microphoneRecord: {fileID: 2062469169}
   streamSegments: 1
   printLanguage: 1
   recordButton: 1
   controller: 2
+  minRecordTime: 1
+  volumeThreshold: 0.01
+--- !u!114 &2062469169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062469166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bc03a4c19604ea394e364f8fc632928, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxLengthSec: 60
+  loop: 0
+  frequency: 16000
+  chunksLengthSec: 0.5
+  echo: 1
+  useVad: 1
+  vadUpdateRateSec: 0.1
+  vadContextSec: 30
+  vadLastSec: 1.25
+  vadThd: 1
+  vadFreqThd: 100
+  vadIndicatorImage: {fileID: 0}
+  vadStop: 0
+  dropVadPart: 1
+  vadStopTime: 3
+  microphoneDropdown: {fileID: 0}
+  microphoneDefaultLabel: Default microphone
 --- !u!1 &2086918267
 GameObject:
   m_ObjectHideFlags: 0
