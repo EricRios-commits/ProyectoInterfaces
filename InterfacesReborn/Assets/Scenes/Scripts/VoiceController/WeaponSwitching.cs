@@ -22,6 +22,7 @@ public class WeaponSwitching : MonoBehaviour
     
     // Arma actualmente equipada
     private GameObject currentWeapon;
+    private string equippedWeaponName = "";
     
     void Start()
     {
@@ -96,6 +97,7 @@ public class WeaponSwitching : MonoBehaviour
         
         // Equipar la nueva arma
         currentWeapon = weaponTransform.gameObject;
+        equippedWeaponName = capitalizedName;
         currentWeapon.SetActive(true);
         
         Debug.Log($"[WeaponSwitching] ⚔️ {capitalizedName} equipada.");
@@ -113,6 +115,7 @@ public class WeaponSwitching : MonoBehaviour
             
             Debug.Log($"[WeaponSwitching] Arma desequipada.");
             currentWeapon = null;
+            equippedWeaponName = "";
         }
     }
     
@@ -122,6 +125,16 @@ public class WeaponSwitching : MonoBehaviour
         Vector3 controllerPosition = OVRInput.GetLocalControllerPosition(rightController);
         Quaternion controllerRotation = OVRInput.GetLocalControllerRotation(rightController);
 
+        switch (equippedWeaponName)
+        {
+            case "Axe":
+                controllerRotation *= Quaternion.Euler(0f, 90f, 0f);
+                break;
+            case "Spear":
+                controllerPosition += controllerRotation * new Vector3(0f, 0.3f, 0f);
+                controllerRotation *= Quaternion.Euler(0f, 90f, 0f);
+                break;
+        }
         
         // Aplicar offsets
         currentWeapon.transform.position = controllerPosition + controllerRotation * positionOffset;
