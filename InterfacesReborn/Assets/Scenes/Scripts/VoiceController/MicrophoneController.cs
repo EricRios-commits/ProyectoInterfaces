@@ -13,6 +13,9 @@ namespace Whisper.Samples
         public delegate void Action(string actionText);
         public event Action onActionDetected;
         
+        public delegate void WeaponCommand(string weaponName);
+        public event WeaponCommand onWeaponCommand;
+        
         [Header("Whisper Settings")]
         public WhisperManager whisper;
         public MicrophoneRecord microphoneRecord;
@@ -173,6 +176,9 @@ namespace Whisper.Samples
             
             // Invocar evento para otros scripts
             onActionDetected?.Invoke(text);
+            
+            // Detectar comandos de armas
+            DetectWeaponCommand(text);
         }
 
         private float CalculateAverageVolume(float[] audioData)
@@ -197,6 +203,104 @@ namespace Whisper.Samples
 
             _buffer += segment.Text;
             UnityEngine.Debug.Log($"[MicrophoneController] 📝 Segmento parcial: {_buffer}...");
+        }
+        
+        private void DetectWeaponCommand(string text)
+        {
+            // Convertir a minúsculas para comparación
+            string lowerText = text.ToLower().Trim();
+            
+            // Lista de armas disponibles
+            string[] weapons = { "axe", "spear", "sword", "mace", "hand" };
+            
+            // Separar el texto en palabras
+            string[] words = lowerText.Split(new char[] { ' ', ',', '.', '!', '?' }, System.StringSplitOptions.RemoveEmptyEntries);
+            
+            // Variables para encontrar la mejor coincidencia
+            string bestMatch = null;
+            float bestSimilarity = 0f;
+            float similarityThreshold = 0.6f; // Umbral de similitud (60%)
+            
+            // Buscar coincidencias exactas primero
+            foreach (string weapon in weapons)
+            {
+                if (lowerText.Contains(weapon))
+                {
+                    UnityEngine.Debug.Log($"[MicrophoneController] ⚔️ Comando de arma detectado (exacto): {weapon}");
+                    onWeaponCommand?.Invoke(weapon);
+                    return;
+                }
+            }
+            
+            // Si no hay coincidencia exacta, buscar similitudes
+            foreach (string word in words)
+            {
+                foreach (string weapon in weapons)
+                {
+                    float similarity = CalculateSimilarity(word, weapon);
+                    
+                    if (similarity > bestSimilarity)
+                    {
+                        bestSimilarity = similarity;
+                        bestMatch = weapon;
+                    }
+                }
+            }
+            
+            // Si encontramos una similitud suficiente, usar esa arma
+            if (bestMatch != null && bestSimilarity >= similarityThreshold)
+            {
+                UnityEngine.Debug.Log($"[MicrophoneController] ⚔️ Comando de arma detectado (similar {bestSimilarity:P0}): {bestMatch}");
+                onWeaponCommand?.Invoke(bestMatch);
+            }
+        }
+        
+        /// <summary>
+        /// Calcula la similitud entre dos cadenas usando distancia de Levenshtein normalizada.
+        /// Retorna un valor entre 0 (sin similitud) y 1 (idénticas).
+        /// </summary>
+        private float CalculateSimilarity(string s1, string s2)
+        {
+            if (string.IsNullOrEmpty(s1) || string.IsNullOrEmpty(s2))
+                return 0f;
+            
+            int distance = LevenshteinDistance(s1, s2);
+            int maxLength = Mathf.Max(s1.Length, s2.Length);
+            
+            // Normalizar la distancia a un valor de similitud entre 0 y 1
+            return 1f - (float)distance / maxLength;
+        }
+        
+        /// <summary>
+        /// Calcula la distancia de Levenshtein entre dos cadenas.
+        /// Representa el número mínimo de ediciones (inserción, eliminación, sustitución) 
+        /// necesarias para transformar una cadena en otra.
+        /// </summary>
+        private int LevenshteinDistance(string s1, string s2)
+        {
+            int[,] d = new int[s1.Length + 1, s2.Length + 1];
+            
+            for (int i = 0; i <= s1.Length; i++)
+                d[i, 0] = i;
+            
+            for (int j = 0; j <= s2.Length; j++)
+                d[0, j] = j;
+            
+            for (int j = 1; j <= s2.Length; j++)
+            {
+                for (int i = 1; i <= s1.Length; i++)
+                {
+                    int cost = (s1[i - 1] == s2[j - 1]) ? 0 : 1;
+                    
+                    d[i, j] = Mathf.Min(
+                        Mathf.Min(d[i - 1, j] + 1,      // Eliminación
+                                  d[i, j - 1] + 1),     // Inserción
+                        d[i - 1, j - 1] + cost          // Sustitución
+                    );
+                }
+            }
+            
+            return d[s1.Length, s2.Length];
         }
     }
 }
