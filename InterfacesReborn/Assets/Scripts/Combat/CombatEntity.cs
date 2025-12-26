@@ -108,7 +108,7 @@ namespace Combat
             }
         }
 
-        #region Runtime Configuration Methods
+        
 
         /// <summary>
         /// Change the entity's resistance profile at runtime.
@@ -154,7 +154,7 @@ namespace Combat
             return healthComponent;
         }
 
-        #endregion
+        
     }
 }
 

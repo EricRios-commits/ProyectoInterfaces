@@ -39,7 +39,7 @@ namespace Combat
             }
         }
 
-        #region Damage Handling
+        
 
         public void TakeDamage(DamageInfo damageInfo)
         {
@@ -79,9 +79,9 @@ namespace Combat
             return damage;
         }
 
-        #endregion
+        
 
-        #region Health Management
+        
 
         public void Heal(float amount)
         {
@@ -108,9 +108,9 @@ namespace Combat
             invulnerable = value;
         }
 
-        #endregion
+        
 
-        #region Death Handling
+        
 
         private void Die(DamageInfo finalDamage)
         {
@@ -127,9 +127,9 @@ namespace Combat
             NotifyHealthChanged(currentHealth);
         }
 
-        #endregion
+        
 
-        #region Observer Pattern
+        
 
         public void AddObserver(IHealthObserver observer)
         {
@@ -160,9 +160,9 @@ namespace Combat
             }
         }
 
-        #endregion
+        
 
-        #region Damage Modifier Management
+        
 
         public void AddDamageModifier(IDamageModifier modifier)
         {
@@ -187,7 +187,7 @@ namespace Combat
             return damageResistance.GetResistance(type);
         }
 
-        #endregion
+        
     }
 }
 

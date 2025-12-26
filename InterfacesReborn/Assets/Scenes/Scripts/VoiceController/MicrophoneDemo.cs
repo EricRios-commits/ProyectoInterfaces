@@ -1,11 +1,12 @@
 using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
+using Whisper;
 using Whisper.Utils;
 using Button = UnityEngine.UI.Button;
 using Toggle = UnityEngine.UI.Toggle;
 
-namespace Whisper.Samples
+namespace Scenes.Scripts.VoiceController
 {
     /// <summary>
     /// Record audio clip from microphone and make a transcription.

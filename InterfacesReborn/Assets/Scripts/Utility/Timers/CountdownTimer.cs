@@ -1,0 +1,34 @@
+using UnityEngine;
+
+namespace Utility.Timers
+{
+    public class CountdownTimer : Timer
+    {
+        public CountdownTimer(float value) : base(value)
+        {
+        }
+
+        public override void Tick(float deltaTime)
+        {
+            if (IsRunning && Time > 0)
+            {
+                Debug.Log("Running Countdown Timer");
+                Time -= deltaTime;
+            }
+            if (IsRunning && Time <= 0)
+            {
+                Stop(); 
+            }
+        }
+
+        public bool IsFinished => Time <= 0;
+
+        public void Reset() => Time = initialTime;
+
+        public void Reset(float newTime)
+        {
+            initialTime = newTime;
+            Reset();
+        }
+    }
+}

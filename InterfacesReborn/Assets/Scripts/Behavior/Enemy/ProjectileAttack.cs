@@ -1,0 +1,64 @@
+using Combat;
+using UnityEngine;
+using Utility;
+using Utility.Timers;
+
+namespace Behavior.Enemy
+{
+    /// <summary>
+    /// Enemy attack that spawns a projectile towards the target.
+    /// </summary>
+    public class ProjectileAttack : EnemyAttack
+    {
+        [Header("Projectile Settings")] [SerializeField]
+        private GameObject projectilePrefab;
+
+        [SerializeField] private float projectileSpeed = 10f;
+        [SerializeField] private float projectileLifetime = 5f;
+
+        [Header("Attack Settings")] [SerializeField]
+        private float shotCooldown = 1f;
+
+        [SerializeField] private Transform shotPoint;
+
+        [Header("Pool Settings")] [SerializeField]
+        private int poolSize = 10;
+
+        public override float Cooldown => shotCooldown;
+        
+        private CountdownTimer shotCooldownTimer;
+
+        private void Awake()
+        {
+            shotCooldownTimer = new CountdownTimer(shotCooldown);
+        }
+
+        public override bool Perform(GameObject agent, GameObject target)
+        {
+            if (!shotCooldownTimer.IsFinished)
+                return false;
+            shotCooldownTimer.Start();
+            if (projectilePrefab == null || agent == null || target == null)
+                return false;
+            var projectile = PoolManager.GetObjectOfType(projectilePrefab, poolSize);
+            if (projectile != null)
+            {
+                var projectileComponent = projectile.GetComponent<Projectile>();
+                if (projectileComponent != null)
+                {
+                    var spawnPosition = shotPoint != null ? shotPoint.position : agent.transform.position;
+                    Vector3 direction = (target.transform.position - spawnPosition);
+                    direction.y = 0;
+                    direction.Normalize();
+                    projectileComponent.Initialize(spawnPosition, direction, projectileSpeed, projectileLifetime);
+                }
+                else
+                {
+                    Debug.LogWarning($"Projectile prefab '{projectilePrefab.name}' is missing Projectile component");
+                }
+                return true;
+            }
+            return false;
+        }
+    }
+}
