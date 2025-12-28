@@ -13,6 +13,9 @@ public class WeaponSwitching : MonoBehaviour
     [Tooltip("Controlador derecho para posicionar el arma")]
     public OVRInput.Controller rightController = OVRInput.Controller.RTouch;
     
+    [Tooltip("Transform del controlador derecho (RightHandAnchor del OVRCameraRig)")]
+    public Transform rightHandAnchor;
+    
     [Header("Configuración")]
     [Tooltip("Offset de posición respecto al controlador")]
     public Vector3 positionOffset = Vector3.zero;
@@ -42,6 +45,21 @@ public class WeaponSwitching : MonoBehaviour
         {
             Debug.LogError("[WeaponSwitching] ¡weaponsContainer no asignado!");
         }
+        
+        // Buscar automáticamente el RightHandAnchor si no está asignado
+        if (rightHandAnchor == null)
+        {
+            OVRCameraRig cameraRig = FindFirstObjectByType<OVRCameraRig>();
+            if (cameraRig != null)
+            {
+                rightHandAnchor = cameraRig.rightHandAnchor;
+                Debug.Log("[WeaponSwitching] RightHandAnchor encontrado automáticamente.");
+            }
+            else
+            {
+                Debug.LogError("[WeaponSwitching] ¡No se encontró OVRCameraRig! Asigna manualmente el RightHandAnchor.");
+            }
+        }
     }
     
     void Update()
@@ -55,16 +73,18 @@ public class WeaponSwitching : MonoBehaviour
     
     private void OnWeaponCommand(string weaponName)
     {
-        Debug.Log($"[WeaponSwitching] Comando recibido: {weaponName}");
+        Debug.Log($"[WeaponSwitching] ⚡ COMANDO RECIBIDO: {weaponName.ToUpper()}");
         
         if (weaponName == "hand")
         {
             // Desequipar arma actual
+            Debug.Log("[WeaponSwitching] 🖐️ Desequipando arma...");
             UnequipWeapon();
         }
         else
         {
             // Equipar el arma solicitada
+            Debug.Log($"[WeaponSwitching] ⚔️ Equipando {weaponName}...");
             EquipWeapon(weaponName);
         }
     }
@@ -121,23 +141,36 @@ public class WeaponSwitching : MonoBehaviour
     
     private void UpdateWeaponPosition()
     {
-        // Obtener la posición y rotación del controlador derecho
-        Vector3 controllerPosition = OVRInput.GetLocalControllerPosition(rightController);
-        Quaternion controllerRotation = OVRInput.GetLocalControllerRotation(rightController);
+        if (rightHandAnchor == null)
+        {
+            Debug.LogWarning("[WeaponSwitching] RightHandAnchor no está asignado.");
+            return;
+        }
 
+        // Obtener la posición y rotación mundial del controlador derecho
+        Vector3 controllerPosition = rightHandAnchor.position;
+        Quaternion controllerRotation = rightHandAnchor.rotation;
+
+        // Aplicar offsets específicos por arma
         switch (equippedWeaponName)
         {
             case "Axe":
-                controllerRotation *= Quaternion.Euler(0f, 90f, 0f);
+                controllerRotation *= Quaternion.Euler(0f, 90f, 45f);
+                break;
+            case "Sword":
+                controllerRotation *= Quaternion.Euler(0f, 270f, -45f);
                 break;
             case "Spear":
-                controllerPosition += controllerRotation * new Vector3(0f, 0.3f, 0f);
-                controllerRotation *= Quaternion.Euler(0f, 90f, 0f);
+                controllerRotation *= Quaternion.Euler(0f, 90f, 45f);
+                controllerPosition += rightHandAnchor.TransformDirection(new Vector3(0f, 0.3f, 0.3f));
+                break;
+            default:
+                controllerRotation *= Quaternion.Euler(45f, 0f, 0f);
                 break;
         }
         
-        // Aplicar offsets
-        currentWeapon.transform.position = controllerPosition + controllerRotation * positionOffset;
+        // Aplicar offsets adicionales configurables
+        currentWeapon.transform.position = controllerPosition + rightHandAnchor.TransformDirection(positionOffset);
         currentWeapon.transform.rotation = controllerRotation * Quaternion.Euler(rotationOffset);
     }
     
