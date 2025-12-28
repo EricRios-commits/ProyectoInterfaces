@@ -31,15 +31,11 @@ namespace Combat
 
         public float ModifyDamage(DamageInfo damageInfo)
         {
-            // Roll for critical hit
             float roll = (float)random.NextDouble();
-            
             if (roll < criticalChance)
             {
-                Debug.Log($"Critical Hit! ({damageInfo.Amount} x {criticalMultiplier})");
                 return damageInfo.Amount * criticalMultiplier;
             }
-
             return damageInfo.Amount;
         }
     }

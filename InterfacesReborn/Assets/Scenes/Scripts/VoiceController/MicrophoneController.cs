@@ -1,8 +1,9 @@
 using System.Diagnostics;
 using UnityEngine;
+using Whisper;
 using Whisper.Utils;
 
-namespace Whisper.Samples
+namespace Scenes.Scripts.VoiceController
 {
     /// <summary>
     /// Record audio clip from microphone and make a transcription for VR Meta Quest 2.

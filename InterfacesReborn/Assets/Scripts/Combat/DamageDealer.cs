@@ -20,7 +20,7 @@ namespace Combat
         /// <summary>
         /// Deal damage to a specific target.
         /// </summary>
-        public void DealDamage(IDamageable target, Vector3 hitPoint = default, Vector3 hitDirection = default)
+        protected virtual void DealDamage(IDamageable target, Vector3 hitPoint = default, Vector3 hitDirection = default)
         {
             if (target == null || !target.IsAlive)
                 return;
@@ -33,47 +33,8 @@ namespace Combat
             );
             target.TakeDamage(damageInfo);
         }
-
-        /// <summary>
-        /// Deal damage with a custom damage amount.
-        /// </summary>
-        public void DealDamage(IDamageable target, float damageAmount, Vector3 hitPoint = default, Vector3 hitDirection = default)
-        {
-            if (target == null || !target.IsAlive)
-                return;
-
-            DamageInfo damageInfo = new DamageInfo(
-                damageAmount,
-                damageType,
-                gameObject,
-                hitPoint,
-                hitDirection
-            );
-            target.TakeDamage(damageInfo);
-        }
-
-        /// <summary>
-        /// Deal damage with full custom parameters.
-        /// </summary>
-        public void DealDamage(GameObject target, float damageAmount, DamageType type, Vector3 hitPoint = default, Vector3 hitDirection = default)
-        {
-            if (target == null)
-                return;
-            IDamageable damageable = target.GetComponent<IDamageable>();
-            if (damageable == null || !damageable.IsAlive)
-                return;
-
-            DamageInfo damageInfo = new DamageInfo(
-                damageAmount,
-                type,
-                gameObject,
-                hitPoint,
-                hitDirection
-            );
-            damageable.TakeDamage(damageInfo);
-        }
-
-        private void OnCollisionEnter(Collision collision)
+        
+        protected virtual void OnCollisionEnter(Collision collision)
         {
             if (!dealDamageOnCollision)
                 return;
