@@ -1,4 +1,4 @@
-# 🚀 Interfaces Inteligentes - Prototipo VR
+# Interfaces Inteligentes - Prototipo VR
 
 <div align="center">
 
@@ -12,7 +12,7 @@
 
 ---
 
-## 📋 Tabla de Contenidos
+## Tabla de Contenidos
 
 - [Cuestiones Importantes](#-cuestiones-importantes)
 - [Hitos Logrados](#-hitos-de-programación-logrados)
@@ -24,30 +24,30 @@
 
 ---
 
-## ⚙️ Cuestiones Importantes
+## Cuestiones Importantes
 
 
 ---
 
-## 🎯 Hitos de Programación Logrados
+## Hitos de Programación Logrados
 
 | Hito | Descripción | Estado |
 | ---- | ----------- | ------ |
-|      |             | ✅     |
+|      |             | COMPLETADO / NO COMPLETADO     |
 
 
 ---
 
-## ⭐ Aspectos Destacados
+## Aspectos Destacados
 
-- 🎮 **Sistema de Entrada Mejorado:** Nuevo Input System de Unity
-- 🤖 **Integración IA:** Conexión con LLM para respuestas inteligentes
-- 👁️ **Interactividad VR:** Triggers y colisiones optimizadas
-- 📱 **Interfaz Responsiva:** UI mejorada con TextMeshPro
+- **Sistema de Entrada Mejorado:** Nuevo Input System de Unity
+- **Integración IA:** Conexión con LLM para respuestas inteligentes
+- **Interactividad VR:** Triggers y colisiones optimizadas
+- **Interfaz Responsiva:** UI mejorada con TextMeshPro
 
 ---
 
-## 🎧 Sensores Multimodales
+## Sensores Multimodales
 <!-- 
 | Sensor            | Tipo              | Utilidad                |
 | ----------------- | ----------------- | ----------------------- |
@@ -58,19 +58,19 @@
 
 ---
 
-## 🎬 Demo
+## Demo
 
 <!-- ![GIF de ejecución](./vacio.gif) -->
 
 ---
 
-## 📊 Organización del Equipo
+## Organización del Equipo
 
 ### Reparto de Tareas
 
 ---
 
-## ✅ Checklist de Recomendaciones VR
+## Checklist de Recomendaciones VR
 
 
 ---
