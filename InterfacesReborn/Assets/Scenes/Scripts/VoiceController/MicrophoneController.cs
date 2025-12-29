@@ -1,9 +1,8 @@
 using System.Diagnostics;
 using UnityEngine;
-using Whisper;
 using Whisper.Utils;
 
-namespace Scenes.Scripts.VoiceController
+namespace Whisper.Samples
 {
     /// <summary>
     /// Record audio clip from microphone and make a transcription for VR Meta Quest 2.
@@ -31,9 +30,11 @@ namespace Scenes.Scripts.VoiceController
         
         [Header("Audio Settings")]
         [Tooltip("Tiempo mínimo de grabación en segundos")]
-        [SerializeField] private float minRecordTime = 1f;
+        [SerializeField] private float minRecordTime = 0.5f;
         [Tooltip("Volumen mínimo para considerar que hay audio")]
         [SerializeField] private float volumeThreshold = 0.01f;
+        [Tooltip("Ganancia de amplificación del audio (1.0 = sin cambios, 2.0 = doble volumen)")]
+        [SerializeField] private float audioGain = 4.0f;
         
         private string _buffer;
         private bool _wasPressingButton = false;
@@ -125,14 +126,23 @@ namespace Scenes.Scripts.VoiceController
                 return;
             }
 
-            // Calcular el volumen promedio del audio (solo informativo)
-            float avgVolume = CalculateAverageVolume(recordedAudio.Data);
-            UnityEngine.Debug.Log($"[MicrophoneController] Volumen promedio del audio: {avgVolume:F4}");
+            UnityEngine.Debug.Log("[MicrophoneController] ⏳ Iniciando procesamiento de audio... (esto puede tardar en Quest 2)");
+
+            // Calcular el volumen promedio del audio antes de amplificar
+            float avgVolumeBefore = CalculateAverageVolume(recordedAudio.Data);
+            
+            // Amplificar el audio para mejorar el reconocimiento
+            float[] amplifiedAudio = AmplifyAudio(recordedAudio.Data, audioGain);
+            
+            float avgVolumeAfter = CalculateAverageVolume(amplifiedAudio);
+            UnityEngine.Debug.Log($"[MicrophoneController] Volumen antes: {avgVolumeBefore:F4} | Después: {avgVolumeAfter:F4} (Ganancia: {audioGain}x)");
 
             var sw = new Stopwatch();
             sw.Start();
             
-            var res = await whisper.GetTextAsync(recordedAudio.Data, recordedAudio.Frequency, recordedAudio.Channels);
+            UnityEngine.Debug.Log("[MicrophoneController] 🔄 Enviando audio a Whisper para transcripción...");
+            var res = await whisper.GetTextAsync(amplifiedAudio, recordedAudio.Frequency, recordedAudio.Channels);
+            
             if (res == null) 
             {
                 UnityEngine.Debug.LogWarning("[MicrophoneController] ❌ No se pudo procesar el audio.");
@@ -140,6 +150,7 @@ namespace Scenes.Scripts.VoiceController
             }
 
             var time = sw.ElapsedMilliseconds;
+            UnityEngine.Debug.Log($"[MicrophoneController] ✅ Transcripción completada en {time}ms");
             var rate = recordedAudio.Length / (time * 0.001f);
             
             var text = res.Result.Trim();
@@ -172,7 +183,7 @@ namespace Scenes.Scripts.VoiceController
                 UnityEngine.Debug.Log($"🌐 Idioma detectado: {res.Language}");
             UnityEngine.Debug.Log($"⏱️ Tiempo de procesamiento: {time} ms");
             UnityEngine.Debug.Log($"⚡ Velocidad: {rate:F1}x");
-            UnityEngine.Debug.Log($"🔊 Volumen: {avgVolume:F4}");
+            UnityEngine.Debug.Log($"🔊 Volumen: {avgVolumeAfter:F4}");
             UnityEngine.Debug.Log("===================================");
             
             // Invocar evento para otros scripts
@@ -190,6 +201,45 @@ namespace Scenes.Scripts.VoiceController
                 sum += Mathf.Abs(sample);
             }
             return sum / audioData.Length;
+        }
+        
+        /// <summary>
+        /// Amplifica las muestras de audio aplicando una ganancia.
+        /// Normaliza automáticamente si supera el rango [-1, 1].
+        /// </summary>
+        private float[] AmplifyAudio(float[] audioData, float gain)
+        {
+            if (gain <= 0f)
+            {
+                UnityEngine.Debug.LogWarning("[MicrophoneController] Ganancia inválida, usando 1.0");
+                gain = 1f;
+            }
+            
+            float[] amplified = new float[audioData.Length];
+            float maxSample = 0f;
+            
+            // Primera pasada: amplificar y encontrar el valor máximo
+            for (int i = 0; i < audioData.Length; i++)
+            {
+                amplified[i] = audioData[i] * gain;
+                float absSample = Mathf.Abs(amplified[i]);
+                if (absSample > maxSample)
+                    maxSample = absSample;
+            }
+            
+            // Si superamos el rango, normalizar para evitar clipping
+            if (maxSample > 1f)
+            {
+                float normalizationFactor = 1f / maxSample;
+                UnityEngine.Debug.Log($"[MicrophoneController] Normalizando audio (factor: {normalizationFactor:F3}) para evitar clipping");
+                
+                for (int i = 0; i < amplified.Length; i++)
+                {
+                    amplified[i] *= normalizationFactor;
+                }
+            }
+            
+            return amplified;
         }
 
         private void OnProgressHandler(int progress)
@@ -211,8 +261,17 @@ namespace Scenes.Scripts.VoiceController
             // Convertir a minúsculas para comparación
             string lowerText = text.ToLower().Trim();
             
-            // Lista de armas disponibles
-            string[] weapons = { "axe", "spear", "sword", "mace", "hand" };
+            UnityEngine.Debug.Log($"[MicrophoneController] 🔍 Analizando comando: '{lowerText}'");
+            
+            // Patrones de detección para cada arma (incluye variantes comunes)
+            var weaponPatterns = new System.Collections.Generic.Dictionary<string, string[]>
+            {
+                { "sword", new[] { "sword", "sord", "sort", "swort", "sworn", "so what", "swarp" } },
+                { "axe", new[] { "axe", "ax", "acts", "ask", "ex" } },
+                { "spear", new[] { "spear", "speer", "sphere", "spere", "pier", "peer" } },
+                { "mace", new[] { "mace", "maze", "mais", "maize", "miss" } },
+                { "hand", new[] { "hand", "hands", "fang", "hang", "and", "end" } }
+            };
             
             // Separar el texto en palabras
             string[] words = lowerText.Split(new char[] { ' ', ',', '.', '!', '?' }, System.StringSplitOptions.RemoveEmptyEntries);
@@ -220,30 +279,45 @@ namespace Scenes.Scripts.VoiceController
             // Variables para encontrar la mejor coincidencia
             string bestMatch = null;
             float bestSimilarity = 0f;
-            float similarityThreshold = 0.6f; // Umbral de similitud (60%)
+            float similarityThreshold = 0.5f; // Umbral reducido a 50% para ser más permisivo
             
-            // Buscar coincidencias exactas primero
-            foreach (string weapon in weapons)
+            // 1. Buscar coincidencias exactas en patrones
+            foreach (var weaponPattern in weaponPatterns)
             {
-                if (lowerText.Contains(weapon))
+                string weaponName = weaponPattern.Key;
+                string[] patterns = weaponPattern.Value;
+                
+                foreach (string pattern in patterns)
                 {
-                    UnityEngine.Debug.Log($"[MicrophoneController] ⚔️ Comando de arma detectado (exacto): {weapon}");
-                    onWeaponCommand?.Invoke(weapon);
-                    return;
+                    if (lowerText.Contains(pattern))
+                    {
+                        UnityEngine.Debug.Log($"[MicrophoneController] ⚔️ Comando detectado (patrón exacto '{pattern}'): {weaponName}");
+                        onWeaponCommand?.Invoke(weaponName);
+                        return;
+                    }
                 }
             }
             
-            // Si no hay coincidencia exacta, buscar similitudes
+            // 2. Buscar similitudes palabra por palabra
             foreach (string word in words)
             {
-                foreach (string weapon in weapons)
+                if (word.Length < 2) continue; // Ignorar palabras muy cortas
+                
+                foreach (var weaponPattern in weaponPatterns)
                 {
-                    float similarity = CalculateSimilarity(word, weapon);
+                    string weaponName = weaponPattern.Key;
+                    string[] patterns = weaponPattern.Value;
                     
-                    if (similarity > bestSimilarity)
+                    foreach (string pattern in patterns)
                     {
-                        bestSimilarity = similarity;
-                        bestMatch = weapon;
+                        float similarity = CalculateSimilarity(word, pattern);
+                        
+                        if (similarity > bestSimilarity)
+                        {
+                            bestSimilarity = similarity;
+                            bestMatch = weaponName;
+                            UnityEngine.Debug.Log($"[MicrophoneController] 📊 '{word}' ~ '{pattern}' = {similarity:P0} (mejor hasta ahora: {weaponName})");
+                        }
                     }
                 }
             }
@@ -251,8 +325,12 @@ namespace Scenes.Scripts.VoiceController
             // Si encontramos una similitud suficiente, usar esa arma
             if (bestMatch != null && bestSimilarity >= similarityThreshold)
             {
-                UnityEngine.Debug.Log($"[MicrophoneController] ⚔️ Comando de arma detectado (similar {bestSimilarity:P0}): {bestMatch}");
+                UnityEngine.Debug.Log($"[MicrophoneController] ⚔️ Comando detectado (similitud {bestSimilarity:P0}): {bestMatch}");
                 onWeaponCommand?.Invoke(bestMatch);
+            }
+            else
+            {
+                UnityEngine.Debug.LogWarning($"[MicrophoneController] ❌ No se detectó ningún comando de arma válido. Mejor coincidencia: {bestMatch} ({bestSimilarity:P0})");
             }
         }
         

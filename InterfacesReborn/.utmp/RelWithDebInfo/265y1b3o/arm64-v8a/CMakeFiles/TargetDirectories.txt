@@ -1,0 +1,5 @@
+C:/Users/FGL14/ProyectoInterfaces/InterfacesReborn/.utmp/RelWithDebInfo/265y1b3o/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/FGL14/ProyectoInterfaces/InterfacesReborn/.utmp/RelWithDebInfo/265y1b3o/arm64-v8a/CMakeFiles/rebuild_cache.dir
+C:/Users/FGL14/ProyectoInterfaces/InterfacesReborn/.utmp/RelWithDebInfo/265y1b3o/arm64-v8a/GameActivity/CMakeFiles/game.dir
+C:/Users/FGL14/ProyectoInterfaces/InterfacesReborn/.utmp/RelWithDebInfo/265y1b3o/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
+C:/Users/FGL14/ProyectoInterfaces/InterfacesReborn/.utmp/RelWithDebInfo/265y1b3o/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir
