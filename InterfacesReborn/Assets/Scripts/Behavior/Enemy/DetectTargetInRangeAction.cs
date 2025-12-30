@@ -27,7 +27,6 @@ namespace Behavior.Enemy
             var target = Sensor.Value.GetClosestTarget();
             if (target == null) return Status.Running;
             Target.Value = target.gameObject;
-            Debug.Log("Detected target: " + Target.Value.name);
             return Status.Success;
         }
 

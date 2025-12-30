@@ -4,7 +4,7 @@ namespace Behavior.Enemy
 {
     public class AnimationAttack : EnemyAttack
     {
-        [SerializeField] private string attackTriggerName = "TrAttack";
+        [SerializeField] private string[] attackTriggerNames = {"TrAttack"};
         [SerializeField] private float attackCooldown = 1f;
         
         public override float Cooldown => attackCooldown;
@@ -19,6 +19,8 @@ namespace Behavior.Enemy
         {
             if (animator == null)
                 return false;
+            var selectIndex = Random.Range(0, attackTriggerNames.Length);
+            var attackTriggerName = attackTriggerNames[selectIndex];
             animator.SetTrigger(attackTriggerName);
             return true;
         }
