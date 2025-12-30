@@ -48,7 +48,7 @@ namespace Combat
                 DealDamage(damageable, hitPoint, hitDirection);
             }
         }
-
+        
         private void OnTriggerEnter(Collider other)
         {
             if (!dealDamageOnCollision)

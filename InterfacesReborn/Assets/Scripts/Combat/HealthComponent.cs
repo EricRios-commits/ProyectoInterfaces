@@ -32,31 +32,24 @@ namespace Combat
         {
             currentHealth = maxHealth;
             damageResistance = new DamageResistance();
-            
             if (useResistances)
             {
                 AddDamageModifier(damageResistance);
             }
         }
 
-        
-
         public void TakeDamage(DamageInfo damageInfo)
         {
             if (!IsAlive || invulnerable)
                 return;
-
             float modifiedDamage = CalculateModifiedDamage(damageInfo);
-            
             if (modifiedDamage <= 0)
                 return;
-
             float previousHealth = currentHealth;
             currentHealth = Mathf.Max(0, currentHealth - modifiedDamage);
             float actualDelta = previousHealth - currentHealth;
-
             NotifyHealthChanged(-actualDelta);
-
+            NotifyDamageTaken(damageInfo);
             if (currentHealth <= 0 && !isDead)
             {
                 Die(damageInfo);
@@ -78,20 +71,14 @@ namespace Combat
             }
             return damage;
         }
-
         
-
-        
-
         public void Heal(float amount)
         {
             if (!IsAlive || amount <= 0)
                 return;
-
             float previousHealth = currentHealth;
             currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
             float actualDelta = currentHealth - previousHealth;
-
             NotifyHealthChanged(actualDelta);
         }
 
@@ -108,10 +95,6 @@ namespace Combat
             invulnerable = value;
         }
 
-        
-
-        
-
         private void Die(DamageInfo finalDamage)
         {
             isDead = true;
@@ -126,10 +109,6 @@ namespace Combat
             currentHealth = Mathf.Min(healthAmount, maxHealth);
             NotifyHealthChanged(currentHealth);
         }
-
-        
-
-        
 
         public void AddObserver(IHealthObserver observer)
         {
@@ -151,6 +130,14 @@ namespace Combat
                 observer.OnHealthChanged(currentHealth, maxHealth, delta);
             }
         }
+        
+        private void NotifyDamageTaken(DamageInfo damageInfo)
+        {
+            foreach (var observer in observers)
+            {
+                observer.OnDamageTaken(damageInfo);
+            }
+        }
 
         private void NotifyDeath(DamageInfo finalDamage)
         {
@@ -159,10 +146,6 @@ namespace Combat
                 observer.OnDeath(finalDamage);
             }
         }
-
-        
-
-        
 
         public void AddDamageModifier(IDamageModifier modifier)
         {
@@ -186,8 +169,6 @@ namespace Combat
         {
             return damageResistance.GetResistance(type);
         }
-
-        
     }
 }
 

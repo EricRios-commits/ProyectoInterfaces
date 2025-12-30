@@ -73,19 +73,5 @@ namespace Behavior
                 UpdateTargetPosition(null);
             }
         }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = IsTargetInRange ? Color.red : Color.blue;
-            switch (detectionCollider)
-            {
-                case SphereCollider sphere:
-                    Gizmos.DrawWireSphere(transform.position + sphere.center, sphere.radius);
-                    break;
-                case BoxCollider box:
-                    Gizmos.DrawWireCube(transform.position + box.center, box.size);
-                    break;
-            }
-        }
     }
 }

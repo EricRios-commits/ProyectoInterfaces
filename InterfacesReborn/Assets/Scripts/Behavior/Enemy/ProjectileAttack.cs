@@ -35,11 +35,17 @@ namespace Behavior.Enemy
 
         public override bool Perform(GameObject agent, GameObject target)
         {
-            if (!shotCooldownTimer.IsFinished)
+            if (shotCooldownTimer.IsRunning)
                 return false;
-            shotCooldownTimer.Start();
+            ShootAtTarget(agent, target);
+            shotCooldownTimer.Reset();
+            return true;
+        }
+        
+        private void ShootAtTarget(GameObject agent, GameObject target)
+        {
             if (projectilePrefab == null || agent == null || target == null)
-                return false;
+                return;
             var projectile = PoolManager.GetObjectOfType(projectilePrefab, poolSize);
             if (projectile != null)
             {
@@ -56,9 +62,7 @@ namespace Behavior.Enemy
                 {
                     Debug.LogWarning($"Projectile prefab '{projectilePrefab.name}' is missing Projectile component");
                 }
-                return true;
             }
-            return false;
         }
     }
 }
