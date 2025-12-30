@@ -86,6 +86,11 @@ namespace Combat
                 Debug.Log($"{entityName} healed {delta}. Health: {currentHealth}/{maxHealth}");
             }
         }
+        
+        public void OnDamageTaken(DamageInfo damageInfo)
+        {
+            //Debug.Log($"{entityName} took {damageInfo.Amount} {damageInfo.Type} damage from {damageInfo.Instigator?.name ?? "unknown"}");
+        }
 
         public void OnDeath(DamageInfo finalDamage)
         {
@@ -107,8 +112,6 @@ namespace Combat
                 gameObject.SetActive(false);
             }
         }
-
-        
 
         /// <summary>
         /// Change the entity's resistance profile at runtime.
@@ -153,8 +156,6 @@ namespace Combat
         {
             return healthComponent;
         }
-
-        
     }
 }
 

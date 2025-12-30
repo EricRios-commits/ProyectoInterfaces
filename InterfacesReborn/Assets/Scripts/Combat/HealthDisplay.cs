@@ -42,6 +42,11 @@ namespace Combat
         {
             UpdateDisplay(currentHealth, maxHealth);
         }
+        
+        public void OnDamageTaken(DamageInfo damageInfo)
+        {
+           // Debug.Log($"{gameObject.name} took {damageInfo.Amount} {damageInfo.Type} damage.");
+        }
 
         public void OnDeath(DamageInfo finalDamage)
         {

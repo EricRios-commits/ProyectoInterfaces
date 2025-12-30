@@ -42,18 +42,14 @@ namespace Combat
         {
             if (!IsAlive || invulnerable)
                 return;
-
             float modifiedDamage = CalculateModifiedDamage(damageInfo);
-            
             if (modifiedDamage <= 0)
                 return;
-
             float previousHealth = currentHealth;
             currentHealth = Mathf.Max(0, currentHealth - modifiedDamage);
             float actualDelta = previousHealth - currentHealth;
-
             NotifyHealthChanged(-actualDelta);
-
+            NotifyDamageTaken(damageInfo);
             if (currentHealth <= 0 && !isDead)
             {
                 Die(damageInfo);
@@ -80,11 +76,9 @@ namespace Combat
         {
             if (!IsAlive || amount <= 0)
                 return;
-
             float previousHealth = currentHealth;
             currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
             float actualDelta = currentHealth - previousHealth;
-
             NotifyHealthChanged(actualDelta);
         }
 
@@ -134,6 +128,14 @@ namespace Combat
             foreach (var observer in observers)
             {
                 observer.OnHealthChanged(currentHealth, maxHealth, delta);
+            }
+        }
+        
+        private void NotifyDamageTaken(DamageInfo damageInfo)
+        {
+            foreach (var observer in observers)
+            {
+                observer.OnDamageTaken(damageInfo);
             }
         }
 
