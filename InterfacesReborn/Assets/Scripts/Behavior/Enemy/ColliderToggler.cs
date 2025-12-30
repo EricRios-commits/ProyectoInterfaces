@@ -1,29 +1,37 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Behavior.Enemy
 {
+    [Serializable]
+    public struct ColliderData
+    {
+        public string name;
+        public Collider collider;
+    }
+    
     public class ColliderToggler : MonoBehaviour
     {
-        [SerializeField] private Collider[] targetColliders;
+        [SerializeField] private ColliderData[] targetColliders;
         
-        public void EnableCollider()
+        public void EnableCollider(string colliderName)
         {
-            foreach (var coll in targetColliders)
+            foreach (var collData in targetColliders)
             {
-                if (coll != null)
+                if (collData.name == colliderName && collData.collider != null)
                 {
-                    coll.enabled = true;
+                    collData.collider.enabled = true;
                 }
             }
         }
         
-        public void DisableCollider()
+        public void DisableCollider(string colliderName)
         {
-            foreach (var coll in targetColliders)
+            foreach (var collData in targetColliders)
             {
-                if (coll != null)
+                if (collData.name == colliderName && collData.collider != null)
                 {
-                    coll.enabled = false;
+                    collData.collider.enabled = false;
                 }
             }
         }

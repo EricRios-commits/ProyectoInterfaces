@@ -60,7 +60,6 @@ namespace Behavior
         {
             if (layerMask == (layerMask | (1 << other.gameObject.layer)))
             {
-                Debug.Log($"{other.gameObject.name} has entered the sensor");
                 UpdateTargetPosition(other.gameObject);
             }
         }
@@ -69,7 +68,6 @@ namespace Behavior
         {
             if (layerMask == (layerMask | (1 << other.gameObject.layer)))
             {
-                Debug.Log($"{other.gameObject.name} has exited the sensor");
                 UpdateTargetPosition(null);
             }
         }
