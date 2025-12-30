@@ -12,7 +12,6 @@ namespace Utility.Timers
         {
             if (IsRunning && Time > 0)
             {
-                Debug.Log("Running Countdown Timer");
                 Time -= deltaTime;
             }
             if (IsRunning && Time <= 0)

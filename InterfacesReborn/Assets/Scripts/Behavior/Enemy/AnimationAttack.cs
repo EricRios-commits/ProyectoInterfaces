@@ -7,6 +7,7 @@ namespace Behavior.Enemy
         [SerializeField] private string attackTriggerName = "TrAttack";
         [SerializeField] private float attackCooldown = 1f;
         
+        public override float Cooldown => attackCooldown;
         private Animator animator;
         
         private void Awake()

@@ -51,10 +51,12 @@ namespace Combat
         
         private void OnTriggerEnter(Collider other)
         {
+            Debug.Log("Dealing damage to " + other.gameObject.name);
             if (!dealDamageOnCollision)
                 return;
             if (!IsInLayerMask(other.gameObject.layer, damageableLayers))
                 return;
+            Debug.Log("Layer mask check passed for " + other.gameObject.name);
             IDamageable damageable = other.GetComponent<IDamageable>();
             if (damageable != null)
             {
