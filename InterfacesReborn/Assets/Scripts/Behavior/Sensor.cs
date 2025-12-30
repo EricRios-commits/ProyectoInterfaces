@@ -1,74 +1,48 @@
+﻿using System;
 using UnityEngine;
-using System;
-using Utility;
-using Utility.Timers;
 
 namespace Behavior
 {
-    [RequireComponent(typeof(Collider))]
-    public class Sensor : MonoBehaviour
+    /// <summary>
+    /// Abstract base sensor providing common functionality for concrete sensors.
+    /// Use protected SetTarget(...) to update the current target and raise OnTargetChanged
+    /// when the target reference or its position changes.
+    /// </summary>
+    public abstract class Sensor : MonoBehaviour
     {
-        [SerializeField] private float timerInterval = 0.5f;
-        [SerializeField] private LayerMask layerMask;
-        
-        [SerializeField] private Collider detectionCollider;
-
+        /// <summary>Raised when the sensor's detected target or its position changes.</summary>
         public event Action OnTargetChanged = delegate { };
-        
-        public Vector3 TargetPosition => target ? target.transform.position : Vector3.zero;
-        
-        public bool IsTargetInRange => TargetPosition != Vector3.zero;
-        
-        private GameObject target;
-        private Vector3 lastKnownPosition;
-        private CountdownTimer timer;
-        
-        
-        private void Awake()
-        {
-            detectionCollider = GetComponent<Collider>();
-            detectionCollider.isTrigger = true;
-        }
 
-        private void Start()
-        {
-            timer = new CountdownTimer(timerInterval);
-            timer.OnTimerStop += () =>
-            {
-                UpdateTargetPosition(target);
-                timer.Start();
-            };
-            timer.Start();
-        }
-        
-        public GameObject GetClosestTarget()
-        {
-            return IsTargetInRange ? target : null;
-        }
+        protected GameObject _target;
+        protected Vector3 _lastKnownPosition;
 
-        private void UpdateTargetPosition(GameObject target)
+        /// <summary>World position of the current target, or Vector3.zero when none.</summary>
+        public virtual Vector3 TargetPosition => _target ? _target.transform.position : Vector3.zero;
+
+        /// <summary>Quick check whether there's a valid target in range.</summary>
+        public virtual bool IsTargetInRange => _target != null;
+
+        /// <summary>Return the current closest target GameObject, or null if none.</summary>
+        public virtual GameObject GetClosestTarget() => IsTargetInRange ? _target : null;
+
+        /// <summary>
+        /// Helper to update the sensor's target. Derived classes should call this
+        /// whenever they detect a new target or want to refresh the current one.
+        /// This method updates internal state and invokes OnTargetChanged if the
+        /// reference changed or the target moved since last known position.
+        /// </summary>
+        /// <param name="newTarget">The newly-detected target, or null.</param>
+        protected virtual void SetTarget(GameObject newTarget)
         {
-            this.target = target;
-            if (IsTargetInRange && (lastKnownPosition != TargetPosition || lastKnownPosition != Vector3.zero))
+            if (newTarget != _target || (newTarget != null && _lastKnownPosition != newTarget.transform.position))
             {
-                lastKnownPosition = TargetPosition;
-                OnTargetChanged.Invoke();
+                _target = newTarget;
+                _lastKnownPosition = _target ? _target.transform.position : Vector3.zero;
+                OnTargetChanged?.Invoke();
             }
-        }
-        
-        private void OnTriggerEnter(Collider other)
-        {
-            if (layerMask == (layerMask | (1 << other.gameObject.layer)))
+            else
             {
-                UpdateTargetPosition(other.gameObject);
-            }
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (layerMask == (layerMask | (1 << other.gameObject.layer)))
-            {
-                UpdateTargetPosition(null);
+                _target = newTarget;
             }
         }
     }
