@@ -1,5 +1,6 @@
 using UnityEngine;
-using Whisper.Samples;
+// using Whisper.Samples;
+using Scenes.Scripts.VoiceController;
 
 public class WeaponSwitching : MonoBehaviour
 {
