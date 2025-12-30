@@ -32,14 +32,11 @@ namespace Combat
         {
             currentHealth = maxHealth;
             damageResistance = new DamageResistance();
-            
             if (useResistances)
             {
                 AddDamageModifier(damageResistance);
             }
         }
-
-        
 
         public void TakeDamage(DamageInfo damageInfo)
         {
@@ -78,11 +75,7 @@ namespace Combat
             }
             return damage;
         }
-
         
-
-        
-
         public void Heal(float amount)
         {
             if (!IsAlive || amount <= 0)
@@ -108,10 +101,6 @@ namespace Combat
             invulnerable = value;
         }
 
-        
-
-        
-
         private void Die(DamageInfo finalDamage)
         {
             isDead = true;
@@ -126,10 +115,6 @@ namespace Combat
             currentHealth = Mathf.Min(healthAmount, maxHealth);
             NotifyHealthChanged(currentHealth);
         }
-
-        
-
-        
 
         public void AddObserver(IHealthObserver observer)
         {
@@ -160,10 +145,6 @@ namespace Combat
             }
         }
 
-        
-
-        
-
         public void AddDamageModifier(IDamageModifier modifier)
         {
             if (!damageModifiers.Contains(modifier))
@@ -186,8 +167,6 @@ namespace Combat
         {
             return damageResistance.GetResistance(type);
         }
-
-        
     }
 }
 
