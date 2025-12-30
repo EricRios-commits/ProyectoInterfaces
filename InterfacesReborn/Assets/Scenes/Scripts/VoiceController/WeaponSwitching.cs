@@ -100,14 +100,19 @@ public class WeaponSwitching : MonoBehaviour
         // Capitalizar el nombre del arma para buscar el GameObject
         string capitalizedName = char.ToUpper(weaponName[0]) + weaponName.Substring(1);
         
+        Debug.Log($"[WeaponSwitching] Buscando arma: '{capitalizedName}' en contenedor '{weaponsContainer.name}'");
+        
         // Buscar el arma en el contenedor
         Transform weaponTransform = weaponsContainer.Find(capitalizedName);
         
         if (weaponTransform == null)
         {
-            Debug.LogWarning($"[WeaponSwitching] Arma '{capitalizedName}' no encontrada en el contenedor.");
+            Debug.LogWarning($"[WeaponSwitching] ⚠️ Arma '{capitalizedName}' NO encontrada en el contenedor.");
+            Debug.Log($"[WeaponSwitching] Armas disponibles: {ListChildren(weaponsContainer)}");
             return;
         }
+        
+        Debug.Log($"[WeaponSwitching] ✓ Arma '{capitalizedName}' encontrada");
         
         // Si ya hay un arma equipada, desequiparla primero
         if (currentWeapon != null)
@@ -118,9 +123,31 @@ public class WeaponSwitching : MonoBehaviour
         // Equipar la nueva arma
         currentWeapon = weaponTransform.gameObject;
         equippedWeaponName = capitalizedName;
-        currentWeapon.SetActive(true);
         
-        Debug.Log($"[WeaponSwitching] ⚔️ {capitalizedName} equipada.");
+        Debug.Log($"[WeaponSwitching] Activando arma '{capitalizedName}'...");
+        currentWeapon.SetActive(true);
+        Debug.Log($"[WeaponSwitching] ⚔️ Arma '{capitalizedName}' activada: {currentWeapon.activeSelf}");
+        
+        // Verificar WeaponController
+        WeaponController controller = currentWeapon.GetComponent<WeaponController>();
+        if (controller != null)
+        {
+            Debug.Log($"[WeaponSwitching] ✓ WeaponController encontrado en {capitalizedName}");
+        }
+        else
+        {
+            Debug.LogError($"[WeaponSwitching] ⚠️⚠️⚠️ NO se encontró WeaponController en {capitalizedName}!");
+        }
+    }
+    
+    private string ListChildren(Transform parent)
+    {
+        string result = "";
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            result += parent.GetChild(i).name + ", ";
+        }
+        return result;
     }
     
     private void UnequipWeapon()

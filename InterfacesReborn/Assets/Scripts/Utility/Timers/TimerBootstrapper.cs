@@ -21,7 +21,7 @@ namespace Utility.Timers
 #if UNITY_EDITOR
             EditorApplication.playModeStateChanged -= OnPlayModeState;
             EditorApplication.playModeStateChanged += OnPlayModeState;
-#endif
+
             static void OnPlayModeState(PlayModeStateChange state)
             {
                 if (state == PlayModeStateChange.ExitingPlayMode)
@@ -32,6 +32,7 @@ namespace Utility.Timers
                     TimerManager.Clear();
                 }
             }
+#endif
         }
 
         private static void RemoveTimerManager<T>(ref PlayerLoopSystem loop)
