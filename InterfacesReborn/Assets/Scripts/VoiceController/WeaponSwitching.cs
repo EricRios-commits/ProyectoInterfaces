@@ -127,17 +127,6 @@ public class WeaponSwitching : MonoBehaviour
         Debug.Log($"[WeaponSwitching] Activando arma '{capitalizedName}'...");
         currentWeapon.SetActive(true);
         Debug.Log($"[WeaponSwitching] ⚔️ Arma '{capitalizedName}' activada: {currentWeapon.activeSelf}");
-        
-        // Verificar WeaponController
-        WeaponController controller = currentWeapon.GetComponent<WeaponController>();
-        if (controller != null)
-        {
-            Debug.Log($"[WeaponSwitching] ✓ WeaponController encontrado en {capitalizedName}");
-        }
-        else
-        {
-            Debug.LogError($"[WeaponSwitching] ⚠️⚠️⚠️ NO se encontró WeaponController en {capitalizedName}!");
-        }
     }
     
     private string ListChildren(Transform parent)

@@ -49,7 +49,7 @@ namespace Combat
             }
         }
         
-        private void OnTriggerEnter(Collider other)
+        protected virtual void OnTriggerEnter(Collider other)
         {
             if (!dealDamageOnCollision)
                 return;
@@ -58,6 +58,7 @@ namespace Combat
             IDamageable damageable = other.GetComponent<IDamageable>();
             if (damageable != null)
             {
+                Debug.Log("AAAAAA");
                 DealDamage(damageable, other.ClosestPoint(transform.position), (other.transform.position - transform.position).normalized);
             }
         }
