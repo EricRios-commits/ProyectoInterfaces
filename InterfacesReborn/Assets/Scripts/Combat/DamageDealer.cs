@@ -49,7 +49,7 @@ namespace Combat
             }
         }
         
-        private void OnTriggerEnter(Collider other)
+        protected virtual void OnTriggerEnter(Collider other)
         {
             Debug.Log("Dealing damage to " + other.gameObject.name);
             if (!dealDamageOnCollision)
