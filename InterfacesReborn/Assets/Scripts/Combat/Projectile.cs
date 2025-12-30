@@ -41,7 +41,6 @@ namespace Combat
 
         protected override void OnCollisionEnter(Collision collision)
         {
-            Debug.Log("Projectile collided with " + collision.gameObject.name);
             base.OnCollisionEnter(collision);
             ReturnToPool();
         }
