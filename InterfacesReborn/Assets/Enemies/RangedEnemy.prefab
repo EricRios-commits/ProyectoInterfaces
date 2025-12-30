@@ -52,8 +52,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 4.832342}
-  m_Center: {x: 0, y: 0, z: 2.916171}
+  m_Size: {x: 1, y: 1, z: 13.049995}
+  m_Center: {x: 0, y: 0, z: 7.0249977}
 --- !u!114 &4308269457210444625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,7 +70,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 8
-  detectionCollider: {fileID: 0}
+  detectionCollider: {fileID: 7295010009482724012}
 --- !u!1 &5487219534877214802
 GameObject:
   m_ObjectHideFlags: 0

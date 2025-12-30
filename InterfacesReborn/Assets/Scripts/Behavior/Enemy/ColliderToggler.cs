@@ -4,21 +4,27 @@ namespace Behavior.Enemy
 {
     public class ColliderToggler : MonoBehaviour
     {
-        [SerializeField] private Collider targetCollider;
+        [SerializeField] private Collider[] targetColliders;
         
         public void EnableCollider()
         {
-            if (targetCollider != null)
+            foreach (var coll in targetColliders)
             {
-                targetCollider.enabled = true;
+                if (coll != null)
+                {
+                    coll.enabled = true;
+                }
             }
         }
         
         public void DisableCollider()
         {
-            if (targetCollider != null)
+            foreach (var coll in targetColliders)
             {
-                targetCollider.enabled = false;
+                if (coll != null)
+                {
+                    coll.enabled = false;
+                }
             }
         }
     }
