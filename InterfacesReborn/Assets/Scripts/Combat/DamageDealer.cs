@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Combat
 {
@@ -70,4 +70,3 @@ namespace Combat
         }
     }
 }
-
