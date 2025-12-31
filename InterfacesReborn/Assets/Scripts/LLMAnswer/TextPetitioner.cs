@@ -46,9 +46,9 @@ namespace PTexto
             StartCoroutine(SendMessageToChatbot(message));
         }
 
-        private void OnTriggerEnter(Collider other)
+        public void RequestToModel()
         {
-            Debug.Log("Trigger detectado");
+            Debug.Log("Se va a hacer una petición");
             SendMessageFromString(defaultPrompt);
         }
 
