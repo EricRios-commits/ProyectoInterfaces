@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "name": "XR Input Actions",
+    "maps": [
+        {
+            "name": "XRI RightHand Interaction",
+            "id": "23b75c3b-fba1-4884-8a05-d404d05435f0",
+            "actions": [
+                {
+                    "name": "Primary Button",
+                    "type": "Button",
+                    "id": "6d6fad0c-76e6-4ba1-bf59-cdcc25a4a0c3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "77f68dd7-3139-44f2-ba43-0403ac3739dd",
+                    "path": "<XRController>{RightHand}/{PrimaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Primary Button",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

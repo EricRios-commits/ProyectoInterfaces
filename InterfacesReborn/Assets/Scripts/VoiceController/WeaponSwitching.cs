@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 using Whisper.Samples;
 
 public class WeaponSwitching : MonoBehaviour
@@ -10,11 +11,8 @@ public class WeaponSwitching : MonoBehaviour
     [Tooltip("GameObject que contiene todas las armas como hijos")]
     public Transform weaponsContainer;
     
-    [Tooltip("Controlador derecho para posicionar el arma")]
-    public OVRInput.Controller rightController = OVRInput.Controller.RTouch;
-    
-    [Tooltip("Transform del controlador derecho (RightHandAnchor del OVRCameraRig)")]
-    public Transform rightHandAnchor;
+    [Tooltip("Transform del controlador derecho (Right Hand XR Controller)")]
+    public Transform rightHandTransform;
     
     [Header("Configuración")]
     [Tooltip("Offset de posición respecto al controlador")]
@@ -46,18 +44,25 @@ public class WeaponSwitching : MonoBehaviour
             Debug.LogError("[WeaponSwitching] ¡weaponsContainer no asignado!");
         }
         
-        // Buscar automáticamente el RightHandAnchor si no está asignado
-        if (rightHandAnchor == null)
+        // Buscar automáticamente el Right Hand Controller si no está asignado
+        if (rightHandTransform == null)
         {
-            OVRCameraRig cameraRig = FindFirstObjectByType<OVRCameraRig>();
-            if (cameraRig != null)
+            // Intentar encontrar el XR Origin y el Right Hand Controller
+            var xrControllers = FindObjectsByType<XRBaseController>(FindObjectsSortMode.None);
+            foreach (var controller in xrControllers)
             {
-                rightHandAnchor = cameraRig.rightHandAnchor;
-                Debug.Log("[WeaponSwitching] RightHandAnchor encontrado automáticamente.");
+                // Buscar el controlador derecho por nombre o tag
+                if (controller.name.ToLower().Contains("right"))
+                {
+                    rightHandTransform = controller.transform;
+                    Debug.Log($"[WeaponSwitching] Right Hand Controller encontrado automáticamente: {controller.name}");
+                    break;
+                }
             }
-            else
+            
+            if (rightHandTransform == null)
             {
-                Debug.LogError("[WeaponSwitching] ¡No se encontró OVRCameraRig! Asigna manualmente el RightHandAnchor.");
+                Debug.LogError("[WeaponSwitching] ¡No se encontró el Right Hand Controller! Asigna manualmente rightHandTransform.");
             }
         }
     }
@@ -157,15 +162,15 @@ public class WeaponSwitching : MonoBehaviour
     
     private void UpdateWeaponPosition()
     {
-        if (rightHandAnchor == null)
+        if (rightHandTransform == null)
         {
-            Debug.LogWarning("[WeaponSwitching] RightHandAnchor no está asignado.");
+            Debug.LogWarning("[WeaponSwitching] rightHandTransform no está asignado.");
             return;
         }
 
         // Obtener la posición y rotación mundial del controlador derecho
-        Vector3 controllerPosition = rightHandAnchor.position;
-        Quaternion controllerRotation = rightHandAnchor.rotation;
+        Vector3 controllerPosition = rightHandTransform.position;
+        Quaternion controllerRotation = rightHandTransform.rotation;
 
         // Aplicar offsets específicos por arma
         switch (equippedWeaponName)
@@ -178,7 +183,7 @@ public class WeaponSwitching : MonoBehaviour
                 break;
             case "Spear":
                 controllerRotation *= Quaternion.Euler(0f, 90f, 45f);
-                controllerPosition += rightHandAnchor.TransformDirection(new Vector3(0f, 0.3f, 0.3f));
+                controllerPosition += rightHandTransform.TransformDirection(new Vector3(0f, 0.3f, 0.3f));
                 break;
             default:
                 controllerRotation *= Quaternion.Euler(45f, 0f, 0f);
@@ -186,7 +191,7 @@ public class WeaponSwitching : MonoBehaviour
         }
         
         // Aplicar offsets adicionales configurables
-        currentWeapon.transform.position = controllerPosition + rightHandAnchor.TransformDirection(positionOffset);
+        currentWeapon.transform.position = controllerPosition + rightHandTransform.TransformDirection(positionOffset);
         currentWeapon.transform.rotation = controllerRotation * Quaternion.Euler(rotationOffset);
     }
     
