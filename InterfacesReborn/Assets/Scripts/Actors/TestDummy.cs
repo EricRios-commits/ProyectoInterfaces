@@ -65,6 +65,11 @@ public class TestDummy : MonoBehaviour, IDamageable, IHealthObserver
         // Optional: Handle health changes
     }
 
+    public void OnDamageTaken(DamageInfo damageInfo, float currentHealth, float maxHealth)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public void OnDamageTaken(DamageInfo damageInfo)
     {
         throw new System.NotImplementedException();

@@ -42,7 +42,12 @@ namespace Combat
         {
             UpdateDisplay(currentHealth, maxHealth);
         }
-        
+
+        public void OnDamageTaken(DamageInfo damageInfo, float currentHealth, float maxHealth)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void OnDamageTaken(DamageInfo damageInfo)
         {
            // Debug.Log($"{gameObject.name} took {damageInfo.Amount} {damageInfo.Type} damage.");

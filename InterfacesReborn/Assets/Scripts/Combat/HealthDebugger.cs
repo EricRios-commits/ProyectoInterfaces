@@ -100,6 +100,11 @@ namespace Combat
             }
         }
 
+        public void OnDamageTaken(DamageInfo damageInfo, float currentHealth, float maxHealth)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void OnDamageTaken(DamageInfo damageInfo)
         {
             string instigatorName = damageInfo.Instigator != null ? damageInfo.Instigator.name : "Desconocido";

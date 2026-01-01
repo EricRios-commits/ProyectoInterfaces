@@ -18,6 +18,10 @@ namespace Combat
         [Header("Damage Modifiers")]
         [SerializeField] private bool useResistances = true;
 
+        [Header("Debug")]
+        [SerializeField] private float debugDamageAmount = 10f;
+        [SerializeField] private DamageType debugDamageType = DamageType.Slash;
+
         private DamageResistance damageResistance;
         private List<IHealthObserver> observers = new List<IHealthObserver>();
         private List<IDamageModifier> damageModifiers = new List<IDamageModifier>();
@@ -48,8 +52,8 @@ namespace Combat
             float previousHealth = currentHealth;
             currentHealth = Mathf.Max(0, currentHealth - modifiedDamage);
             float actualDelta = previousHealth - currentHealth;
+            NotifyDamageTaken(damageInfo, actualDelta);
             NotifyHealthChanged(-actualDelta);
-            NotifyDamageTaken(damageInfo);
             if (currentHealth <= 0 && !isDead)
             {
                 Die(damageInfo);
@@ -71,7 +75,7 @@ namespace Combat
             }
             return damage;
         }
-        
+
         public void Heal(float amount)
         {
             if (!IsAlive || amount <= 0)
@@ -109,7 +113,7 @@ namespace Combat
             currentHealth = Mathf.Min(healthAmount, maxHealth);
             NotifyHealthChanged(currentHealth);
         }
-
+        
         public void AddObserver(IHealthObserver observer)
         {
             if (!observers.Contains(observer))
@@ -130,12 +134,19 @@ namespace Combat
                 observer.OnHealthChanged(currentHealth, maxHealth, delta);
             }
         }
-        
-        private void NotifyDamageTaken(DamageInfo damageInfo)
+
+        private void NotifyDamageTaken(DamageInfo damageInfo, float actualDamage)
         {
+            DamageInfo actualDamageInfo = new DamageInfo(
+                actualDamage,
+                damageInfo.Type,
+                damageInfo.Instigator,
+                damageInfo.HitPoint,
+                damageInfo.HitDirection
+            );
             foreach (var observer in observers)
             {
-                observer.OnDamageTaken(damageInfo);
+                observer.OnDamageTaken(actualDamageInfo, currentHealth, maxHealth);
             }
         }
 
@@ -165,10 +176,80 @@ namespace Combat
             damageResistance.SetResistance(type, multiplier);
         }
 
+
+        #region Debug Methods
+
+        /// <summary>
+        /// Debug method to test taking damage from the inspector.
+        /// Configure debugDamageAmount and debugDamageType in the inspector, then call this method.
+        /// </summary>
+        [ContextMenu("Debug: Take Damage")]
+        public void DebugTakeDamage()
+        {
+            var damageInfo = new DamageInfo(
+                debugDamageAmount,
+                debugDamageType,
+                gameObject, // Self as instigator for debug
+                transform.position,
+                Vector3.forward
+            );
+            TakeDamage(damageInfo);
+            Debug.Log($"[HealthComponent Debug] Took {debugDamageAmount} {debugDamageType} damage. Health: {currentHealth}/{maxHealth}");
+        }
+
+        /// <summary>
+        /// Debug method to fully heal from the inspector.
+        /// </summary>
+        [ContextMenu("Debug: Full Heal")]
+        public void DebugFullHeal()
+        {
+            Heal(maxHealth);
+            Debug.Log($"[HealthComponent Debug] Fully healed. Health: {currentHealth}/{maxHealth}");
+        }
+
+        /// <summary>
+        /// Debug method to kill instantly from the inspector.
+        /// </summary>
+        [ContextMenu("Debug: Kill")]
+        public void DebugKill()
+        {
+            var damageInfo = new DamageInfo(
+                currentHealth + 1000f,
+                DamageType.Magic,
+                gameObject,
+                transform.position,
+                Vector3.zero
+            );
+            TakeDamage(damageInfo);
+            Debug.Log($"[HealthComponent Debug] Killed. Health: {currentHealth}/{maxHealth}");
+        }
+
+        /// <summary>
+        /// Debug method to revive from the inspector.
+        /// </summary>
+        [ContextMenu("Debug: Revive")]
+        public void DebugRevive()
+        {
+            Revive(maxHealth);
+            Debug.Log($"[HealthComponent Debug] Revived. Health: {currentHealth}/{maxHealth}");
+        }
+
+        /// <summary>
+        /// Debug method to toggle invulnerability from the inspector.
+        /// </summary>
+        [ContextMenu("Debug: Toggle Invulnerable")]
+        public void DebugToggleInvulnerable()
+        {
+            invulnerable = !invulnerable;
+            Debug.Log($"[HealthComponent Debug] Invulnerable: {invulnerable}");
+        }
+
+        #endregion
+
         public float GetDamageResistance(DamageType type)
         {
             return damageResistance.GetResistance(type);
         }
+        
     }
 }
-
