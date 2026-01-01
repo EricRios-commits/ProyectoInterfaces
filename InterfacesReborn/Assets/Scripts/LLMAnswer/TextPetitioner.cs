@@ -43,18 +43,14 @@ namespace PTexto
 
         public void SendMessageFromString(string message)
         {
-            if (message == null || message.Trim() == "")
-            {
-                message = defaultPrompt;
-            }
             StartCoroutine(SendMessageToChatbot(message));
         }
 
-        // private void OnTriggerEnter(Collider other)
-        // {
-        //     Debug.Log("Trigger detectado");
-        //     SendMessageFromString(defaultPrompt);
-        // }
+        public void RequestToModel()
+        {
+            Debug.Log("Se va a hacer una petición");
+            SendMessageFromString(defaultPrompt);
+        }
 
         private IEnumerator SendMessageToChatbot(string message)
         {

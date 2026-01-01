@@ -1,12 +1,14 @@
 using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Whisper.Utils;
 
 namespace Whisper.Samples
 {
     /// <summary>
     /// Record audio clip from microphone and make a transcription for VR Meta Quest 2.
-    /// Press and hold the right controller grip button to record, release to process.
+    /// Press and hold the right controller button to record, release to process.
+    /// Uses XR Interaction Toolkit Input System.
     /// </summary>
     public class MicrophoneController : MonoBehaviour
     {
@@ -22,11 +24,9 @@ namespace Whisper.Samples
         public bool streamSegments = true;
         public bool printLanguage = true;
 
-        [Header("VR Input Settings")]
-        [Tooltip("Which controller button to use (GripButton, TriggerButton, PrimaryButton, SecondaryButton)")]
-        public OVRInput.Button recordButton = OVRInput.Button.Two; // Botón B del mando derecho
-        [Tooltip("Which controller to use (RTouch for right, LTouch for left)")]
-        public OVRInput.Controller controller = OVRInput.Controller.RTouch; // Mando derecho
+        [Header("XR Input Settings")]
+        [Tooltip("Input action for recording (assign Right Primary Button or any button action)")]
+        public InputActionReference recordButtonAction;
         
         [Header("Audio Settings")]
         [Tooltip("Tiempo mínimo de grabación en segundos")]
@@ -60,20 +60,112 @@ namespace Whisper.Samples
                 }
             }
         }
+        
+        private void TryFindRecordButtonAction()
+        {
+            UnityEngine.Debug.Log("[MicrophoneController] Buscando controlador XR...");
+            
+            // Buscar el controlador derecho
+            var xrControllers = FindObjectsByType<UnityEngine.XR.Interaction.Toolkit.XRBaseController>(FindObjectsSortMode.None);
+            
+            UnityEngine.Debug.Log($"[MicrophoneController] Controladores XR encontrados: {xrControllers.Length}");
+            
+            foreach (var controller in xrControllers)
+            {
+                UnityEngine.Debug.Log($"[MicrophoneController] Revisando controlador: {controller.name}");
+                
+                if (controller.name.ToLower().Contains("right"))
+                {
+                    UnityEngine.Debug.Log($"[MicrophoneController] ✓ Controlador derecho encontrado: {controller.name}");
+                    
+                    // Intentar obtener el ActionBasedController
+                    var actionController = controller.GetComponent<UnityEngine.XR.Interaction.Toolkit.ActionBasedController>();
+                    if (actionController != null)
+                    {
+                        UnityEngine.Debug.Log("[MicrophoneController] ActionBasedController encontrado");
+                        
+                        // Intentar usar activateAction (típicamente el gatillo)
+                        if (actionController.activateAction.action != null)
+                        {
+                            // Crear un InputActionReference desde la acción
+                            recordButtonAction = ScriptableObject.CreateInstance<InputActionReference>();
+                            var actionField = typeof(InputActionReference).GetField("m_Action", 
+                                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                            if (actionField != null)
+                            {
+                                actionField.SetValue(recordButtonAction, actionController.activateAction.action);
+                                UnityEngine.Debug.Log($"[MicrophoneController] ✓ Input Action asignado desde activateAction de {controller.name}");
+                                return;
+                            }
+                        }
+                        
+                        // Alternativa: usar selectAction
+                        if (actionController.selectAction.action != null)
+                        {
+                            recordButtonAction = ScriptableObject.CreateInstance<InputActionReference>();
+                            var actionField = typeof(InputActionReference).GetField("m_Action", 
+                                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                            if (actionField != null)
+                            {
+                                actionField.SetValue(recordButtonAction, actionController.selectAction.action);
+                                UnityEngine.Debug.Log($"[MicrophoneController] ✓ Input Action asignado desde selectAction de {controller.name}");
+                                return;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        UnityEngine.Debug.LogWarning($"[MicrophoneController] No se encontró ActionBasedController en {controller.name}");
+                    }
+                    break;
+                }
+            }
+            
+            UnityEngine.Debug.LogWarning("[MicrophoneController] No se pudo encontrar el Input Action automáticamente. Asígnalo manualmente en el Inspector.");
+        }
 
         private async void Start()
         {
+            // Buscar automáticamente el input action si no está asignado
+            if (recordButtonAction == null || recordButtonAction.action == null)
+            {
+                UnityEngine.Debug.Log("[MicrophoneController] Buscando Input Action automáticamente...");
+                TryFindRecordButtonAction();
+            }
+
+            // Habilitar el input action
+            if (recordButtonAction != null && recordButtonAction.action != null)
+            {
+                recordButtonAction.action.Enable();
+                UnityEngine.Debug.Log("[MicrophoneController] Input Action habilitado");
+            }
+            else
+            {
+                UnityEngine.Debug.LogWarning("[MicrophoneController] ⚠️ recordButtonAction no asignado. Asígnalo manualmente en el Inspector para usar comandos de voz.");
+                UnityEngine.Debug.LogWarning("[MicrophoneController] Si estás en el editor, asegúrate de que el XR Origin esté en la escena y XR Simulator esté activo.");
+            }
+            
             // Inicializar el modelo de Whisper
             UnityEngine.Debug.Log("[MicrophoneController] Cargando modelo de Whisper...");
             await whisper.InitModel();
             UnityEngine.Debug.Log("[MicrophoneController] Modelo de Whisper cargado y listo.");
-            UnityEngine.Debug.Log("[MicrophoneController] Mantén presionado el botón B y habla cerca del micrófono de las Quest 2.");
+            
+            if (recordButtonAction != null && recordButtonAction.action != null)
+            {
+                UnityEngine.Debug.Log("[MicrophoneController] Mantén presionado el botón asignado y habla cerca del micrófono de las Quest 2.");
+            }
+            else
+            {
+                UnityEngine.Debug.Log("[MicrophoneController] Asigna 'Record Button Action' en el Inspector para activar la grabación por voz.");
+            }
         }
 
         private void Update()
         {
+            if (recordButtonAction == null || recordButtonAction.action == null) return;
+            
             // Detectar cuando se presiona el botón
-            bool isPressingButton = OVRInput.Get(recordButton, controller);
+            bool isPressingButton = recordButtonAction.action.ReadValue<float>() > 0.5f;
             
             // Botón presionado (transición de no presionado a presionado)
             if (isPressingButton && !_wasPressingButton)
