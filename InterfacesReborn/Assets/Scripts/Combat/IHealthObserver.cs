@@ -7,7 +7,7 @@
     public interface IHealthObserver
     {
         void OnHealthChanged(float currentHealth, float maxHealth, float delta);
-        void OnDamageTaken(DamageInfo damageInfo);
+        void OnDamageTaken(DamageInfo damageInfo, float currentHealth, float maxHealth);
         void OnDeath(DamageInfo finalDamage);
     }
 }
