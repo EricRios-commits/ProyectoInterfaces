@@ -16,6 +16,7 @@ public partial class WaitForAttackAction : Action
     protected override Status OnStart()
     {
         m_Timer = Attack.Value.Cooldown;
+        Debug.Log("Starting WaitForAttackAction with timer: " + m_Timer);
         if (m_Timer <= 0.0f)
         {
             return Status.Success;
@@ -27,6 +28,7 @@ public partial class WaitForAttackAction : Action
     protected override Status OnUpdate()
     {
         m_Timer -= Time.deltaTime;
+        Debug.Log("Updating WaitForAttackAction, timer: " + m_Timer);
         if (m_Timer <= 0)
         {
             return Status.Success;

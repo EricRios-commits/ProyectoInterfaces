@@ -33,7 +33,6 @@ namespace Behavior.Enemy
         {
             if (Agent.Value == null || Target.Value == null)
                 return Status.Failure;
-
             return Initialize();
         }
 

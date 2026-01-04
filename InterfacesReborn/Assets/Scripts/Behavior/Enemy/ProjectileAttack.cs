@@ -42,6 +42,15 @@ namespace Behavior.Enemy
             return true;
         }
         
+        public override bool Perform(GameObject agent, Vector3 targetPosition)
+        {
+            if (shotCooldownTimer.IsRunning)
+                return false;
+            ShootAtPosition(agent, targetPosition);
+            shotCooldownTimer.Reset();
+            return true;
+        }
+        
         private void ShootAtTarget(GameObject agent, GameObject target)
         {
             if (projectilePrefab == null || agent == null || target == null)
@@ -54,6 +63,29 @@ namespace Behavior.Enemy
                 {
                     var spawnPosition = shotPoint != null ? shotPoint.position : agent.transform.position;
                     Vector3 direction = (target.transform.position - spawnPosition);
+                    direction.y = 0;
+                    direction.Normalize();
+                    projectileComponent.Initialize(spawnPosition, direction, projectileSpeed, projectileLifetime);
+                }
+                else
+                {
+                    Debug.LogWarning($"Projectile prefab '{projectilePrefab.name}' is missing Projectile component");
+                }
+            }
+        }
+        
+        private void ShootAtPosition(GameObject agent, Vector3 targetPosition)
+        {
+            if (projectilePrefab == null || agent == null)
+                return;
+            var projectile = PoolManager.GetObjectOfType(projectilePrefab, poolSize);
+            if (projectile != null)
+            {
+                var projectileComponent = projectile.GetComponent<Projectile>();
+                if (projectileComponent != null)
+                {
+                    var spawnPosition = shotPoint != null ? shotPoint.position : agent.transform.position;
+                    Vector3 direction = (targetPosition - spawnPosition);
                     direction.y = 0;
                     direction.Normalize();
                     projectileComponent.Initialize(spawnPosition, direction, projectileSpeed, projectileLifetime);

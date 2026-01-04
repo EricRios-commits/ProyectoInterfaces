@@ -24,5 +24,16 @@ namespace Behavior.Enemy
             animator.SetTrigger(attackTriggerName);
             return true;
         }
+        
+        public override bool Perform(GameObject agent, Vector3 targetPosition)
+        {
+            // Animation attacks don't need target position, just trigger the animation
+            if (animator == null)
+                return false;
+            var selectIndex = Random.Range(0, attackTriggerNames.Length);
+            var attackTriggerName = attackTriggerNames[selectIndex];
+            animator.SetTrigger(attackTriggerName);
+            return true;
+        }
     }
 }
