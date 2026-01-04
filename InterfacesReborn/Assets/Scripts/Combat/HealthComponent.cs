@@ -146,6 +146,7 @@ namespace Combat
             );
             foreach (var observer in observers)
             {
+                Debug.Log("Notifying observer of damage taken: " + observer);
                 observer.OnDamageTaken(actualDamageInfo, currentHealth, maxHealth);
             }
         }

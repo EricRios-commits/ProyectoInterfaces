@@ -15,7 +15,7 @@ namespace Behavior.Enemy
         [Header("Thresholds")]
         [Tooltip("Health percentage threshold to trigger events (0-1)")] 
         [Range(0, 1)]
-        [SerializeField] private float healthThresholds = 0.25f;
+        [SerializeField] private float healthThreshold = 0.25f;
 
         private bool hasTriggeredThreshold;
 
@@ -33,8 +33,9 @@ namespace Behavior.Enemy
 
         public override void OnHealthChanged(float current, float max, float delta)
         {
+            Debug.Log("EnemyAI: OnHealthChanged called. Current Health: " + current + ", Max Health: " + max + ", Delta: " + delta);
             float healthPercent = current / max;
-            bool isBelowThreshold = healthPercent <= healthThresholds;
+            bool isBelowThreshold = healthPercent <= healthThreshold;
             if (isBelowThreshold && !hasTriggeredThreshold)
             {
                 hasTriggeredThreshold = true;
@@ -44,6 +45,7 @@ namespace Behavior.Enemy
 
         public override void OnDamageTaken(DamageInfo info, float current, float max)
         {
+            Debug.Log("EnemyAI: OnDamageTaken called. Current Health: " + current + ", Max Health: " + max + ", Damage Info: " + info);
             var damageData = new ActorDamageEventData(info, current, max);
             onDamagedEvent?.SendEventMessage(gameObject, gameObject);
         }

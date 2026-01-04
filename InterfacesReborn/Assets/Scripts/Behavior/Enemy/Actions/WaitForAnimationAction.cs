@@ -37,14 +37,14 @@ public partial class WaitForAnimationAction : Action
                 return Status.Running;
             }
             waitingForTransition = false;
+            return Status.Running;
         }
         if (Animator.Value.IsInTransition(Layer.Value))
         {
-            waitingForTransition = true;
-            return Status.Running;
+            return Status.Success;
         }
         AnimatorStateInfo stateInfo = Animator.Value.GetCurrentAnimatorStateInfo(Layer.Value);
-        if (stateInfo.normalizedTime >= 1.0f && !Animator.Value.IsInTransition(Layer.Value))
+        if (stateInfo.normalizedTime >= 1.0f)
         {
             return Status.Success;
         }
