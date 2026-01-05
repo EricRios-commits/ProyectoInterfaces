@@ -1,59 +1,49 @@
-// using System.Collections;
-// using PTexto;
-// using UnityEngine;
-// using UnityEngine.XR.Interaction.Toolkit;
-// using UnityEngine.XR.Interaction.Toolkit.Interactors;
+using PTexto;
+using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
-// public class GazeController : MonoBehaviour
-// {
-//     public float holdTime = 2f;
-//     public delegate void message();
-//     public event message GazeAlert;
-//     public TextPetitioner petitioner;
+public class GazeController : MonoBehaviour
+{
+    public float holdTime;
+    public delegate void message();
+    public event message GazeAlert;
+    public TextPetitioner petitioner;
 
-//     public GameObject debugCube;
+    public GameObject debugCube;
+    private float timer;
+    private bool activatedTimer;
 
-//     // XRBaseInteractable interactable;
-//     Coroutine routine;
+    void Start()
+    {
+        timer = 0f;
+    }
 
-//     // void Awake()
-//     // {
-//     //     interactable = GetComponent<XRBaseInteractable>();
+    void Update()
+    {
+        if (activatedTimer)
+        {
+            timer += Time.deltaTime;
+        }
+        if (timer >= holdTime)
+        {
+            petitioner.RequestToModel();
+            timer = 0;
+        }
+    }
 
-//     //     interactable.hoverEntered.AddListener(OnHoverEnter);
-//     //     interactable.hoverExited.AddListener(OnHoverExit);
-//     // }
+    public void OnHoverEnter(HoverEnterEventArgs args)
+    {
+        Debug.Log("interactor: " + args.interactorObject.GetType());
+        // if (args.interactorObject is XRGazeInteractor)
+        // {
+        activatedTimer = true;
+        // }
+    }
 
-//     public void OnHoverEnter(HoverEnterEventArgs args)
-//     {
-//         if (args.interactorObject is XRGazeInteractor)
-//         {
-//             debugCube.transform.position = new Vector3 (0, 0, 0);
-//             Debug.Log("Comenzamos Corutina");
-//             routine = StartCoroutine(HoldTimer());
-//         }
-//     }
-
-//     public void OnHoverExit(HoverExitEventArgs args)
-//     {
-//         if (args.interactorObject is XRGazeInteractor && routine != null)
-//         {
-//             Debug.Log("Interrumpimos Corutina");
-//             StopCoroutine(routine);
-//             routine = null;
-//         }
-//     }
-
-//     IEnumerator HoldTimer()
-//     {
-//         float t = 0f;
-
-//         while (t < holdTime)
-//         {
-//             t += Time.deltaTime;
-//             yield return null;
-//         }
-//         petitioner.RequestToModel();
-//         routine = null;
-//     }
-// }
+    public void OnHoverExit(HoverExitEventArgs args)
+    {
+        activatedTimer = false;
+        timer = 0f;
+    }
+}
