@@ -25,7 +25,7 @@ namespace Combat
 
         public abstract void OnDamageTaken(DamageInfo info, float currentHealth, float maxHealth);
 
-        public virtual void OnDeath(DamageInfo finalDamage)
+        public virtual void OnDeath(GameObject dead, DamageInfo finalDamage)
         {
             if (combatEntity != null)
                 combatEntity.HandleDeath(finalDamage);

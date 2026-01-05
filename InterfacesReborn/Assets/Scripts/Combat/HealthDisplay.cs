@@ -53,7 +53,7 @@ namespace Combat
            // Debug.Log($"{gameObject.name} took {damageInfo.Amount} {damageInfo.Type} damage.");
         }
 
-        public void OnDeath(DamageInfo finalDamage)
+        public void OnDeath(GameObject dead, DamageInfo finalDamage)
         {
             Debug.Log($"{gameObject.name} died from {finalDamage.Type} damage!");
             // Handle death visuals here

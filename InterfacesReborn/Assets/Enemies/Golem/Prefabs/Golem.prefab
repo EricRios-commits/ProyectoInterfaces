@@ -2312,13 +2312,14 @@ GameObject:
   - component: {fileID: 4697349046287947820}
   - component: {fileID: 9146567202670030237}
   - component: {fileID: 6487678136985470757}
+  - component: {fileID: 3556342717221667811}
   m_Layer: 9
   m_Name: Golem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8468617057500289297
 Transform:
   m_ObjectHideFlags: 0
@@ -2375,6 +2376,8 @@ MonoBehaviour:
   currentHealth: 0
   invulnerable: 0
   useResistances: 1
+  debugDamageAmount: 10
+  debugDamageType: 0
 --- !u!114 &6271622960165884098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2391,7 +2394,6 @@ MonoBehaviour:
   entityName: Combat Entity
   deathEffectPrefab: {fileID: 0}
   destroyDelay: 2
-  resistanceProfile: {fileID: 0}
 --- !u!114 &4277312130403313173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2474,7 +2476,7 @@ MonoBehaviour:
           m_Value0: 7577049017393989758
           m_Value1: 18051915901580581456
         Name: Speed
-        m_Value: 1
+        m_Value: 0.75
     - rid: 5524551844633510291
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -2500,7 +2502,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 9137032837993464747}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 1
   m_Speed: 500
   m_Acceleration: 5
   avoidancePriority: 50
@@ -2553,3 +2555,20 @@ CapsuleCollider:
   m_Height: 3
   m_Direction: 1
   m_Center: {x: 0, y: 1.5, z: 0}
+--- !u!114 &3556342717221667811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9137032837993464747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 503f7dbb8cdd419ea6bbb7d144049830, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthComponent: {fileID: 1870801420667007174}
+  combatEntity: {fileID: 6271622960165884098}
+  onDamagedEvent: {fileID: 11400000, guid: 0e0275cc9f3d5954f8c7d8093f9e8a6a, type: 2}
+  onHealthThresholdEvent: {fileID: 0}
+  healthThreshold: 0.25

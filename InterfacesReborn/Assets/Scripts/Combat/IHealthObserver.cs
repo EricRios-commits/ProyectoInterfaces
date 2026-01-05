@@ -1,4 +1,6 @@
-﻿namespace Combat
+﻿using UnityEngine;
+
+namespace Combat
 {
     /// <summary>
     /// Observer interface for health change notifications.
@@ -8,7 +10,7 @@
     {
         void OnHealthChanged(float currentHealth, float maxHealth, float delta);
         void OnDamageTaken(DamageInfo damageInfo, float currentHealth, float maxHealth);
-        void OnDeath(DamageInfo finalDamage);
+        void OnDeath(GameObject dead, DamageInfo finalDamage);
     }
 }
 

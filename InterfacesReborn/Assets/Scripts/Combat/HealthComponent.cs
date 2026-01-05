@@ -155,7 +155,7 @@ namespace Combat
         {
             foreach (var observer in observers)
             {
-                observer.OnDeath(finalDamage);
+                observer.OnDeath(gameObject, finalDamage);
             }
         }
 

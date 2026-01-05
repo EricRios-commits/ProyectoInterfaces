@@ -497,6 +497,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c0e8ec4be6a4d554881a5c8bb6d0c0cf, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5814455845899168656}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c0e8ec4be6a4d554881a5c8bb6d0c0cf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 219080001601123157}
   m_SourcePrefab: {fileID: 100100000, guid: c0e8ec4be6a4d554881a5c8bb6d0c0cf, type: 3}
 --- !u!95 &2829917917779058644 stripped
 Animator:
@@ -572,7 +575,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 8858051749441068820}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 1
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -601,6 +604,8 @@ MonoBehaviour:
   currentHealth: 0
   invulnerable: 0
   useResistances: 1
+  debugDamageAmount: 10
+  debugDamageType: 0
 --- !u!114 &4752809287299496541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -617,7 +622,6 @@ MonoBehaviour:
   entityName: Combat Entity
   deathEffectPrefab: {fileID: 0}
   destroyDelay: 2
-  resistanceProfile: {fileID: 0}
 --- !u!114 &5284564578453793481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -638,6 +642,7 @@ MonoBehaviour:
   - rid: 5524551845230936215
   - rid: 5524551845230936216
   - rid: 5524551845230936637
+  - rid: 7365014968990433359
   m_OriginalGraph: {fileID: 0}
   m_IsInitialised: 0
   m_IsStarted: 0
@@ -692,6 +697,14 @@ MonoBehaviour:
           m_Value1: 176864911625185744
         Name: Animator
         m_Value: {fileID: 2829917917779058644}
+    - rid: 7365014968990433359
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 7577049017393989758
+          m_Value1: 18051915901580581456
+        Name: Speed
+        m_Value: 3.2
 --- !u!114 &5814455845899168656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -708,3 +721,20 @@ MonoBehaviour:
   - TrBasicAttack
   - TrStrongAttack
   attackCooldown: 1
+--- !u!114 &219080001601123157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8858051749441068820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 503f7dbb8cdd419ea6bbb7d144049830, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthComponent: {fileID: 34332410738316634}
+  combatEntity: {fileID: 4752809287299496541}
+  onDamagedEvent: {fileID: 11400000, guid: 0e0275cc9f3d5954f8c7d8093f9e8a6a, type: 2}
+  onHealthThresholdEvent: {fileID: 0}
+  healthThreshold: 0.25

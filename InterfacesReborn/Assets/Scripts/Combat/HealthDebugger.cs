@@ -113,7 +113,7 @@ namespace Combat
                 Debug.Log($"<color=orange>⚔️ [{gameObject.name}] DAÑO RECIBIDO | Tipo: {damageInfo.Type} | Cantidad: {damageInfo.Amount:F1} | Causado por: {instigatorName}</color>");
         }
 
-        public void OnDeath(DamageInfo finalDamage)
+        public void OnDeath(GameObject dead, DamageInfo finalDamage)
         {
             string instigatorName = finalDamage.Instigator != null ? finalDamage.Instigator.name : "Desconocido";
             
