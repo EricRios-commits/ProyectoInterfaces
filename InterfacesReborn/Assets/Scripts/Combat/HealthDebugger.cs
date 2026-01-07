@@ -102,7 +102,11 @@ namespace Combat
 
         public void OnDamageTaken(DamageInfo damageInfo, float currentHealth, float maxHealth)
         {
-            throw new System.NotImplementedException();
+            string instigatorName = damageInfo.Instigator != null ? damageInfo.Instigator.name : "Desconocido";
+            string percentageText = showPercentage ? $" ({(currentHealth / maxHealth * 100):F0}%)" : "";
+            
+            if (logHealthChanges)
+                Debug.Log($"<color=orange>⚔️ [{gameObject.name}] DAÑO RECIBIDO | Tipo: {damageInfo.Type} | Cantidad: {damageInfo.Amount:F1} | Causado por: {instigatorName} | Salud: {currentHealth:F1}/{maxHealth:F1}{percentageText}</color>");
         }
 
         public void OnDamageTaken(DamageInfo damageInfo)
