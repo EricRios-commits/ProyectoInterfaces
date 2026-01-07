@@ -355,6 +355,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c0e8ec4be6a4d554881a5c8bb6d0c0cf, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1415565928651794808, guid: c0e8ec4be6a4d554881a5c8bb6d0c0cf, type: 3}
       propertyPath: m_Layer
       value: 9
@@ -500,6 +504,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c0e8ec4be6a4d554881a5c8bb6d0c0cf, type: 3}
       insertIndex: -1
       addedObject: {fileID: 219080001601123157}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c0e8ec4be6a4d554881a5c8bb6d0c0cf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7040831628943479960}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c0e8ec4be6a4d554881a5c8bb6d0c0cf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4303571878704657346}
   m_SourcePrefab: {fileID: 100100000, guid: c0e8ec4be6a4d554881a5c8bb6d0c0cf, type: 3}
 --- !u!95 &2829917917779058644 stripped
 Animator:
@@ -738,3 +748,138 @@ MonoBehaviour:
   onDamagedEvent: {fileID: 11400000, guid: 0e0275cc9f3d5954f8c7d8093f9e8a6a, type: 2}
   onHealthThresholdEvent: {fileID: 0}
   healthThreshold: 0.25
+--- !u!82 &7040831628943479960
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8858051749441068820}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1.19
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &4303571878704657346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8858051749441068820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fa1f6386230ec542808fbda8aee234d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundEvents:
+  - eventName: Footstep
+    baseAudioClip: {fileID: 0}
+    audioClips:
+    - {fileID: 8300000, guid: b8cc5ab4991a03b4ea7bc058c13b1c9d, type: 3}
+    - {fileID: 8300000, guid: 69dcfa732f4756045aca1289a088c3b2, type: 3}
+    - {fileID: 8300000, guid: 9758612c8ada7a642b969c22b6e10bed, type: 3}
+    volume: 0.478
+  - eventName: LightAttack
+    baseAudioClip: {fileID: 0}
+    audioClips:
+    - {fileID: 8300000, guid: ed578435b43e9154bbf033a8ffd4dcad, type: 3}
+    - {fileID: 8300000, guid: 2a09ea2a7d4e54f428ab73a97ac2e8e4, type: 3}
+    volume: 0.556
+  - eventName: HeavyAttack
+    baseAudioClip: {fileID: 0}
+    audioClips:
+    - {fileID: 8300000, guid: ed578435b43e9154bbf033a8ffd4dcad, type: 3}
+    - {fileID: 8300000, guid: 2a09ea2a7d4e54f428ab73a97ac2e8e4, type: 3}
+    - {fileID: 8300000, guid: dbde60099750bfd44aee210c64ba79de, type: 3}
+    volume: 0.556
+  - eventName: Death
+    baseAudioClip: {fileID: 0}
+    audioClips:
+    - {fileID: 8300000, guid: 3450e417cf06a554e8c6cba5dfc4ed34, type: 3}
+    volume: 0.313
