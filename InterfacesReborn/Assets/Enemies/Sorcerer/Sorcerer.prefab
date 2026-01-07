@@ -588,6 +588,7 @@ Transform:
   - {fileID: 8464513731290995040}
   - {fileID: 238015442342920683}
   - {fileID: 712835581667810184}
+  - {fileID: 7095728538946861787}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &6490303377521577871
@@ -667,6 +668,7 @@ MonoBehaviour:
   - rid: 5524551845230936226
   - rid: 5524551845230936227
   - rid: 5524551845230936342
+  - rid: 7365015035094500257
   m_OriginalGraph: {fileID: 0}
   m_IsInitialised: 0
   m_IsStarted: 0
@@ -688,7 +690,7 @@ MonoBehaviour:
           m_Value0: 10703362715159290596
           m_Value1: 7660428523514216421
         Name: AttackSensor
-        m_Value: {fileID: 6284347704877911041}
+        m_Value: {fileID: 3479044352452917527}
     - rid: 5524551845230936224
       type: {class: 'BlackboardVariable`1[[Behavior.Enemy.EnemyAttack, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -729,6 +731,14 @@ MonoBehaviour:
           m_Value1: 17045715010492801660
         Name: SpeedString
         m_Value: SpeedY
+    - rid: 7365015035094500257
+      type: {class: 'BlackboardVariable`1[[Behavior.Sensor, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1125249564264904256
+          m_Value1: 7830006283050571573
+        Name: LoSSensor
+        m_Value: {fileID: 6284347704877911041}
 --- !u!195 &7795794363357577416
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2600,7 +2610,7 @@ GameObject:
   - component: {fileID: 712835581667810184}
   - component: {fileID: 6284347704877911041}
   m_Layer: 9
-  m_Name: AttackSensor
+  m_Name: LoSSensor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2993,6 +3003,77 @@ Transform:
   - {fileID: 8541628734288298468}
   m_Father: {fileID: 8909091118759341861}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8642531774673205599
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7095728538946861787}
+  - component: {fileID: 2199368468290588086}
+  - component: {fileID: 3479044352452917527}
+  m_Layer: 9
+  m_Name: AttackSensor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7095728538946861787
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8642531774673205599}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7306787892031971976}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2199368468290588086
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8642531774673205599}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 13.008015}
+  m_Center: {x: 0, y: 1, z: 6.5040073}
+--- !u!114 &3479044352452917527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8642531774673205599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5683a6d2ec06ed04ea6f691e9f211b16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timerInterval: 0.5
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 8
+  detectionCollider: {fileID: 2199368468290588086}
 --- !u!1 &8673934607908137758
 GameObject:
   m_ObjectHideFlags: 0
