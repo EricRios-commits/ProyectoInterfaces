@@ -7,6 +7,8 @@ public class MenuManager : MonoBehaviour
     [SerializeField]
     private GameObject menu;
 
+    private bool lastState = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -14,8 +16,6 @@ public class MenuManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    bool lastState = false;
-
     void Update()
     {
         var leftHand = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
@@ -24,7 +24,7 @@ public class MenuManager : MonoBehaviour
         {
             if (pressed && !lastState)
             {
-                TogglePauseMenu(); // Aquí activas tu menú
+                TogglePauseMenu();
             }
 
             lastState = pressed;
@@ -34,7 +34,6 @@ public class MenuManager : MonoBehaviour
     public void ContinuePressed()
     {
         menu.SetActive(false);
-        Time.timeScale = 1;
     }
 
     public void ExitPressed()
@@ -43,8 +42,27 @@ public class MenuManager : MonoBehaviour
         Application.Quit();
     }
 
+    public void ResumeTime()
+    {
+        Time.timeScale = 1;
+        lastState = false;
+    }
+
+    public Transform head;      
+    public float distance = 1.5f;
+    public float heightOffset = -0.1f;
+
     private void TogglePauseMenu()
     {
+        Vector3 forward = Vector3.ProjectOnPlane(head.forward, Vector3.up).normalized;
+
+        transform.position =
+            head.position +
+            forward * distance +
+            Vector3.up * heightOffset;
+
+        transform.rotation = Quaternion.LookRotation(forward);
+
         Time.timeScale = 0;
         Debug.Log("Botón de menú izquierdo pulsado");
         menu.SetActive(true);
