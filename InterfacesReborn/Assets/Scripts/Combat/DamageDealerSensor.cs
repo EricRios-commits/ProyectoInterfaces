@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 namespace Combat
 {
     /// <summary>
     /// Component that deals damage to IDamageable objects based on controller sensor velocity.
-    /// Uses the Rigidbody velocity of the XR controller to determine impact force.
+    /// Uses XR InputDevice velocity sensors to determine impact force.
     /// Calculates velocity only on horizontal plane (XZ) to ignore gravity effects.
     /// Only deals damage if the velocity exceeds a minimum threshold.
     /// Damage is dealt once per collision until the weapon exits and re-enters the collider.
@@ -17,21 +18,19 @@ namespace Combat
         [Tooltip("Velocidad mínima para causar daño (m/s) - solo plano horizontal")]
         
         [Header("Controller Reference")]
-        [SerializeField] private Rigidbody controllerRigidbody;
-        [Tooltip("Rigidbody del controlador XR. Si no se asigna, se buscará en los objetos padre.")]
-        
-        [SerializeField] private bool searchInParent = true;
-        [Tooltip("Si está activado, buscará el Rigidbody en los objetos padre")]
+        [SerializeField] private XRNode controllerNode = XRNode.RightHand;
+        [Tooltip("Nodo del controlador XR (RightHand o LeftHand)")]
         
         [SerializeField] private bool useManualCalculation = true;
-        [Tooltip("Si está activado, calcula la velocidad manualmente como respaldo cuando no hay Rigidbody")]
+        [Tooltip("Si está activado, calcula la velocidad manualmente como respaldo cuando no hay sensores")]
         
         [Header("Debug")]
         [SerializeField] private bool showVelocityDebug = true;
         
         private float _currentVelocity;
         private HashSet<Collider> _hitColliders = new HashSet<Collider>();
-        private bool _controllerFound = false;
+        private InputDevice _controllerDevice;
+        private bool _deviceFound = false;
         private Vector3 _previousPosition;
         private bool _isInitialized = false;
 
@@ -45,90 +44,89 @@ namespace Combat
 
         private void FindController()
         {
-            // Si ya hay un rigidbody asignado manualmente
-            if (controllerRigidbody != null)
+            List<InputDevice> devices = new List<InputDevice>();
+            InputDevices.GetDevicesAtXRNode(controllerNode, devices);
+            
+            if (devices.Count > 0)
             {
-                _controllerFound = true;
-                Debug.Log($"[DamageDealerSensor] Rigidbody asignado manualmente: {controllerRigidbody.gameObject.name}");
-                return;
+                _controllerDevice = devices[0];
+                _deviceFound = true;
+                Debug.Log($"[DamageDealerSensor] InputDevice encontrado: {_controllerDevice.name} en {controllerNode}");
             }
-
-            // Buscar en los padres si está habilitado
-            if (searchInParent)
+            else
             {
-                controllerRigidbody = GetComponentInParent<Rigidbody>();
-                if (controllerRigidbody != null)
-                {
-                    _controllerFound = true;
-                    Debug.Log($"[DamageDealerSensor] Rigidbody encontrado en padre: {controllerRigidbody.gameObject.name}");
-                    return;
-                }
+                Debug.LogWarning($"[DamageDealerSensor] No se encontró InputDevice en {controllerNode}. Intentando nuevamente...");
             }
-
-            Debug.LogWarning($"[DamageDealerSensor] No se encontró Rigidbody. Asigna manualmente el Rigidbody del controlador XR en el Inspector.");
         }
 
         private void FixedUpdate()
         {
             if (!_isInitialized)
-            {
-                Debug.LogWarning("[DamageDealerSensor] FixedUpdate - No inicializado");
                 return;
-            }
 
-            // Si no se encontró el controlador, intentar buscarlo nuevamente
-            if (!_controllerFound)
+            // Si no se encontró el dispositivo, intentar buscarlo nuevamente
+            if (!_deviceFound)
             {
                 FindController();
+                if (!_deviceFound)
+                {
+                    // Usar cálculo manual como respaldo
+                    if (useManualCalculation)
+                    {
+                        CalculateVelocityManually();
+                    }
+                    return;
+                }
             }
 
-            // Intentar obtener velocidad del Rigidbody del controlador
+            // Intentar obtener velocidad del InputDevice
+            Vector3 deviceVelocity;
             bool velocityObtained = false;
-            if (controllerRigidbody != null)
+            
+            if (_controllerDevice.TryGetFeatureValue(CommonUsages.deviceVelocity, out deviceVelocity))
             {
-                Vector3 deviceVelocity = controllerRigidbody.linearVelocity;
-                
-                // Solo usar si la velocidad no es exactamente cero (indicativo de que el Rigidbody está activo)
-                if (deviceVelocity.sqrMagnitude > 0.0001f)
-                {
-                    // Calcular velocidad solo en el plano horizontal (XZ) - ignorar gravedad (Y)
-                    Vector3 velocityXZ = new Vector3(deviceVelocity.x, 0f, deviceVelocity.z);
-                    _currentVelocity = velocityXZ.magnitude;
-                    velocityObtained = true;
+                // Calcular velocidad solo en el plano horizontal (XZ) - ignorar gravedad (Y)
+                Vector3 velocityXZ = new Vector3(deviceVelocity.x, 0f, deviceVelocity.z);
+                _currentVelocity = velocityXZ.magnitude;
+                velocityObtained = true;
 
-                    Debug.Log($"[DamageDealerSensor] Velocidad del Rigidbody: {_currentVelocity:F2} m/s");
-                }
-                else
+                if (showVelocityDebug && _currentVelocity > 0.1f)
                 {
-                    Debug.Log($"[DamageDealerSensor] Rigidbody encontrado pero velocidad es cero: {deviceVelocity}");
+                    Debug.Log($"[DamageDealerSensor] Velocidad del sensor XR: {_currentVelocity:F2} m/s (Vector completo: {deviceVelocity})");
+                }
+            }
+            else
+            {
+                if (showVelocityDebug)
+                {
+                    Debug.LogWarning("[DamageDealerSensor] No se pudo obtener velocidad del InputDevice");
                 }
             }
 
-            // Si no se obtuvo velocidad del Rigidbody, calcular manualmente
+            // Si no se obtuvo velocidad del sensor, calcular manualmente
             if (!velocityObtained && useManualCalculation)
             {
-                Vector3 currentPosition = transform.position;
-                Vector3 currentPositionXZ = new Vector3(currentPosition.x, 0f, currentPosition.z);
-                Vector3 previousPositionXZ = new Vector3(_previousPosition.x, 0f, _previousPosition.z);
-                
-                float distance = (currentPositionXZ - previousPositionXZ).magnitude;
-                _currentVelocity = distance / Time.fixedDeltaTime;
-
-                Debug.Log($"[DamageDealerSensor] Cálculo manual - Distancia: {distance:F4}m, DeltaTime: {Time.fixedDeltaTime:F4}s, Velocidad: {_currentVelocity:F2} m/s");
-                Debug.Log($"[DamageDealerSensor] Posición actual: {currentPosition}, Anterior: {_previousPosition}");
-                
-                _previousPosition = currentPosition;
+                CalculateVelocityManually();
             }
             else if (!velocityObtained)
             {
                 _currentVelocity = 0f;
-                Debug.Log("[DamageDealerSensor] No se obtuvo velocidad de ninguna fuente");
             }
+        }
 
-            // Actualizar posición anterior para el siguiente frame
-            if (useManualCalculation)
+        private void CalculateVelocityManually()
+        {
+            Vector3 currentPosition = transform.position;
+            Vector3 currentPositionXZ = new Vector3(currentPosition.x, 0f, currentPosition.z);
+            Vector3 previousPositionXZ = new Vector3(_previousPosition.x, 0f, _previousPosition.z);
+            
+            float distance = (currentPositionXZ - previousPositionXZ).magnitude;
+            _currentVelocity = distance / Time.fixedDeltaTime;
+            _previousPosition = currentPosition;
+
+            if (showVelocityDebug && _currentVelocity > 0.1f)
             {
-                _previousPosition = transform.position;
+                Debug.Log($"[DamageDealerSensor] Velocidad calculada manualmente: {_currentVelocity:F2} m/s (distancia: {distance:F4}m)");
             }
         }
 
@@ -174,25 +172,15 @@ namespace Combat
 
         /// <summary>
         /// Obtiene la velocidad horizontal actual del sensor del controlador
+        /// Cambia el nodo del controlador a usar (RightHand o LeftHand)
         /// </summary>
-        public float GetCurrentVelocity()
+        public void SetControllerNode(XRNode node)
         {
-            return _currentVelocity;
-        }
-
-        /// <summary>
-        /// Asigna manualmente el Rigidbody del controlador a usar
-        /// </summary>
-        public void SetControllerRigidbody(Rigidbody rigidbody)
-        {
-            if (controllerRigidbody != rigidbody)
+            if (controllerNode != node)
             {
-                controllerRigidbody = rigidbody;
-                _controllerFound = rigidbody != null;
-                if (_controllerFound)
-                {
-                    Debug.Log($"[DamageDealerSensor] Nuevo Rigidbody asignado: {rigidbody.gameObject.name}");
-                }
+                controllerNode = node;
+                _deviceFound = false;
+                FindController();
             }
         }
     }
