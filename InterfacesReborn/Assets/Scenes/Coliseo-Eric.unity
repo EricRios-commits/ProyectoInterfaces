@@ -339,34 +339,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8323227832867245103, guid: d66c23583a584ef4195dbea312c0b2a7, type: 3}
-      propertyPath: 'managedReferences[7365015035094500259]'
-      value: 'Unity.Behavior Unity.Behavior.BlackboardVariable`1[[Behavior.Sensor,
-        Assembly-CSharp]]'
+    - target: {fileID: 1633092651350847521, guid: d66c23583a584ef4195dbea312c0b2a7, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8323227832867245103, guid: d66c23583a584ef4195dbea312c0b2a7, type: 3}
-      propertyPath: managedReferences[7365015035094500259].Name
-      value: LoSSensor
-      objectReference: {fileID: 0}
-    - target: {fileID: 8323227832867245103, guid: d66c23583a584ef4195dbea312c0b2a7, type: 3}
-      propertyPath: m_BlackboardVariableOverridesList.Array.size
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8323227832867245103, guid: d66c23583a584ef4195dbea312c0b2a7, type: 3}
-      propertyPath: managedReferences[7365015035094500259].m_Value
-      value: 
-      objectReference: {fileID: 1211294790}
-    - target: {fileID: 8323227832867245103, guid: d66c23583a584ef4195dbea312c0b2a7, type: 3}
-      propertyPath: 'm_BlackboardVariableOverridesList.Array.data[7]'
-      value: 7365015035094500259
-      objectReference: {fileID: 0}
-    - target: {fileID: 8323227832867245103, guid: d66c23583a584ef4195dbea312c0b2a7, type: 3}
-      propertyPath: managedReferences[7365015035094500259].GUID.m_Value0
-      value: 1125249564264904256
-      objectReference: {fileID: 0}
-    - target: {fileID: 8323227832867245103, guid: d66c23583a584ef4195dbea312c0b2a7, type: 3}
-      propertyPath: managedReferences[7365015035094500259].GUID.m_Value1
-      value: 7830006283050571573
+    - target: {fileID: 5998568603183121165, guid: d66c23583a584ef4195dbea312c0b2a7, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8468617057500289297, guid: d66c23583a584ef4195dbea312c0b2a7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -412,26 +391,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Golem
       objectReference: {fileID: 0}
-    - target: {fileID: 9137032837993464747, guid: d66c23583a584ef4195dbea312c0b2a7, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d66c23583a584ef4195dbea312c0b2a7, type: 3}
---- !u!114 &1211294790 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8676941106062440431, guid: d66c23583a584ef4195dbea312c0b2a7, type: 3}
-  m_PrefabInstance: {fileID: 1211294789}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c169e80824a4a8f9a2331836ae73f1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1365978955
 GameObject:
   m_ObjectHideFlags: 0
@@ -1033,6 +997,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sorcerer
       objectReference: {fileID: 0}
+    - target: {fileID: 4340229751917696230, guid: 4c86fdfa58b5a8c4aa97ac804b3e36c2, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7306787892031971976, guid: 4c86fdfa58b5a8c4aa97ac804b3e36c2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1071,6 +1039,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7306787892031971976, guid: 4c86fdfa58b5a8c4aa97ac804b3e36c2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8767748400406407114, guid: 4c86fdfa58b5a8c4aa97ac804b3e36c2, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

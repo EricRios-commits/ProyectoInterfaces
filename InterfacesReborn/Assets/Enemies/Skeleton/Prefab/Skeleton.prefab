@@ -278,6 +278,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 8189179709687727534}
     m_Modifications:
     - target: {fileID: 3180093118743051252, guid: f23fd5a2d0f84e64abfea378347937d8, type: 3}
+      propertyPath: hideWhenFull
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3180093118743051252, guid: f23fd5a2d0f84e64abfea378347937d8, type: 3}
       propertyPath: healthComponent
       value: 
       objectReference: {fileID: 34332410738316634}
