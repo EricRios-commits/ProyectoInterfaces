@@ -99,8 +99,15 @@ namespace Actors
             }
         }
 
-        #region IHealthObserver Implementation
-
+        private void Update()
+        {
+            if (Camera.main != null)
+            {
+                var direction = transform.position - Camera.main.transform.position;
+                transform.rotation = Quaternion.LookRotation(direction);
+            }
+        }
+        
         public void OnHealthChanged(float currentHealth, float maxHealth, float delta)
         {
             _view?.UpdateHealth(currentHealth, maxHealth);
@@ -115,8 +122,6 @@ namespace Actors
         {
             _view?.OnActorDeath();
         }
-
-        #endregion
 
         /// <summary>
         /// Public method to manually set the health component reference.
