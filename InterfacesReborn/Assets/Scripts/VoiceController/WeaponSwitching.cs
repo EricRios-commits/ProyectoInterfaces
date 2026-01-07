@@ -65,6 +65,10 @@ public class WeaponSwitching : MonoBehaviour
                 Debug.LogError("[WeaponSwitching] ¡No se encontró el Right Hand Controller! Asigna manualmente rightHandTransform.");
             }
         }
+        
+        // Equipar espada por defecto al iniciar
+        Debug.Log("[WeaponSwitching] Equipando espada por defecto...");
+        EquipWeapon("sword");
     }
     
     void Update()
