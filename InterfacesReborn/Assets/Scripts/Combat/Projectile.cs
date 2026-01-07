@@ -1,3 +1,4 @@
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace Combat
@@ -12,10 +13,12 @@ namespace Combat
         private float _lifetime;
         private float _spawnTime;
         private Rigidbody _rb;
+        private LayerMask originalDamageableLayers;
 
         private void Awake()
         {
             _rb = GetComponent<Rigidbody>();
+            originalDamageableLayers = damageableLayers;
         }
 
         /// <summary>
@@ -28,6 +31,7 @@ namespace Combat
             _spawnTime = Time.time;
             transform.position = position;
             transform.forward = direction;
+            damageableLayers = originalDamageableLayers;
             _rb.linearVelocity = direction.normalized * speed;
         }
 
@@ -37,6 +41,13 @@ namespace Combat
             {
                 ReturnToPool();
             }
+        }
+        
+        public void Reflect(LayerMask newDamageableLayers)
+        {
+            damageableLayers = newDamageableLayers;
+            _rb.linearVelocity = -_rb.linearVelocity;
+            transform.forward = _rb.linearVelocity.normalized;
         }
 
         protected override void OnCollisionEnter(Collision collision)
