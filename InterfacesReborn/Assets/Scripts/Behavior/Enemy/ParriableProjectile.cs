@@ -6,15 +6,15 @@ namespace Behavior.Enemy
     public class ParriableProjectile : MonoBehaviour, IDamageable
     {
         [SerializeField] private Projectile projectile;
-        [SerializeField] private LayerMask damageableLayersAfterParry = LayerMask.GetMask("Player");
+        [SerializeField] private LayerMask damageableLayersAfterParry;
         
         public void TakeDamage(DamageInfo damageInfo)
         {
             projectile.Reflect(damageableLayersAfterParry);
         }
 
-        public bool IsAlive { get; }
-        public float CurrentHealth { get; }
-        public float MaxHealth { get; }
+        public bool IsAlive => true; 
+        public float CurrentHealth => 1f;
+        public float MaxHealth => 1f;
     }
 }

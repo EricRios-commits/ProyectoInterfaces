@@ -63,14 +63,10 @@ namespace Combat
         public void ApplyToHealthComponent(HealthComponent health)
         {
             if (health == null) return;
-
-            // Apply all damage resistances
             foreach (var resistance in resistances)
             {
                 health.SetDamageResistance(resistance.damageType, resistance.multiplier);
             }
-
-            // Apply armor modifier if configured
             if (hasArmor && armorValue > 0)
             {
                 var armorModifier = new ArmorModifier(armorValue);

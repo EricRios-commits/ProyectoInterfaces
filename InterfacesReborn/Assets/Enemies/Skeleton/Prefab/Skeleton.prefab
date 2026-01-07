@@ -411,7 +411,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c0e8ec4be6a4d554881a5c8bb6d0c0cf, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1415565928651794808, guid: c0e8ec4be6a4d554881a5c8bb6d0c0cf, type: 3}
       propertyPath: m_Layer
@@ -685,7 +685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fd1849e344d483b8329cfc24677a684, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statsProfile: {fileID: 0}
+  statsProfile: {fileID: 11400000, guid: af8f78ba9919cc1419ecbc0353df32b1, type: 2}
   entityName: Combat Entity
   deathEffectPrefab: {fileID: 0}
   destroyDelay: 2

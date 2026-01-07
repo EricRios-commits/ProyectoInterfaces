@@ -63,8 +63,6 @@ namespace Combat
         {
             if (!_isInitialized)
                 return;
-
-            // Si no se encontró el dispositivo, intentar buscarlo nuevamente
             if (!_deviceFound)
             {
                 FindController();
@@ -78,11 +76,8 @@ namespace Combat
                     return;
                 }
             }
-
-            // Intentar obtener velocidad del InputDevice
             Vector3 deviceVelocity;
             bool velocityObtained = false;
-            
             if (_controllerDevice.TryGetFeatureValue(CommonUsages.deviceVelocity, out deviceVelocity))
             {
                 // Calcular velocidad solo en el plano horizontal (XZ) - ignorar gravedad (Y)
@@ -102,8 +97,6 @@ namespace Combat
                     Debug.LogWarning("[DamageDealerSensor] No se pudo obtener velocidad del InputDevice");
                 }
             }
-
-            // Si no se obtuvo velocidad del sensor, calcular manualmente
             if (!velocityObtained && useManualCalculation)
             {
                 CalculateVelocityManually();
@@ -119,11 +112,9 @@ namespace Combat
             Vector3 currentPosition = transform.position;
             Vector3 currentPositionXZ = new Vector3(currentPosition.x, 0f, currentPosition.z);
             Vector3 previousPositionXZ = new Vector3(_previousPosition.x, 0f, _previousPosition.z);
-            
             float distance = (currentPositionXZ - previousPositionXZ).magnitude;
             _currentVelocity = distance / Time.fixedDeltaTime;
             _previousPosition = currentPosition;
-
             if (showVelocityDebug && _currentVelocity > 0.1f)
             {
                 Debug.Log($"[DamageDealerSensor] Velocidad calculada manualmente: {_currentVelocity:F2} m/s (distancia: {distance:F4}m)");
@@ -132,41 +123,25 @@ namespace Combat
 
         protected override void OnTriggerEnter(Collider other)
         {
-            Debug.Log($"[DamageDealerSensor] OnTriggerEnter detectado con: {other.gameObject.name}");
-            
-            // Verificar si ya golpeó a este collider
             if (_hitColliders.Contains(other))
             {
-                Debug.Log($"[DamageDealerSensor] Ya golpeó a {other.gameObject.name} anteriormente - IGNORADO");
                 return;
             }
-
-            // Verificar velocidad mínima
-            Debug.Log($"[DamageDealerSensor] Velocidad actual: {_currentVelocity:F2} m/s | Mínima requerida: {minimumVelocity:F2} m/s");
             if (_currentVelocity < minimumVelocity)
             {
-                Debug.Log($"[DamageDealerSensor] Velocidad insuficiente - IGNORADO");
                 return;
             }
-
-            // Marcar este collider como golpeado
             _hitColliders.Add(other);
-            
-            Debug.Log($"[DamageDealerSensor] {gameObject.name} GOLPEÓ a {other.gameObject.name} a velocidad {_currentVelocity:F1} m/s - Llamando a base.OnTriggerEnter");
-
-            // Hacer daño sin escalar con velocidad
             base.OnTriggerEnter(other);
         }
 
         private void OnTriggerExit(Collider other)
         {
-            // Cuando sale del trigger, permitir que pueda golpear de nuevo
             _hitColliders.Remove(other);
         }
 
         private void OnDisable()
         {
-            // Limpiar historial al desactivar
             _hitColliders.Clear();
         }
 

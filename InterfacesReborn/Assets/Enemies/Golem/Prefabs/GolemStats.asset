@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a861dfbf26174eacbf53af707b2bced1, type: 3}
+  m_Name: GolemStats
+  m_EditorClassIdentifier: 
+  entityTypeName: Golem
+  description: Slow, tanky and heavy hitting
+  maxHealth: 70
+  startsInvulnerable: 0
+  resistanceProfile: {fileID: 11400000, guid: 764d353528bf5bf4a997c968fd84b5a7, type: 2}
+  useCriticalHitModifier: 0
+  criticalChance: 0.1
+  criticalMultiplier: 2
+  deathEffectPrefab: {fileID: 0}
+  deathSound: {fileID: 0}
+  destroyDelay: 2

@@ -2447,7 +2447,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fd1849e344d483b8329cfc24677a684, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statsProfile: {fileID: 0}
+  statsProfile: {fileID: 11400000, guid: 1932ef62450e8e54893baf1125e22cdc, type: 2}
   entityName: Combat Entity
   deathEffectPrefab: {fileID: 0}
   destroyDelay: 2
