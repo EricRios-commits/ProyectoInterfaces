@@ -12,7 +12,7 @@ namespace Combat
         [SerializeField] private float baseDamage = 10f;
         [SerializeField] private DamageType damageType = DamageType.Slash;
         [SerializeField] private bool dealDamageOnCollision = true;
-        [SerializeField] private LayerMask damageableLayers = ~0;
+        [SerializeField] protected LayerMask damageableLayers = ~0;
 
         public float BaseDamage { get => baseDamage; set => baseDamage = value; }
         public DamageType DamageType { get => damageType; set => damageType = value; }

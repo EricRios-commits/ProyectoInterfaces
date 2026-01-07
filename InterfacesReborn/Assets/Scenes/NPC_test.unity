@@ -131,7 +131,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 19315772}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e988983f96fe1dd48800bcdfc82f23e9, type: 3}
   m_Name: 
@@ -282,7 +282,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 19315772}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -411,7 +411,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 238168959}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 67.5, z: 0}
 --- !u!65 &49079336
 BoxCollider:
@@ -679,7 +679,6 @@ GameObject:
   - component: {fileID: 162167610}
   - component: {fileID: 162167609}
   - component: {fileID: 162167608}
-  - component: {fileID: 162167607}
   - component: {fileID: 162167612}
   m_Layer: 0
   m_Name: Cube
@@ -688,19 +687,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &162167607
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 162167606}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2f8c3ae46513dc44b563221c4a1c25b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  velocidad: 10
 --- !u!65 &162167608
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -784,7 +770,7 @@ Transform:
   m_GameObject: {fileID: 162167606}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: 2, z: 2}
+  m_LocalPosition: {x: 6.63, y: 2, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1240,7 +1226,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 238168959}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 273.29498, z: 0}
 --- !u!65 &605371953
 BoxCollider:
@@ -1344,7 +1330,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 238168959}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 202.5, z: 0}
 --- !u!65 &683605533
 BoxCollider:
@@ -1692,7 +1678,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 238168959}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
 --- !u!65 &797324050
 BoxCollider:
@@ -1745,7 +1731,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 238168959}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 337.5, z: 0}
 --- !u!65 &799149307
 BoxCollider:
@@ -1798,7 +1784,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 238168959}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!65 &799480375
 BoxCollider:
@@ -2118,8 +2104,12 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2734315883792958320, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_InteractionManager
+      value: 
+      objectReference: {fileID: 635445097}
+    - target: {fileID: 2734315883792958320, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_LiveConeCastDebugVisuals
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2766569358201078490, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_Layer
@@ -2474,7 +2464,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 238168959}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1062382709
 BoxCollider:
@@ -2527,7 +2517,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 238168959}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1102917612
 BoxCollider:
@@ -2580,7 +2570,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 238168959}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 157.5, z: 0}
 --- !u!65 &1192054140
 BoxCollider:
@@ -2633,7 +2623,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 294149223}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1220966977
 BoxCollider:
@@ -3060,7 +3050,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 238168959}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 225, z: 0}
 --- !u!65 &1425342064
 BoxCollider:
@@ -3113,7 +3103,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 238168959}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 22.5, z: 0}
 --- !u!65 &1457316280
 BoxCollider:
@@ -3322,7 +3312,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 294149223}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1721199796
 BoxCollider:
@@ -3376,7 +3366,6 @@ Transform:
   m_Children:
   - {fileID: 49099315}
   - {fileID: 770247890}
-  - {fileID: 294149223}
   - {fileID: 2022187461}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3442,7 +3431,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 238168959}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 112.5, z: 0}
 --- !u!65 &1802023643
 BoxCollider:
@@ -3495,7 +3484,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 238168959}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 315, z: 0}
 --- !u!65 &1848987453
 BoxCollider:
@@ -3758,7 +3747,7 @@ MonoBehaviour:
   m_SelectMode: 0
   m_FocusMode: 1
   m_CustomReticle: {fileID: 0}
-  m_AllowGazeInteraction: 0
+  m_AllowGazeInteraction: 1
   m_AllowGazeSelect: 0
   m_OverrideGazeTimeToSelect: 0
   m_GazeTimeToSelect: 0.5
@@ -3861,6 +3850,7 @@ MonoBehaviour:
   holdTime: 2
   petitioner: {fileID: 2004366225}
   debugCube: {fileID: 162167606}
+  debugText: {fileID: 589536815}
 --- !u!1 &2013079160
 GameObject:
   m_ObjectHideFlags: 0
@@ -3978,7 +3968,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 238168959}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 47.07, z: 0}
 --- !u!65 &2014079510
 BoxCollider:
@@ -4031,7 +4021,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 238168959}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 292.5, z: 0}
 --- !u!65 &2014348505
 BoxCollider:
@@ -4120,10 +4110,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 2869413995942106812, guid: 5676bdababfc9c144824b1050aa60674, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 218149763}
+    m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3213851043470871558, guid: 5676bdababfc9c144824b1050aa60674, type: 3}
       insertIndex: -1
@@ -4373,7 +4360,6 @@ Transform:
   m_Children:
   - {fileID: 614087055}
   - {fileID: 593948254}
-  - {fileID: 238168959}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
@@ -4391,3 +4377,23 @@ SceneRoots:
   - {fileID: 842365082}
   - {fileID: 320169668}
   - {fileID: 951822194}
+  - {fileID: 49079335}
+  - {fileID: 605371952}
+  - {fileID: 683605532}
+  - {fileID: 737483563}
+  - {fileID: 797324049}
+  - {fileID: 799149306}
+  - {fileID: 799480374}
+  - {fileID: 1062382708}
+  - {fileID: 1102917611}
+  - {fileID: 1192054139}
+  - {fileID: 1220966976}
+  - {fileID: 1425342063}
+  - {fileID: 1457316279}
+  - {fileID: 1678258586}
+  - {fileID: 1721199795}
+  - {fileID: 1751819739}
+  - {fileID: 1802023642}
+  - {fileID: 1848987452}
+  - {fileID: 2014079509}
+  - {fileID: 2014348504}

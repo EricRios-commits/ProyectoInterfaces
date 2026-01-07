@@ -33,13 +33,13 @@ namespace PTexto
             public ChatChoice[] choices;
         }
 
-        private void Start()
-        {
-            if (outputText != null)
-            {
-                outputText.gameObject.SetActive(false);
-            }
-        }
+        // private void Start()
+        // {
+        //     if (outputText != null)
+        //     {
+        //         outputText.gameObject.SetActive(false);
+        //     }
+        // }
 
         public void SendMessageFromString(string message)
         {

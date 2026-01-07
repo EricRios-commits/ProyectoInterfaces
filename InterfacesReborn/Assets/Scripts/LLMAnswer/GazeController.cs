@@ -1,4 +1,5 @@
 using PTexto;
+using TMPro;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
@@ -13,6 +14,7 @@ public class GazeController : MonoBehaviour
     public GameObject debugCube;
     private float timer;
     private bool activatedTimer;
+    public TextMeshProUGUI debugText;
 
     void Start()
     {
@@ -34,11 +36,10 @@ public class GazeController : MonoBehaviour
 
     public void OnHoverEnter(HoverEnterEventArgs args)
     {
-        Debug.Log("interactor: " + args.interactorObject.GetType());
-        // if (args.interactorObject is XRGazeInteractor)
-        // {
-        activatedTimer = true;
-        // }
+        if (args.interactorObject is XRGazeInteractor)
+        {
+            activatedTimer = true;
+        }
     }
 
     public void OnHoverExit(HoverExitEventArgs args)
