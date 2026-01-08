@@ -56,6 +56,7 @@ namespace Combat
             if (damageable != null)
             {
                 Vector3 hitPoint = collision.contacts.Length > 0 ? collision.contacts[0].point : collision.transform.position;
+                hitPoint.y += 1.0f;
                 Debug.Log("Golpe Collision:" + hitPoint);
                 Vector3 hitDirection = collision.contacts.Length > 0 ? collision.contacts[0].normal : Vector3.zero;
                 DealDamage(damageable, hitPoint, hitDirection);
@@ -72,7 +73,8 @@ namespace Combat
             if (damageable != null)
             {
                 Vector3 hitDirection = (other.bounds.center - transform.position).normalized;
-                Vector3 hitPoint = other.ClosestPointOnBounds(transform.position) + hitDirection * 0.1f;
+                Vector3 hitPoint = other.bounds.center - hitDirection * other.bounds.extents.magnitude;
+                hitPoint.y += 1.0f;
                 Debug.Log("Golpe Trigger:" + hitPoint);
                 DealDamage(damageable, hitPoint, hitDirection);
             }

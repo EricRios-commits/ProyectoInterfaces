@@ -15,6 +15,11 @@ namespace Combat
     [SerializeField] private float particleLifetime = 2f;
     [SerializeField] private float particleScale = 1f;
 
+    [Header("Sound Settings")]
+    [SerializeField] private AudioClip impactSoundClip;
+    [SerializeField] private bool enableSound = true;
+    [SerializeField] private float soundVolume = 1f;
+
     [Header("Hitbox Configuration")]
     [SerializeField] private Transform hitboxTransform;
     [Tooltip("Si está vacío, buscará automáticamente el primer collider en los hijos")]
@@ -82,8 +87,22 @@ namespace Combat
       if (logParticleSpawn)
         Debug.Log($"<color=yellow>✨ Impacto de arma en {spawnPosition}. Daño: {damageAmount:F1}</color>");
 
+      // Reproducir sonido de impacto
+      if (enableSound && impactSoundClip != null)
+      {
+        PlayImpactSound(spawnPosition);
+      }
+
       // Destruir después del tiempo de vida
       Destroy(particleInstance.gameObject, particleLifetime);
+    }
+
+    /// <summary>
+    /// Play impact sound at the hit location.
+    /// </summary>
+    private void PlayImpactSound(Vector3 soundPosition)
+    {
+      AudioSource.PlayClipAtPoint(impactSoundClip, soundPosition, soundVolume);
     }
   }
 }

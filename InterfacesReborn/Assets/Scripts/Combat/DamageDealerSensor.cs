@@ -136,10 +136,8 @@ namespace Combat
                 // Debug.Log($"[DamageDealerSensor] Velocidad insuficiente - IGNORADO");
                 return;
             }
-            // Marcar este collider como golpeado
             _hitColliders.Add(other);
             // Debug.Log($"[DamageDealerSensor] {gameObject.name} GOLPEÓ a {other.gameObject.name} a velocidad {_currentVelocity:F1} m/s - Llamando a base.OnTriggerEnter");
-            // Hacer daño sin escalar con velocidad
             base.OnTriggerEnter(other);
         }
 
