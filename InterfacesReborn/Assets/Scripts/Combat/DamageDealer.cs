@@ -42,10 +42,10 @@ namespace Combat
             // Trigger particle effect at impact point
             if (particleEffect != null)
             {
-                particleEffect.OnWeaponHit(hitPoint, hitDirection);
-            }            
+                particleEffect.SpawnImpactParticles(hitPoint, hitDirection, baseDamage);
+            }
         }
-        
+
         protected virtual void OnCollisionEnter(Collision collision)
         {
             if (!dealDamageOnCollision)
@@ -61,7 +61,7 @@ namespace Combat
                 DealDamage(damageable, hitPoint, hitDirection);
             }
         }
-        
+
         protected virtual void OnTriggerEnter(Collider other)
         {
             if (!dealDamageOnCollision)
@@ -71,9 +71,9 @@ namespace Combat
             IDamageable damageable = other.GetComponent<IDamageable>();
             if (damageable != null)
             {
-                Vector3 hitPoint = other.ClosestPoint(transform.position);
+                Vector3 hitDirection = (other.bounds.center - transform.position).normalized;
+                Vector3 hitPoint = other.ClosestPointOnBounds(transform.position) + hitDirection * 0.1f;
                 Debug.Log("Golpe Trigger:" + hitPoint);
-                Vector3 hitDirection = (other.transform.position - transform.position).normalized;
                 DealDamage(damageable, hitPoint, hitDirection);
             }
         }

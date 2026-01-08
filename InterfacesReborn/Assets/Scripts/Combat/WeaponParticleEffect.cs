@@ -13,12 +13,7 @@ namespace Combat
     [SerializeField] private ParticleSystem impactParticlePrefab;
     [SerializeField] private bool enableParticles = true;
     [SerializeField] private float particleLifetime = 2f;
-
-    [Header("Effect Scale")]
-    [SerializeField] private bool scaleDamageEffect = true;
-    [SerializeField] private float minDamageScale = 0.5f;
-    [SerializeField] private float maxDamageScale = 2f;
-    [SerializeField] private float maxDamageForScale = 50f;
+    [SerializeField] private float particleScale = 1f;
 
     [Header("Hitbox Configuration")]
     [SerializeField] private Transform hitboxTransform;
@@ -76,14 +71,7 @@ namespace Combat
 
       // Instanciar las partículas
       ParticleSystem particleInstance = Instantiate(impactParticlePrefab, spawnPosition, Quaternion.identity);
-
-      // Escalar el efecto según el daño
-      if (scaleDamageEffect)
-      {
-        float damageRatio = Mathf.Min(damageAmount / maxDamageForScale, 1f);
-        float scale = Mathf.Lerp(minDamageScale, maxDamageScale, damageRatio);
-        particleInstance.transform.localScale = Vector3.one * scale;
-      }
+      particleInstance.transform.localScale = Vector3.one * particleScale;
 
       // Orientar las partículas en la dirección del golpe
       if (hitNormal != Vector3.zero)
@@ -96,32 +84,6 @@ namespace Combat
 
       // Destruir después del tiempo de vida
       Destroy(particleInstance.gameObject, particleLifetime);
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-      Debug.Log("HolaCollision");
-      // Solo procesar si la colisión es en el hitbox
-      if (collision.gameObject != hitboxTransform.gameObject)
-        return;
-
-      if (collision.contacts.Length > 0)
-      {
-        ContactPoint contact = collision.contacts[0];
-        SpawnImpactParticles(contact.point, contact.normal, damageDealer.BaseDamage);
-      }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-      Debug.Log("HolaTrigger");
-      // Solo procesar si el trigger es en el hitbox
-      if (other.gameObject != hitboxTransform.gameObject)
-        return;
-
-      Vector3 closestPoint = other.ClosestPoint(hitboxTransform.position);
-      Vector3 hitNormal = (closestPoint - hitboxTransform.position).normalized;
-      SpawnImpactParticles(closestPoint, hitNormal, damageDealer.BaseDamage);
     }
   }
 }

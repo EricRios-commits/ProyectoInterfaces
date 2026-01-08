@@ -303,9 +303,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6519b2b16aac43e891f82213faeb8018, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 10000
   currentHealth: 0
-  invulnerable: 0
+  invulnerable: 1
   useResistances: 1
   debugDamageAmount: 10
   debugDamageType: 0
@@ -392,24 +392,26 @@ Transform:
   m_GameObject: {fileID: 200327997}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5, z: 5}
-  m_LocalScale: {x: 20, y: 10, z: 5}
+  m_LocalPosition: {x: 0.64, y: 0.96, z: 2.58}
+  m_LocalScale: {x: 2.4813154, y: 1.7759465, z: 1.8568516}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &202615790
+--- !u!21 &400717857
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Default UI Material
+  m_Name: Stencil Id:1, Op:Replace, Comp:Always, WriteMask:255, ReadMask:255, ColorMask:All
+    AlphaClip:True (Default UI Material)
   m_Shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - UNITY_UI_ALPHACLIP
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -428,12 +430,12 @@ Material:
     m_Ints: []
     m_Floats:
     - _ColorMask: 15
-    - _Stencil: 0
+    - _Stencil: 1
     - _StencilComp: 8
-    - _StencilOp: 0
+    - _StencilOp: 2
     - _StencilReadMask: 255
     - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
+    - _UseUIAlphaClip: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
@@ -612,6 +614,46 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.15, y: 0.26, z: 0.025}
   m_Center: {x: 0.11, y: 0.39, z: 0}
+--- !u!21 &1101050646
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Default UI Material
+  m_Shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1001 &1126727873
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -704,6 +746,7 @@ MonoBehaviour:
   damageableLayers:
     serializedVersion: 2
     m_Bits: 512
+  particleEffect: {fileID: 0}
   minimumVelocity: 2
   showVelocityDebug: 1
 --- !u!54 &1126727876
@@ -751,6 +794,7 @@ MonoBehaviour:
   damageableLayers:
     serializedVersion: 2
     m_Bits: 4294967295
+  particleEffect: {fileID: 0}
   minimumVelocity: 2
   controllerNode: 5
   useManualCalculation: 1
@@ -788,6 +832,174 @@ Transform:
   - {fileID: 1126727874}
   - {fileID: 1553760641}
   - {fileID: 1922290116}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1194480548
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1194480555}
+  - component: {fileID: 1194480554}
+  - component: {fileID: 1194480553}
+  - component: {fileID: 1194480552}
+  - component: {fileID: 1194480551}
+  - component: {fileID: 1194480550}
+  - component: {fileID: 1194480549}
+  m_Layer: 9
+  m_Name: Cube (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1194480549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194480548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fd1849e344d483b8329cfc24677a684, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statsProfile: {fileID: 0}
+  entityName: Combat Entity
+  deathEffectPrefab: {fileID: 0}
+  destroyDelay: 2
+--- !u!114 &1194480550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194480548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ec34d797a025c54da6528e0c45ff0de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableVisualFeedback: 1
+  damageColor: {r: 1, g: 0, b: 0, a: 1}
+  healColor: {r: 0, g: 1, b: 0, a: 1}
+  flashDuration: 0.3
+  scaleOnDamage: 1
+  damageScaleFactor: 1.2
+  disableOnDeath: 1
+  deathDelay: 1
+  logHealthChanges: 1
+  logDeath: 1
+  showPercentage: 1
+--- !u!114 &1194480551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194480548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6519b2b16aac43e891f82213faeb8018, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10000
+  currentHealth: 0
+  invulnerable: 1
+  useResistances: 1
+  debugDamageAmount: 10
+  debugDamageType: 0
+--- !u!65 &1194480552
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194480548}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1194480553
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194480548}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1194480554
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194480548}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1194480555
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194480548}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.92, y: 0.96, z: -0.4}
+  m_LocalScale: {x: 2.4813154, y: 1.7351384, z: 1.8568516}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1287927678 stripped
@@ -879,7 +1091,7 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1922290124}
   m_SourcePrefab: {fileID: 100100000, guid: 5676bdababfc9c144824b1050aa60674, type: 3}
---- !u!21 &1379559105
+--- !u!21 &1333173539
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -1012,6 +1224,7 @@ MonoBehaviour:
   damageableLayers:
     serializedVersion: 2
     m_Bits: 512
+  particleEffect: {fileID: 0}
   minimumVelocity: 2
   showVelocityDebug: 1
 --- !u!54 &1441047846
@@ -1059,6 +1272,7 @@ MonoBehaviour:
   damageableLayers:
     serializedVersion: 2
     m_Bits: 4294967295
+  particleEffect: {fileID: 0}
   minimumVelocity: 2
   controllerNode: 5
   useManualCalculation: 1
@@ -1211,6 +1425,7 @@ MonoBehaviour:
   damageableLayers:
     serializedVersion: 2
     m_Bits: 512
+  particleEffect: {fileID: 0}
   minimumVelocity: 2
   showVelocityDebug: 1
 --- !u!54 &1553760643
@@ -1258,6 +1473,7 @@ MonoBehaviour:
   damageableLayers:
     serializedVersion: 2
     m_Bits: 4294967295
+  particleEffect: {fileID: 0}
   minimumVelocity: 2
   controllerNode: 5
   useManualCalculation: 1
@@ -1444,6 +1660,7 @@ MonoBehaviour:
   damageableLayers:
     serializedVersion: 2
     m_Bits: 512
+  particleEffect: {fileID: 0}
   minimumVelocity: 2
   showVelocityDebug: 1
 --- !u!54 &1922290118
@@ -1491,6 +1708,7 @@ MonoBehaviour:
   damageableLayers:
     serializedVersion: 2
     m_Bits: 2147485431
+  particleEffect: {fileID: 0}
   minimumVelocity: 2
   controllerNode: 5
   useManualCalculation: 1
@@ -1510,10 +1728,7 @@ MonoBehaviour:
   impactParticlePrefab: {fileID: 1375353507806458937, guid: bfd016bff164dfc4aac33a0563922772, type: 3}
   enableParticles: 1
   particleLifetime: 2
-  scaleDamageEffect: 1
-  minDamageScale: 0.5
-  maxDamageScale: 2
-  maxDamageForScale: 50
+  particleScale: 1.7
   hitboxTransform: {fileID: 0}
   logParticleSpawn: 1
 --- !u!1 &1944054505
@@ -1871,48 +2086,6 @@ Transform:
   - {fileID: 593948254}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &2122598782
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Stencil Id:1, Op:Replace, Comp:Always, WriteMask:255, ReadMask:255, ColorMask:All
-    AlphaClip:True (Default UI Material)
-  m_Shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - UNITY_UI_ALPHACLIP
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 1
-    - _StencilComp: 8
-    - _StencilOp: 2
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 1
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1923,4 +2096,5 @@ SceneRoots:
   - {fileID: 1192566574}
   - {fileID: 1872453877}
   - {fileID: 200328004}
+  - {fileID: 1194480555}
   - {fileID: 69256263}
