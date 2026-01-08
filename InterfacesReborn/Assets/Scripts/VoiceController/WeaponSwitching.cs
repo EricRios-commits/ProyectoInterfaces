@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.InputSystem;
 using Whisper.Samples;
 
 public class WeaponSwitching : MonoBehaviour
@@ -14,6 +15,9 @@ public class WeaponSwitching : MonoBehaviour
     [Tooltip("Transform del controlador derecho (Right Hand XR Controller)")]
     public Transform rightHandTransform;
     
+    [Tooltip("Input action para el botón B del controlador derecho")]
+    public InputActionReference switchWeaponButton;
+    
     [Header("Configuración")]
     [Tooltip("Offset de posición respecto al controlador")]
     public Vector3 positionOffset = Vector3.zero;
@@ -24,6 +28,11 @@ public class WeaponSwitching : MonoBehaviour
     // Arma actualmente equipada
     private GameObject currentWeapon;
     private string equippedWeaponName = "";
+    
+    // Control de rotación de armas
+    private string[] weaponNames = { "sword", "axe", "spear", "mace" };
+    private int currentWeaponIndex = 0;
+    private bool wasPressingSwitch = false;
     
     void Start()
     {
@@ -69,6 +78,17 @@ public class WeaponSwitching : MonoBehaviour
         // Equipar espada por defecto al iniciar
         Debug.Log("[WeaponSwitching] Equipando espada por defecto...");
         EquipWeapon("sword");
+        
+        // Habilitar el input action del botón de cambio si está asignado
+        if (switchWeaponButton != null && switchWeaponButton.action != null)
+        {
+            switchWeaponButton.action.Enable();
+            Debug.Log("[WeaponSwitching] Botón de cambio de arma habilitado (botón B)");
+        }
+        else
+        {
+            Debug.LogWarning("[WeaponSwitching] switchWeaponButton no asignado. No se podrá cambiar de arma con el botón B.");
+        }
     }
     
     void Update()
@@ -78,6 +98,30 @@ public class WeaponSwitching : MonoBehaviour
         {
             UpdateWeaponPosition();
         }
+        
+        // Detectar presión del botón B para cambiar de arma
+        if (switchWeaponButton != null && switchWeaponButton.action != null)
+        {
+            bool isPressingSwitch = switchWeaponButton.action.ReadValue<float>() > 0.5f;
+            
+            // Detectar flanco de subida (transición de no presionado a presionado)
+            if (isPressingSwitch && !wasPressingSwitch)
+            {
+                SwitchToNextWeapon();
+            }
+            
+            wasPressingSwitch = isPressingSwitch;
+        }
+    }
+    
+    private void SwitchToNextWeapon()
+    {
+        // Avanzar al siguiente índice
+        currentWeaponIndex = (currentWeaponIndex + 1) % weaponNames.Length;
+        string nextWeapon = weaponNames[currentWeaponIndex];
+        
+        Debug.Log($"[WeaponSwitching] 🔄 Cambiando a siguiente arma: {nextWeapon} (índice {currentWeaponIndex}/{weaponNames.Length - 1})");
+        EquipWeapon(nextWeapon);
     }
     
     private void OnWeaponCommand(string weaponName)
@@ -92,9 +136,19 @@ public class WeaponSwitching : MonoBehaviour
         }
         else
         {
-            // Equipar el arma solicitada
+            // Equipar el arma solicitada y actualizar el índice
             Debug.Log($"[WeaponSwitching] ⚔️ Equipando {weaponName}...");
             EquipWeapon(weaponName);
+            
+            // Actualizar el índice para que coincida con el arma equipada
+            for (int i = 0; i < weaponNames.Length; i++)
+            {
+                if (weaponNames[i] == weaponName)
+                {
+                    currentWeaponIndex = i;
+                    break;
+                }
+            }
         }
     }
     

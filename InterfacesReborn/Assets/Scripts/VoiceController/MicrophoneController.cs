@@ -42,6 +42,19 @@ namespace Whisper.Samples
 
         private void Awake()
         {
+            // Validar que los componentes requeridos están asignados
+            if (whisper == null)
+            {
+                UnityEngine.Debug.LogError("[MicrophoneController] ❌ WhisperManager no asignado. Asígnalo en el Inspector.");
+                return;
+            }
+            
+            if (microphoneRecord == null)
+            {
+                UnityEngine.Debug.LogError("[MicrophoneController] ❌ MicrophoneRecord no asignado. Asígnalo en el Inspector.");
+                return;
+            }
+            
             // Forzar idioma a inglés
             whisper.language = "en";
             
@@ -50,14 +63,10 @@ namespace Whisper.Samples
             microphoneRecord.OnRecordStop += OnRecordStop;
 
             // Configurar el micrófono para mejor captura
-            if (microphoneRecord != null)
+            UnityEngine.Debug.Log($"[MicrophoneController] Micrófonos disponibles: {Microphone.devices.Length}");
+            foreach (var device in Microphone.devices)
             {
-                // Asegurarse de que el micrófono esté configurado correctamente
-                UnityEngine.Debug.Log($"[MicrophoneController] Micrófonos disponibles: {Microphone.devices.Length}");
-                foreach (var device in Microphone.devices)
-                {
-                    UnityEngine.Debug.Log($"[MicrophoneController] - {device}");
-                }
+                UnityEngine.Debug.Log($"[MicrophoneController] - {device}");
             }
         }
         

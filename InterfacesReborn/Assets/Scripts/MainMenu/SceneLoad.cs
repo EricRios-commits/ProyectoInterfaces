@@ -11,6 +11,7 @@ public class SceneLoad : MonoBehaviour
         {
             newScene = "Coliseo";
         }
+        Time.timeScale = 1; // Asegurarse de que el tiempo esté normalizado al cambiar de escena
         SceneManager.LoadScene(newScene);
     }
 }

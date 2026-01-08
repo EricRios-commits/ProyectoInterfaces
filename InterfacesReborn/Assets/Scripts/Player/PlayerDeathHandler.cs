@@ -117,6 +117,7 @@ namespace Player
             {
                 characterController.enabled = true;
             }
+            Time.timeScale = 0; // Pausar el juego al morir
         }
         
         /// <summary>
