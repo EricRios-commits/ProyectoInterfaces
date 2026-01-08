@@ -36,6 +36,7 @@ namespace Combat
 
         private void Start()
         {
+            base.Start();
             _currentVelocity = 0f;
             _previousPosition = transform.position;
             _isInitialized = true;
@@ -51,11 +52,11 @@ namespace Combat
             {
                 _controllerDevice = devices[0];
                 _deviceFound = true;
-                Debug.Log($"[DamageDealerSensor] InputDevice encontrado: {_controllerDevice.name} en {controllerNode}");
+                // Debug.Log($"[DamageDealerSensor] InputDevice encontrado: {_controllerDevice.name} en {controllerNode}");
             }
             else
             {
-                Debug.LogWarning($"[DamageDealerSensor] No se encontró InputDevice en {controllerNode}. Intentando nuevamente...");
+                // Debug.LogWarning($"[DamageDealerSensor] No se encontró InputDevice en {controllerNode}. Intentando nuevamente...");
             }
         }
 
@@ -87,7 +88,7 @@ namespace Combat
 
                 if (showVelocityDebug && _currentVelocity > 0.1f)
                 {
-                    Debug.Log($"[DamageDealerSensor] Velocidad del sensor XR: {_currentVelocity:F2} m/s (Vector completo: {deviceVelocity})");
+                    // Debug.Log($"[DamageDealerSensor] Velocidad del sensor XR: {_currentVelocity:F2} m/s (Vector completo: {deviceVelocity})");
                 }
             }
             else
@@ -117,21 +118,26 @@ namespace Combat
             _previousPosition = currentPosition;
             if (showVelocityDebug && _currentVelocity > 0.1f)
             {
-                Debug.Log($"[DamageDealerSensor] Velocidad calculada manualmente: {_currentVelocity:F2} m/s (distancia: {distance:F4}m)");
+                // Debug.Log($"[DamageDealerSensor] Velocidad calculada manualmente: {_currentVelocity:F2} m/s (distancia: {distance:F4}m)");
             }
         }
 
         protected override void OnTriggerEnter(Collider other)
         {
+            // Debug.Log($"[DamageDealerSensor] OnTriggerEnter detectado con: {other.gameObject.name}");
             if (_hitColliders.Contains(other))
             {
+                // Debug.Log($"[DamageDealerSensor] Ya golpeó a {other.gameObject.name} anteriormente - IGNORADO");
                 return;
             }
+            // Debug.Log($"[DamageDealerSensor] Velocidad actual: {_currentVelocity:F2} m/s | Mínima requerida: {minimumVelocity:F2} m/s");
             if (_currentVelocity < minimumVelocity)
             {
+                // Debug.Log($"[DamageDealerSensor] Velocidad insuficiente - IGNORADO");
                 return;
             }
             _hitColliders.Add(other);
+            // Debug.Log($"[DamageDealerSensor] {gameObject.name} GOLPEÓ a {other.gameObject.name} a velocidad {_currentVelocity:F1} m/s - Llamando a base.OnTriggerEnter");
             base.OnTriggerEnter(other);
         }
 

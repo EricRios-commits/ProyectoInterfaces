@@ -17,6 +17,13 @@ namespace Combat
         public float BaseDamage { get => baseDamage; set => baseDamage = value; }
         public DamageType DamageType { get => damageType; set => damageType = value; }
 
+        public WeaponParticleEffect particleEffect;
+
+        protected virtual void Start()
+        {
+            particleEffect = GetComponent<WeaponParticleEffect>();
+        }
+
         /// <summary>
         /// Deal damage to a specific target.
         /// </summary>
@@ -32,8 +39,13 @@ namespace Combat
                 hitDirection
             );
             target.TakeDamage(damageInfo);
+            // Trigger particle effect at impact point
+            if (particleEffect != null)
+            {
+                particleEffect.SpawnImpactParticles(hitPoint, hitDirection, baseDamage);
+            }
         }
-        
+
         protected virtual void OnCollisionEnter(Collision collision)
         {
             if (!dealDamageOnCollision)
@@ -44,11 +56,13 @@ namespace Combat
             if (damageable != null)
             {
                 Vector3 hitPoint = collision.contacts.Length > 0 ? collision.contacts[0].point : collision.transform.position;
+                hitPoint.y += 1.0f;
+                Debug.Log("Golpe Collision:" + hitPoint);
                 Vector3 hitDirection = collision.contacts.Length > 0 ? collision.contacts[0].normal : Vector3.zero;
                 DealDamage(damageable, hitPoint, hitDirection);
             }
         }
-        
+
         protected virtual void OnTriggerEnter(Collider other)
         {
             if (!dealDamageOnCollision)
@@ -58,7 +72,11 @@ namespace Combat
             IDamageable damageable = other.GetComponent<IDamageable>();
             if (damageable != null)
             {
-                DealDamage(damageable, other.ClosestPoint(transform.position), (other.transform.position - transform.position).normalized);
+                Vector3 hitDirection = (other.bounds.center - transform.position).normalized;
+                Vector3 hitPoint = other.bounds.center - hitDirection * other.bounds.extents.magnitude;
+                hitPoint.y += 1.0f;
+                Debug.Log("Golpe Trigger:" + hitPoint);
+                DealDamage(damageable, hitPoint, hitDirection);
             }
         }
 
