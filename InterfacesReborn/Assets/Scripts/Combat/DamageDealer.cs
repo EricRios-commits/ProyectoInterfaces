@@ -17,6 +17,13 @@ namespace Combat
         public float BaseDamage { get => baseDamage; set => baseDamage = value; }
         public DamageType DamageType { get => damageType; set => damageType = value; }
 
+        public WeaponParticleEffect particleEffect;
+
+        protected virtual void Start()
+        {
+            particleEffect = GetComponent<WeaponParticleEffect>();
+        }
+
         /// <summary>
         /// Deal damage to a specific target.
         /// </summary>
@@ -32,6 +39,11 @@ namespace Combat
                 hitDirection
             );
             target.TakeDamage(damageInfo);
+            // Trigger particle effect at impact point
+            if (particleEffect != null)
+            {
+                particleEffect.OnWeaponHit(hitPoint, hitDirection);
+            }            
         }
         
         protected virtual void OnCollisionEnter(Collision collision)
@@ -44,6 +56,7 @@ namespace Combat
             if (damageable != null)
             {
                 Vector3 hitPoint = collision.contacts.Length > 0 ? collision.contacts[0].point : collision.transform.position;
+                Debug.Log("Golpe Collision:" + hitPoint);
                 Vector3 hitDirection = collision.contacts.Length > 0 ? collision.contacts[0].normal : Vector3.zero;
                 DealDamage(damageable, hitPoint, hitDirection);
             }
@@ -58,7 +71,10 @@ namespace Combat
             IDamageable damageable = other.GetComponent<IDamageable>();
             if (damageable != null)
             {
-                DealDamage(damageable, other.ClosestPoint(transform.position), (other.transform.position - transform.position).normalized);
+                Vector3 hitPoint = other.ClosestPoint(transform.position);
+                Debug.Log("Golpe Trigger:" + hitPoint);
+                Vector3 hitDirection = (other.transform.position - transform.position).normalized;
+                DealDamage(damageable, hitPoint, hitDirection);
             }
         }
 

@@ -36,6 +36,7 @@ namespace Combat
 
         private void Start()
         {
+            base.Start();
             _currentVelocity = 0f;
             _previousPosition = transform.position;
             _isInitialized = true;
@@ -55,7 +56,7 @@ namespace Combat
             }
             else
             {
-                Debug.LogWarning($"[DamageDealerSensor] No se encontró InputDevice en {controllerNode}. Intentando nuevamente...");
+                // Debug.LogWarning($"[DamageDealerSensor] No se encontró InputDevice en {controllerNode}. Intentando nuevamente...");
             }
         }
 
@@ -123,15 +124,29 @@ namespace Combat
 
         protected override void OnTriggerEnter(Collider other)
         {
+            // Debug.Log($"[DamageDealerSensor] OnTriggerEnter detectado con: {other.gameObject.name}");
+
+            // Verificar si ya golpeó a este collider
             if (_hitColliders.Contains(other))
             {
+                Debug.Log($"[DamageDealerSensor] Ya golpeó a {other.gameObject.name} anteriormente - IGNORADO");
                 return;
             }
+
+            // Verificar velocidad mínima
+            // Debug.Log($"[DamageDealerSensor] Velocidad actual: {_currentVelocity:F2} m/s | Mínima requerida: {minimumVelocity:F2} m/s");
             if (_currentVelocity < minimumVelocity)
             {
+                // Debug.Log($"[DamageDealerSensor] Velocidad insuficiente - IGNORADO");
                 return;
             }
+
+            // Marcar este collider como golpeado
             _hitColliders.Add(other);
+
+            Debug.Log($"[DamageDealerSensor] {gameObject.name} GOLPEÓ a {other.gameObject.name} a velocidad {_currentVelocity:F1} m/s - Llamando a base.OnTriggerEnter");
+
+            // Hacer daño sin escalar con velocidad
             base.OnTriggerEnter(other);
         }
 
