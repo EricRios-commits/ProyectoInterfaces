@@ -8,7 +8,6 @@ public class ScreenFader : MonoBehaviour
 
     private void Awake()
     {
-        // Asegurarse de que el canvas empiece invisible
         fadeCanvasGroup.alpha = 0f;
     }
 

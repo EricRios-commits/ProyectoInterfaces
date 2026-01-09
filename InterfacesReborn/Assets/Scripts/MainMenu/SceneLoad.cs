@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using Oculus.Interaction.Samples;
 
 public class SceneLoad : MonoBehaviour
 {
-    public string newScene;
     private ScreenFader screenFader;
+    [SerializeField] private string targetScene;
 
     private void Start()
     {
@@ -18,25 +19,17 @@ public class SceneLoad : MonoBehaviour
 
     public void Change()
     {
-        if (newScene == "")
-        {
-            newScene = "Coliseo";
-        }
-        Time.timeScale = 1; // Asegurarse de que el tiempo esté normalizado al cambiar de escena
+        Time.timeScale = 1;
         StartCoroutine(ChangeSceneWithFade());
     }
 
     private IEnumerator ChangeSceneWithFade()
     {
-        // Fade out
-        screenFader.FadeOut(5f);
-        yield return new WaitForSeconds(5f);
-
-        // Cambiar escena
-        SceneManager.LoadScene(newScene);
-
-        // Fade in en la nueva escena
-        yield return new WaitForSeconds(3f);
-        screenFader.FadeIn(3f);
+        // screenFader.FadeOut(5f);
+        // yield return new WaitForSeconds(5f);
+        SceneManager.LoadScene(targetScene);
+        // yield return new WaitForSeconds(3f);
+        // screenFader.FadeIn(3f);
+        yield return null;
     }
 }
