@@ -11,6 +11,10 @@ namespace Player
     [RequireComponent(typeof(HealthComponent))]
     public class PlayerDeathHandler : MonoBehaviour, IHealthObserver
     {
+        [Header("Death UI")]
+        [SerializeField] private GameObject deathPanel;
+        [Tooltip("Panel de muerte que se mostrará en la cara del jugador (debe estar como hijo de la cámara)")]
+        
         [Header("Teleport Settings")]
         [SerializeField] private bool resetRotation = true;
         [Tooltip("Si está activado, resetea la rotación del jugador al teletransportar")]
@@ -32,6 +36,17 @@ namespace Player
             healthComponent = GetComponent<HealthComponent>();
             characterController = GetComponent<CharacterController>();
             playerTransform = transform;
+            
+            // Asegurarse de que el panel de muerte esté desactivado al inicio
+            if (deathPanel != null)
+            {
+                deathPanel.SetActive(false);
+            }
+            else
+            {
+                Debug.LogWarning("[PlayerDeathHandler] No se ha asignado el Death Panel. Asígnalo en el Inspector.");
+            }
+            
             if (healthComponent == null)
             {
                 Debug.LogError("[PlayerDeathHandler] No se encontró HealthComponent. Este componente es requerido.");
@@ -93,6 +108,7 @@ namespace Player
                 Debug.LogError("[PlayerDeathHandler] No se puede teletransportar: Transform del jugador es null");
                 return;
             }
+            
             // Si hay CharacterController, deshabilitarlo temporalmente para permitir el teletransporte
             bool hadCharacterController = false;
             if (characterController != null && characterController.enabled)
@@ -100,6 +116,7 @@ namespace Player
                 hadCharacterController = true;
                 characterController.enabled = false;
             }
+            
             var target = GameObject.FindGameObjectWithTag("DeathPosition");
             if (target == null)
             {
@@ -107,16 +124,34 @@ namespace Player
                     "[PlayerDeathHandler] No se encontró ningún GameObject con la etiqueta 'DeathPosition'. Asegúrate de que exista en la escena.");
                 return;
             }
+            
             var targetPosition = target.transform.position;
             playerTransform.position = targetPosition;
+            
             if (resetRotation)
             {
                 playerTransform.rotation = Quaternion.identity;
             }
+            
             if (hadCharacterController && characterController != null)
             {
                 characterController.enabled = true;
             }
+            
+            // Activar el panel de muerte
+            if (deathPanel != null)
+            {
+                deathPanel.SetActive(true);
+                if (showDebugLogs)
+                {
+                    Debug.Log("[PlayerDeathHandler] Panel de muerte activado");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("[PlayerDeathHandler] No se puede mostrar el panel de muerte: no está asignado");
+            }
+            
             Time.timeScale = 0; // Pausar el juego al morir
         }
         
@@ -137,6 +172,12 @@ namespace Player
         public void ResetDeathState()
         {
             hasDied = false;
+            
+            // Desactivar el panel de muerte si está activo
+            if (deathPanel != null)
+            {
+                deathPanel.SetActive(false);
+            }
             
             if (showDebugLogs)
             {
