@@ -2,8 +2,17 @@ using Unity.XR.CoreUtils;
 using UnityEngine;
 using UnityEngine.XR;
 
+/// <summary>
+/// Class to manage the pause menu of the game
+/// </summary>
 public class MenuManager : MonoBehaviour
 {
+
+    [SerializeField]
+    private Transform head;      
+    public float distance = 1.5f;
+    public float heightOffset = -0.1f;
+
     [SerializeField]
     private GameObject menu;
 
@@ -30,28 +39,35 @@ public class MenuManager : MonoBehaviour
             lastState = pressed;
         }
     }
-
+    /// <summary>
+    /// Listener of the Continue button to resume the game
+    /// </summary>
     public void ContinuePressed()
     {
         menu.SetActive(false);
     }
 
+    /// <summary>
+    /// Listener of the Exit button to quit the game
+    /// </summary>
     public void ExitPressed()
     {
         Debug.Log("Quitting the game...");
         Application.Quit();
     }
 
+    /// <summary>
+    /// Sets the timeScale to one. 
+    /// </summary>
     public void ResumeTime()
     {
         Time.timeScale = 1;
         lastState = false;
     }
 
-    public Transform head;      
-    public float distance = 1.5f;
-    public float heightOffset = -0.1f;
-
+    /// <summary>
+    /// Activates and sets the position of the pause menu
+    /// </summary>
     private void TogglePauseMenu()
     {
         Vector3 forward = Vector3.ProjectOnPlane(head.forward, Vector3.up).normalized;
