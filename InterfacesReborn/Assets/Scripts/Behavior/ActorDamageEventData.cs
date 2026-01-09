@@ -9,7 +9,7 @@ namespace Behavior
     /// Packages damage information with health context for behavior tree events.
     /// </summary>
     [Serializable, GeneratePropertyBag]
-    public struct ActorDamageEventData
+    public class ActorDamageEventData
     {
         public DamageInfo DamageInfo;
         public float CurrentHealth;

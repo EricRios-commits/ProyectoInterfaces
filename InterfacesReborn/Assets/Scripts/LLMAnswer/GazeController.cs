@@ -8,7 +8,7 @@ public class GazeController : MonoBehaviour
 {
     public float holdTime;
     public delegate void message();
-    public event message GazeAlert;
+    public event message GazeAlert = delegate { };
     public TextPetitioner petitioner;
 
     private float timer;
@@ -41,7 +41,7 @@ public class GazeController : MonoBehaviour
     /// <param name="args"></param>
     public void OnHoverEnter(HoverEnterEventArgs args)
     {
-        Debug.Log("Llamada a función Enter");
+        Debug.Log("On hover enter");
         if (args.interactorObject is XRGazeInteractor)
         {
             activatedTimer = true;

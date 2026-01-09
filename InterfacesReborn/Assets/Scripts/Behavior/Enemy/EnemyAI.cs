@@ -11,6 +11,8 @@ namespace Behavior.Enemy
         [SerializeField] private OnActorDamaged onDamagedEvent;
         [Tooltip("Raised when health drops below threshold")] 
         [SerializeField] private OnActorHealthThresholdReached onHealthThresholdEvent;
+        [Tooltip("Raised when actor is staggered from multiple hits")]
+        [SerializeField] private OnActorStaggered onStaggeredEvent;
         [Tooltip("Raised when enemy dies")]
         [SerializeField] private OnActorDeath onDeathEvent;
         
@@ -18,8 +20,13 @@ namespace Behavior.Enemy
         [Tooltip("Health percentage threshold to trigger events (0-1)")] 
         [Range(0, 1)]
         [SerializeField] private float healthThreshold = 0.25f;
+        
+        [Header("Enemy Configuration")]
+        [Tooltip("Enemy profile containing stagger configuration")]
+        [SerializeField] private EnemyProfile enemyProfile;
 
         private bool hasTriggeredThreshold;
+        private int hitCounter;
 
         public float HealthPercent
         {
@@ -48,6 +55,16 @@ namespace Behavior.Enemy
         {
             var damageData = new ActorDamageEventData(info, current, max);
             onDamagedEvent?.SendEventMessage(gameObject, gameObject);
+            
+            // Track hits and trigger stagger if threshold reached
+            if (enemyProfile != null && enemyProfile.HitsToStagger > 0)
+            {
+                hitCounter++;
+                if (hitCounter % enemyProfile.HitsToStagger == 0)
+                {
+                    onStaggeredEvent?.SendEventMessage(gameObject, gameObject);
+                }
+            }
         }
 
         public override void OnDeath(GameObject dead, DamageInfo finalDamage)
@@ -55,6 +72,15 @@ namespace Behavior.Enemy
             Debug.Log("EnemyAI: OnDeath called. Final Damage: " + finalDamage);
             onDeathEvent?.SendEventMessage(dead, finalDamage);
             base.OnDeath(dead, finalDamage);
+        }
+
+        /// <summary>
+        /// Resets the hit counter for stagger tracking.
+        /// Can be called externally (e.g., after a stagger recovery period).
+        /// </summary>
+        public void ResetHitCounter()
+        {
+            hitCounter = 0;
         }
     }
 }

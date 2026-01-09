@@ -41,6 +41,10 @@ namespace Behavior.Enemy
         [SerializeField] private float attackDamage = 10f;
         [SerializeField] private Combat.DamageType damageType = Combat.DamageType.Slash;
         
+        [Header("Stagger")]
+        [Tooltip("Number of hits required to trigger a stagger. Set to 0 to disable stagger.")]
+        [SerializeField] private int hitsToStagger = 3;
+        
         [Header("Visual")]
         [SerializeField] private Color gizmoColor = Color.red;
 
@@ -58,7 +62,7 @@ namespace Behavior.Enemy
         public float AttackCooldown => attackCooldown;
         public float AttackDamage => attackDamage;
         public Combat.DamageType DamageType => damageType;
+        public int HitsToStagger => hitsToStagger;
         public Color GizmoColor => gizmoColor;
     }
 }
-
