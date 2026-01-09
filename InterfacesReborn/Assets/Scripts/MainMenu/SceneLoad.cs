@@ -20,7 +20,7 @@ public class SceneLoad : MonoBehaviour
             screenFader.FadeIn(3f);
         }
 
-        // StartCoroutine(WaitAndChange());
+        StartCoroutine(WaitAndChange());
     }
 
     private IEnumerator WaitAndChange()
