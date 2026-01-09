@@ -11,16 +11,16 @@ public class GazeController : MonoBehaviour
     public event message GazeAlert;
     public TextPetitioner petitioner;
 
-    public GameObject debugCube;
     private float timer;
     private bool activatedTimer;
-    public TextMeshProUGUI debugText;
 
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         timer = 0f;
     }
 
+    // Update is called once per frame
     void Update()
     {
         if (activatedTimer)
@@ -30,20 +30,31 @@ public class GazeController : MonoBehaviour
         if (timer >= holdTime)
         {
             petitioner.RequestToModel();
+            GazeAlert();
             timer = 0;
         }
     }
 
+    /// <summary>
+    /// Listener for the OnHoverEnter callback of the XR Simple Interactable
+    /// </summary>
+    /// <param name="args"></param>
     public void OnHoverEnter(HoverEnterEventArgs args)
     {
+        Debug.Log("Llamada a función Enter");
         if (args.interactorObject is XRGazeInteractor)
         {
             activatedTimer = true;
         }
     }
 
+    /// <summary>
+    /// Listener of the OnHoverExit callback of the XR Simple Interactable 
+    /// </summary>
+    /// <param name="args"></param>
     public void OnHoverExit(HoverExitEventArgs args)
     {
+        Debug.Log("Llamada a función Exit");
         activatedTimer = false;
         timer = 0f;
     }
