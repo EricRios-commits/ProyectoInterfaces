@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation;
 
 public class PlayerMovementType : MonoBehaviour
 {
@@ -16,6 +17,10 @@ public class PlayerMovementType : MonoBehaviour
     {
         Debug.Log("Llamada a START");
         MovementTypeSetter();
+        if (teleportationArea == null)
+        {
+            teleportationArea = FindFirstObjectByType<TeleportationArea>().gameObject;
+        }
     }
 
     public void OnValueChanged(Int32 newValue)
