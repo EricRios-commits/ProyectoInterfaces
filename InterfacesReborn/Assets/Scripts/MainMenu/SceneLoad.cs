@@ -29,14 +29,14 @@ public class SceneLoad : MonoBehaviour
     private IEnumerator ChangeSceneWithFade()
     {
         // Fade out
-        screenFader.FadeOut(2.5f);
-        yield return new WaitForSeconds(2.5f);
+        screenFader.FadeOut(5f);
+        yield return new WaitForSeconds(5f);
 
         // Cambiar escena
         SceneManager.LoadScene(newScene);
 
         // Fade in en la nueva escena
-        yield return new WaitForSeconds(1.5f);
-        screenFader.FadeIn(1.5f);
+        yield return new WaitForSeconds(3f);
+        screenFader.FadeIn(3f);
     }
 }
