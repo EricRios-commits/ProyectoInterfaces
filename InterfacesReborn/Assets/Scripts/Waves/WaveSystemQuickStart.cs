@@ -23,7 +23,7 @@ namespace Waves
                 Debug.LogError("WaveSystemQuickStart: WaveTrigger not assigned!");
                 return;
             }
-            waveManager.SetWaveTrigger(waveTrigger);
+            // waveManager.SetWaveTrigger(waveTrigger);
             if (startFirstWaveImmediately)
             {
                 StartFirstWave();

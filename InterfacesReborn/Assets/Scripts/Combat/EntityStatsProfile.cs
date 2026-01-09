@@ -17,6 +17,10 @@ namespace Combat
         [SerializeField] private float maxHealth = 100f;
         [SerializeField] private bool startsInvulnerable = false;
 
+        [Header("Stagger Settings")]
+        [Tooltip("Number of hits required to trigger a stagger. Set to 0 to disable stagger.")]
+        [SerializeField] private int hitsToStagger = 3;
+
         [Header("Resistance Profile")]
         [SerializeField] private DamageResistanceProfile resistanceProfile;
 
@@ -34,6 +38,7 @@ namespace Combat
         public string Description => description;
         public float MaxHealth => maxHealth;
         public bool StartsInvulnerable => startsInvulnerable;
+        public int HitsToStagger => hitsToStagger;
         public DamageResistanceProfile ResistanceProfile => resistanceProfile;
         public bool UseCriticalHitModifier => useCriticalHitModifier;
         public float CriticalChance => criticalChance;
@@ -66,4 +71,3 @@ namespace Combat
         }
     }
 }
-

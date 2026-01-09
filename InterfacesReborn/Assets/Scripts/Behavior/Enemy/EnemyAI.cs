@@ -1,4 +1,4 @@
-﻿using Combat;
+﻿﻿using Combat;
 using UnityEngine;
 
 namespace Behavior.Enemy
@@ -20,10 +20,6 @@ namespace Behavior.Enemy
         [Tooltip("Health percentage threshold to trigger events (0-1)")] 
         [Range(0, 1)]
         [SerializeField] private float healthThreshold = 0.25f;
-        
-        [Header("Enemy Configuration")]
-        [Tooltip("Enemy profile containing stagger configuration")]
-        [SerializeField] private EnemyProfile enemyProfile;
 
         private bool hasTriggeredThreshold;
         private int hitCounter;
@@ -57,12 +53,16 @@ namespace Behavior.Enemy
             onDamagedEvent?.SendEventMessage(gameObject, gameObject);
             
             // Track hits and trigger stagger if threshold reached
-            if (enemyProfile != null && enemyProfile.HitsToStagger > 0)
+            if (combatEntity != null && combatEntity.StatsProfile != null)
             {
-                hitCounter++;
-                if (hitCounter % enemyProfile.HitsToStagger == 0)
+                int hitsToStagger = combatEntity.StatsProfile.HitsToStagger;
+                if (hitsToStagger > 0)
                 {
-                    onStaggeredEvent?.SendEventMessage(gameObject, gameObject);
+                    hitCounter++;
+                    if (hitCounter % hitsToStagger == 0)
+                    {
+                        onStaggeredEvent?.SendEventMessage(gameObject, gameObject);
+                    }
                 }
             }
         }

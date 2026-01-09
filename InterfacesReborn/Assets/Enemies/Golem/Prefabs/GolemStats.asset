@@ -16,6 +16,7 @@ MonoBehaviour:
   description: Slow, tanky and heavy hitting
   maxHealth: 70
   startsInvulnerable: 0
+  hitsToStagger: 4
   resistanceProfile: {fileID: 11400000, guid: 764d353528bf5bf4a997c968fd84b5a7, type: 2}
   useCriticalHitModifier: 0
   criticalChance: 0.1

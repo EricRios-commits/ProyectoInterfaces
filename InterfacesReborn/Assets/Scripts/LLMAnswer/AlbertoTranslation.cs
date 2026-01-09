@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using Waves;
 
 public class AlbertoTranslation : MonoBehaviour
@@ -6,6 +7,8 @@ public class AlbertoTranslation : MonoBehaviour
     [SerializeField]
     private AlbertoTrigger notifier;
 
+    [SerializeField] private string idleAnimationTrigger = "TrIdle";
+    [SerializeField] private string sitAnimationTrigger = "TrSit";
     [SerializeField]
     private Transform targetPosition;
     [SerializeField]
@@ -26,13 +29,13 @@ public class AlbertoTranslation : MonoBehaviour
     {
         transform.position = targetPosition.position;
         transform.LookAt(playerTransform);
-        animator.SetTrigger("TrIdle");
+        animator.SetTrigger(idleAnimationTrigger);
     }
 
     private void TranslateAlbertoToThrone()
     {
         transform.position = originalPosition.position;
         transform.rotation = originalPosition.rotation;
-        animator.SetTrigger("TrSeat");
+        animator.SetTrigger(sitAnimationTrigger);
     }
 }
