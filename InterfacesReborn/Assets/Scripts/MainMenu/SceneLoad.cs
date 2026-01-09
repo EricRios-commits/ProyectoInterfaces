@@ -17,7 +17,7 @@ public class SceneLoad : MonoBehaviour
             Debug.LogError("[SceneLoad] No se encontró ScreenFader en la escena!" + SceneManager.GetActiveScene().name);
         }
         // Change();
-        StartCoroutine(WaitAndChange());
+        // StartCoroutine(WaitAndChange());
     }
 
     private IEnumerator WaitAndChange()
