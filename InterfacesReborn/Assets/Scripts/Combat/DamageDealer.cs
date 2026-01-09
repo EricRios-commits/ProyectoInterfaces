@@ -91,7 +91,6 @@ namespace Combat
                 Vector3 hitDirection = (other.bounds.center - transform.position).normalized;
                 Vector3 hitPoint = other.bounds.center - hitDirection * other.bounds.extents.magnitude;
                 hitPoint.y += 1.0f;
-                Debug.Log("Golpe Trigger:" + hitPoint);
                 DealDamage(damageable, hitPoint, hitDirection);
             }
         }
