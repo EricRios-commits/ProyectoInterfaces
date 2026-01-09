@@ -11,6 +11,10 @@ GameObject:
   - component: {fileID: 811062370745517174}
   - component: {fileID: 4390626425023368147}
   - component: {fileID: 1948462360350359321}
+  - component: {fileID: 4273143648989496486}
+  - component: {fileID: 4234359244873761273}
+  - component: {fileID: 5348579941534694672}
+  - component: {fileID: 754490807103752365}
   m_Layer: 0
   m_Name: Axe1H_Basic
   m_TagString: Untagged
@@ -25,12 +29,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2999748106215116}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4390626425023368147
 MeshFilter:
@@ -51,10 +56,15 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -79,3 +89,79 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &4273143648989496486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2999748106215116}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0eb1989478dac847b51850f434f1268, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDamage: 20
+  damageType: 0
+  dealDamageOnCollision: 1
+  damageableLayers:
+    serializedVersion: 2
+    m_Bits: 512
+  minimumVelocity: 2
+  showVelocityDebug: 1
+--- !u!114 &4234359244873761273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2999748106215116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06e00a5305fe13546b928034dcd10137, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDamage: 10
+  damageType: 0
+  dealDamageOnCollision: 1
+  damageableLayers:
+    serializedVersion: 2
+    m_Bits: 2147485687
+  minimumVelocity: 2
+  controllerNode: 5
+  useManualCalculation: 1
+  showVelocityDebug: 1
+--- !u!114 &5348579941534694672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2999748106215116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 235d0aec28771c544aa4862996ea301b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  impactSoundClip: {fileID: 8300000, guid: 2b731e9686028544492d2506b83a292a, type: 3}
+  enableSound: 1
+  soundVolume: 1
+--- !u!114 &754490807103752365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2999748106215116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9833da58b85208a40a9e41b4872f7e68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  impactParticlePrefab: {fileID: 3642160410948286680, guid: 171dda363e9efd94ca9bc63e38ca9658, type: 3}
+  enableParticles: 1
+  particleLifetime: 2
+  particleScale: 1.5
+  hitboxTransform: {fileID: 0}
+  logParticleSpawn: 1

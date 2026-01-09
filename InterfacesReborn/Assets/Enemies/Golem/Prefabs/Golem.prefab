@@ -2755,7 +2755,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: d5239f5a6b82798439044bfdc9ddddee, type: 3}
     - {fileID: 8300000, guid: fdaa35fde8e040b4aa27e68b8f272b28, type: 3}
     - {fileID: 8300000, guid: e8020514312339c47a8fdf4590e0d837, type: 3}
-    volume: 0.159
+    volume: 0.681
   - eventName: LightAttack
     baseAudioClip: {fileID: 0}
     audioClips:

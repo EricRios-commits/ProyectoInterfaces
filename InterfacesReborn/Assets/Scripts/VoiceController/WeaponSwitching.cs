@@ -77,7 +77,7 @@ public class WeaponSwitching : MonoBehaviour
         
         // Equipar espada por defecto al iniciar
         Debug.Log("[WeaponSwitching] Equipando espada por defecto...");
-        EquipWeapon("sword");
+        EquipWeapon("mace");
         
         // Habilitar el input action del botón de cambio si está asignado
         if (switchWeaponButton != null && switchWeaponButton.action != null)

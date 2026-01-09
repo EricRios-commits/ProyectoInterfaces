@@ -17,11 +17,13 @@ namespace Combat
         public float BaseDamage { get => baseDamage; set => baseDamage = value; }
         public DamageType DamageType { get => damageType; set => damageType = value; }
 
-        public WeaponParticleEffect particleEffect;
+        private WeaponParticleEffect particleEffect;
+        private WeaponSoundEffect soundEffect;
 
         protected virtual void Start()
         {
             particleEffect = GetComponent<WeaponParticleEffect>();
+            soundEffect = GetComponent<WeaponSoundEffect>();
         }
 
         /// <summary>
@@ -43,6 +45,11 @@ namespace Combat
             if (particleEffect != null)
             {
                 particleEffect.SpawnImpactParticles(hitPoint, hitDirection, baseDamage);
+            }
+            // Trigger sound effect at impact point
+            if (soundEffect != null)
+            {
+                soundEffect.PlayImpactSoundEffect(hitPoint, baseDamage);
             }
         }
 
