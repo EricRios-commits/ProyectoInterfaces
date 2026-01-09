@@ -41,6 +41,7 @@ public class GazeController : MonoBehaviour
     /// <param name="args"></param>
     public void OnHoverEnter(HoverEnterEventArgs args)
     {
+        Debug.Log("Llamada a función Enter");
         if (args.interactorObject is XRGazeInteractor)
         {
             activatedTimer = true;
@@ -53,6 +54,7 @@ public class GazeController : MonoBehaviour
     /// <param name="args"></param>
     public void OnHoverExit(HoverExitEventArgs args)
     {
+        Debug.Log("Llamada a función Exit");
         activatedTimer = false;
         timer = 0f;
     }
