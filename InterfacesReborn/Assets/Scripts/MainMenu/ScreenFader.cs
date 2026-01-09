@@ -8,6 +8,10 @@ public class ScreenFader : MonoBehaviour
 
     private void Awake()
     {
+        // Hacer este objeto persistente entre cambios de escena
+        // DontDestroyOnLoad(gameObject);
+
+        // Asegurarse de que el canvas empiece invisible
         fadeCanvasGroup.alpha = 0f;
     }
 

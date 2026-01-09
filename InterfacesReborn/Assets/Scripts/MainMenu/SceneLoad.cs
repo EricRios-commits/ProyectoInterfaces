@@ -1,35 +1,56 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
-using Oculus.Interaction.Samples;
 
 public class SceneLoad : MonoBehaviour
 {
+    public string newScene;
     private ScreenFader screenFader;
-    [SerializeField] private string targetScene;
 
     private void Start()
     {
+        if (SceneManager.GetActiveScene().name != "Main_menuFadein")
+            return;
         screenFader = FindObjectOfType<ScreenFader>();
         if (screenFader == null)
         {
-            Debug.LogError("[SceneLoad] No se encontró ScreenFader en la escena!");
+            Debug.LogError("[SceneLoad] No se encontró ScreenFader en la escena!" + SceneManager.GetActiveScene().name);
         }
+        // Change();
+        StartCoroutine(WaitAndChange());
+    }
+
+    private IEnumerator WaitAndChange()
+    {
+        yield return new WaitForSeconds(5f);
+        Change();
     }
 
     public void Change()
     {
-        Time.timeScale = 1;
+        if (newScene == "")
+        {
+            newScene = "Coliseo";
+        }
+        Time.timeScale = 1; // Asegurarse de que el tiempo esté normalizado al cambiar de escena
         StartCoroutine(ChangeSceneWithFade());
     }
 
     private IEnumerator ChangeSceneWithFade()
     {
-        // screenFader.FadeOut(5f);
-        // yield return new WaitForSeconds(5f);
-        SceneManager.LoadScene(targetScene);
-        // yield return new WaitForSeconds(3f);
-        // screenFader.FadeIn(3f);
-        yield return null;
+        // Iniciar fade out
+        screenFader.FadeOut(5f);
+
+        // Cargar escena de forma asíncrona
+        AsyncOperation loadOperation = SceneManager.LoadSceneAsync(newScene);
+
+        // Esperar a que la escena esté completamente cargada
+        while (!loadOperation.isDone)
+        {
+            yield return null;
+        }
+
+        // Escena cargada, ahora hacer fade in
+        screenFader.FadeIn(3f);
     }
 }
