@@ -12,7 +12,13 @@ namespace Waves
         private WaveManager waveManager;
         private float startedTime;
         private bool isEnabled;
-        
+        private bool timerStarted;
+
+        void Start()
+        {
+            timerStarted = false;
+        }
+
         public override void Initialize(WaveManager manager)
         {
             waveManager = manager;
@@ -33,12 +39,22 @@ namespace Waves
         
         public override bool CanTrigger()
         {
-            return isEnabled && Time.time >= startedTime + triggerDelay;
+            if (!isEnabled || !timerStarted)
+            {
+                return false;
+            }
+            bool canTrigger = false;
+            if (isEnabled && Time.time >= startedTime + triggerDelay)
+            {
+                canTrigger = true;
+            }
+            return canTrigger;
         }
 
         public void StartTimer()
         {
             startedTime = Time.time;
+            timerStarted = true;
         }
         
         private void Update()
@@ -47,6 +63,7 @@ namespace Waves
             {
                 Debug.Log("Trigger activated");
                 InvokeTriggerActivated();
+                timerStarted = false;
                 Disable();
             }
         }

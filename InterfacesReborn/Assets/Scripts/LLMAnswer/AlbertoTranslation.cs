@@ -13,16 +13,19 @@ public class AlbertoTranslation : MonoBehaviour
     private Transform targetPosition;
     [SerializeField]
     private Transform playerTransform;
-    private Transform originalPosition;
+    private Vector3 originalPosition;
+    private Quaternion originalRotation;
     [SerializeField]
     private Animator animator;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        originalPosition = transform;
-        notifier.OnTriggerActivated += TranslateAlbertoToThrone;
+        animator.SetTrigger(sitAnimationTrigger);
+        originalPosition = transform.position;
+        originalRotation = transform.rotation;
         notifier.TriggerEnabled += TranslateAlbertoToArena;
+        notifier.OnTriggerActivated += TranslateAlbertoToThrone;
     }
 
     private void TranslateAlbertoToArena()
@@ -34,8 +37,9 @@ public class AlbertoTranslation : MonoBehaviour
 
     private void TranslateAlbertoToThrone()
     {
-        transform.position = originalPosition.position;
-        transform.rotation = originalPosition.rotation;
+        Debug.Log("Me piden enviarlo de vuelta al trono");
+        transform.position = originalPosition;
+        transform.rotation = originalRotation;
         animator.SetTrigger(sitAnimationTrigger);
     }
 }

@@ -1930,6 +1930,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29e5bf51e91b0a0499897ba80f40eda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deathPanel: {fileID: 0}
   resetRotation: 1
   teleportDelay: 0.5
   showDebugLogs: 1
