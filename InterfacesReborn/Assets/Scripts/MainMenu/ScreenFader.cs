@@ -8,21 +8,21 @@ public class ScreenFader : MonoBehaviour
 
     private void Awake()
     {
-        // Hacer este objeto persistente entre cambios de escena
-        // DontDestroyOnLoad(gameObject);
-
-        // Asegurarse de que el canvas empiece invisible
-        fadeCanvasGroup.alpha = 0f;
+        // // Hacer este objeto persistente entre cambios de escena (debe ser un GameObject raíz)
+        // DontDestroyOnLoad(transform.gameObject);
+        
+        // Asegurarse de que el canvas empiece visible
+        fadeCanvasGroup.alpha = 1f;
     }
 
     public void FadeIn(float duration = 1f)
     {
-        StartCoroutine(Fade(0, 1, duration));
+        StartCoroutine(Fade(1, 0, duration));
     }
 
     public void FadeOut(float duration = 1f)
     {
-        StartCoroutine(Fade(1, 0, duration));
+        StartCoroutine(Fade(0, 1, duration));
     }
 
     private IEnumerator Fade(float from, float to, float duration)
