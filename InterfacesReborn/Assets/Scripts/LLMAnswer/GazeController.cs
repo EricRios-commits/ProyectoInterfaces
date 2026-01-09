@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
+using Waves;
 
 public class GazeController : MonoBehaviour
 {
@@ -13,11 +14,22 @@ public class GazeController : MonoBehaviour
 
     private float timer;
     private bool activatedTimer;
+    private bool alreadySpoken;
+
+    [SerializeField]
+    private AlbertoTrigger triggerNotifier;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         timer = 0f;
+        alreadySpoken = false;
+        triggerNotifier.TriggerEnabled += RestartInteraction;
+    }
+
+    private void RestartInteraction()
+    {
+        alreadySpoken = false;
     }
 
     // Update is called once per frame
@@ -27,11 +39,12 @@ public class GazeController : MonoBehaviour
         {
             timer += Time.deltaTime;
         }
-        if (timer >= holdTime)
+        if (timer >= holdTime && !alreadySpoken)
         {
             petitioner.RequestToModel();
             GazeAlert();
             timer = 0;
+            alreadySpoken = true;
         }
     }
 
