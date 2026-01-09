@@ -18,8 +18,7 @@ namespace Combat
         [SerializeField] private string entityName = "Combat Entity";
         [SerializeField] private GameObject deathEffectPrefab;
         [SerializeField] private float destroyDelay = 5f;
-
-
+        
         private HealthComponent healthComponent;
         private AudioSource audioSource;
 
@@ -27,7 +26,7 @@ namespace Combat
         public HealthComponent Health => healthComponent;
         public EntityStatsProfile StatsProfile => statsProfile;
         
-        private void Awake()
+        private void Start()
         {
             healthComponent = GetComponent<HealthComponent>();
             audioSource = GetComponent<AudioSource>();
