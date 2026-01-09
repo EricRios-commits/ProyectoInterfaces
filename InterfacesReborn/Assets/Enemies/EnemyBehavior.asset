@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
   m_Name: EnemyBehavior Blackboard
   m_EditorClassIdentifier: 
-  VersionTimestamp: 639033771793980564
+  VersionTimestamp: 639035508885419723
   AssetID:
     m_Value0: 8411694794851859383
     m_Value1: 477579199692836793
@@ -36,6 +36,8 @@ MonoBehaviour:
     - rid: 7365014969652871317
     - rid: 7365014969652872005
     - rid: 7365014969865208092
+    - rid: 7365015079377699087
+    - rid: 7365015080513044876
   m_SharedBlackboardVariableGuids: []
   references:
     version: 2
@@ -183,6 +185,22 @@ MonoBehaviour:
           m_Value0: 1125249564264904256
           m_Value1: 7830006283050571573
         Name: LoSSensor
+        m_Value: {fileID: 0}
+    - rid: 7365015079377699087
+      type: {class: 'BlackboardVariable`1[[Behavior.OnActorDeath, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1526201399860725551
+          m_Value1: 11125249156867594287
+        Name: OnEnemyDeath
+        m_Value: {fileID: 11400000, guid: 1f990bb30b43cbb4788203f315253ed8, type: 2}
+    - rid: 7365015080513044876
+      type: {class: 'BlackboardVariable`1[[Combat.HealthComponent, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 12175735537397334089
+          m_Value1: 1200889623284321725
+        Name: HealthComponent
         m_Value: {fileID: 0}
 --- !u!114 &11400000
 MonoBehaviour:
