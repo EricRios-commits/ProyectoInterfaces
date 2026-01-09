@@ -563,6 +563,8 @@ GameObject:
   - component: {fileID: 7248297434494498618}
   - component: {fileID: 2269417332913419692}
   - component: {fileID: 4252846326301837139}
+  - component: {fileID: 4077805523292420192}
+  - component: {fileID: 8211873720127200140}
   m_Layer: 9
   m_Name: Sorcerer
   m_TagString: Untagged
@@ -835,6 +837,7 @@ MonoBehaviour:
   combatEntity: {fileID: 787261298714624607}
   onDamagedEvent: {fileID: 11400000, guid: 0e0275cc9f3d5954f8c7d8093f9e8a6a, type: 2}
   onHealthThresholdEvent: {fileID: 0}
+  onDeathEvent: {fileID: 0}
   healthThreshold: 0.25
 --- !u!114 &2269417332913419692
 MonoBehaviour:
@@ -951,6 +954,39 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4077805523292420192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1866282395009761389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 277b2f32f5e14962af21c6424b5de7d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  healthComponent: {fileID: 0}
+  deathBoolName: Death
+--- !u!114 &8211873720127200140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1866282395009761389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d5a9e350f3f48fba0d684bcfce75a7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deathDisableDelay: 4
+  usePooling: 1
+  onDeathEvent: {fileID: 11400000, guid: 1f990bb30b43cbb4788203f315253ed8, type: 2}
+  disableColliders: 1
+  disableNavMeshAgent: 0
+  disableAnimator: 0
 --- !u!1 &1979272167855249099
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,6 +11,8 @@ namespace Behavior.Enemy
         [SerializeField] private OnActorDamaged onDamagedEvent;
         [Tooltip("Raised when health drops below threshold")] 
         [SerializeField] private OnActorHealthThresholdReached onHealthThresholdEvent;
+        [Tooltip("Raised when enemy dies")]
+        [SerializeField] private OnActorDeath onDeathEvent;
 
         [Header("Thresholds")]
         [Tooltip("Health percentage threshold to trigger events (0-1)")] 
@@ -48,6 +50,13 @@ namespace Behavior.Enemy
             Debug.Log("EnemyAI: OnDamageTaken called. Current Health: " + current + ", Max Health: " + max + ", Damage Info: " + info);
             var damageData = new ActorDamageEventData(info, current, max);
             onDamagedEvent?.SendEventMessage(gameObject, gameObject);
+        }
+
+        public override void OnDeath(GameObject dead, DamageInfo finalDamage)
+        {
+            Debug.Log("EnemyAI: OnDeath called. Final Damage: " + finalDamage);
+            onDeathEvent?.SendEventMessage(dead, finalDamage);
+            base.OnDeath(dead, finalDamage);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using Utility;
 
 namespace Combat
@@ -16,7 +17,7 @@ namespace Combat
         [Header("Entity Settings")]
         [SerializeField] private string entityName = "Combat Entity";
         [SerializeField] private GameObject deathEffectPrefab;
-        [SerializeField] private float destroyDelay = 2f;
+        [SerializeField] private float destroyDelay = 5f;
 
 
         private HealthComponent healthComponent;
@@ -66,7 +67,12 @@ namespace Combat
             {
                 audioSource.PlayOneShot(statsProfile.DeathSound);
             }
-            Destroy(gameObject, destroyDelay);
+        }
+        
+        private IEnumerator DisableAfterDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            gameObject.SetActive(false);
         }
     }
 }

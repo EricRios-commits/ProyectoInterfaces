@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Utility;
 
 namespace Combat
 {
@@ -8,7 +9,7 @@ namespace Combat
     /// Follows Single Responsibility Principle - only manages health.
     /// Follows Open/Closed Principle - extensible through observers and modifiers.
     /// </summary>
-    public class HealthComponent : MonoBehaviour, IDamageable
+    public class HealthComponent : MonoBehaviour, IDamageable, IResettable
     {
         [Header("Health Settings")]
         [SerializeField] private float maxHealth = 100f;
@@ -252,5 +253,16 @@ namespace Combat
             return damageResistance.GetResistance(type);
         }
         
+        /// <summary>
+        /// Reset the health component to its initial state.
+        /// Used when returning objects to a pool for reuse.
+        /// </summary>
+        public void ResetState()
+        {
+            isDead = false;
+            currentHealth = maxHealth;
+            invulnerable = false;
+            NotifyHealthChanged(currentHealth);
+        }
     }
 }
