@@ -14,19 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   availableEnemyTypes:
   - typeName: BasicGolem
-    enemyPrefab: {fileID: 9137032837993464747, guid: d66c23583a584ef4195dbea312c0b2a7, type: 3}
+    enemyPrefab: {fileID: 8172304335225014991, guid: ce84d29c2b0d5f84ab4787955a2998df, type: 3}
     profile: {fileID: 0}
     baseSpawnWeight: 2
     minWaveToAppear: 0
     tier: 1
   - typeName: BasicSkeleton
-    enemyPrefab: {fileID: 8858051749441068820, guid: 4c67ed6c086451b4db54ac4d24b626bb, type: 3}
+    enemyPrefab: {fileID: 6537343075684750409, guid: 28e2caa60065179438ae57bc83573810, type: 3}
     profile: {fileID: 0}
     baseSpawnWeight: 3
     minWaveToAppear: 0
     tier: 3
   - typeName: BasicSorcerer
-    enemyPrefab: {fileID: 1866282395009761389, guid: 4c86fdfa58b5a8c4aa97ac804b3e36c2, type: 3}
+    enemyPrefab: {fileID: 1622137879795029465, guid: 3b2416fc32575de4c96298098f38ddf0, type: 3}
     profile: {fileID: 0}
     baseSpawnWeight: 1
     minWaveToAppear: 0
