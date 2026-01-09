@@ -11,6 +11,8 @@ public class AlbertoTranslation : MonoBehaviour
     [SerializeField]
     private Transform playerTransform;
     private Transform originalPosition;
+    [SerializeField]
+    private Animator animator;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,11 +26,13 @@ public class AlbertoTranslation : MonoBehaviour
     {
         transform.position = targetPosition.position;
         transform.LookAt(playerTransform);
+        animator.SetTrigger("TrIdle");
     }
 
     private void TranslateAlbertoToThrone()
     {
         transform.position = originalPosition.position;
         transform.rotation = originalPosition.rotation;
+        animator.SetTrigger("TrSeat");
     }
 }
