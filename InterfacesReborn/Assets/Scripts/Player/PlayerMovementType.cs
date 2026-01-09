@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation;
 
 /// <summary>
 ///  Handles the movement type for the player in base of the value setted on the PlayerPrefs
@@ -19,6 +20,10 @@ public class PlayerMovementType : MonoBehaviour
     {
         Debug.Log("Llamada a START");
         MovementTypeSetter();
+        if (teleportationArea == null)
+        {
+            teleportationArea = FindFirstObjectByType<TeleportationArea>().gameObject;
+        }
     }
 
     /// <summary>

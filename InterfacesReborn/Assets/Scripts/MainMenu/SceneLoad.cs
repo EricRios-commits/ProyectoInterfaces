@@ -9,11 +9,21 @@ public class SceneLoad : MonoBehaviour
 
     private void Start()
     {
+        if (SceneManager.GetActiveScene().name != "Main_menuFadein")
+            return;
         screenFader = FindObjectOfType<ScreenFader>();
         if (screenFader == null)
         {
-            Debug.LogError("[SceneLoad] No se encontró ScreenFader en la escena!");
+            Debug.LogError("[SceneLoad] No se encontró ScreenFader en la escena!" + SceneManager.GetActiveScene().name);
         }
+        // Change();
+        StartCoroutine(WaitAndChange());
+    }
+
+    private IEnumerator WaitAndChange()
+    {
+        yield return new WaitForSeconds(5f);
+        Change();
     }
 
     public void Change()
@@ -28,15 +38,19 @@ public class SceneLoad : MonoBehaviour
 
     private IEnumerator ChangeSceneWithFade()
     {
-        // Fade out
-        screenFader.FadeOut(2.5f);
-        yield return new WaitForSeconds(2.5f);
-
-        // Cambiar escena
-        SceneManager.LoadScene(newScene);
-
-        // Fade in en la nueva escena
-        yield return new WaitForSeconds(1.5f);
-        screenFader.FadeIn(1.5f);
+        // // Iniciar fade out
+        // screenFader.FadeOut(5f);
+        //
+        // // Cargar escena de forma asíncrona
+        AsyncOperation loadOperation = SceneManager.LoadSceneAsync(newScene);
+        yield return null;
+        // // Esperar a que la escena esté completamente cargada
+        // while (!loadOperation.isDone)
+        // {
+        //     yield return null;
+        // }
+        //
+        // // Escena cargada, ahora hacer fade in
+        // screenFader.FadeIn(3f);
     }
 }
