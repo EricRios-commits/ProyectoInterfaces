@@ -38,19 +38,19 @@ public class SceneLoad : MonoBehaviour
 
     private IEnumerator ChangeSceneWithFade()
     {
-        // Iniciar fade out
-        screenFader.FadeOut(5f);
-
-        // Cargar escena de forma asíncrona
+        // // Iniciar fade out
+        // screenFader.FadeOut(5f);
+        //
+        // // Cargar escena de forma asíncrona
         AsyncOperation loadOperation = SceneManager.LoadSceneAsync(newScene);
-
-        // Esperar a que la escena esté completamente cargada
-        while (!loadOperation.isDone)
-        {
-            yield return null;
-        }
-
-        // Escena cargada, ahora hacer fade in
-        screenFader.FadeIn(3f);
+        yield return null;
+        // // Esperar a que la escena esté completamente cargada
+        // while (!loadOperation.isDone)
+        // {
+        //     yield return null;
+        // }
+        //
+        // // Escena cargada, ahora hacer fade in
+        // screenFader.FadeIn(3f);
     }
 }
