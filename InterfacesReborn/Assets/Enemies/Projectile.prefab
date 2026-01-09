@@ -102,6 +102,9 @@ MonoBehaviour:
   damageableLayers:
     serializedVersion: 2
     m_Bits: 8
+  blockingLayers:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &3078084235557523134
 MonoBehaviour:
   m_ObjectHideFlags: 0

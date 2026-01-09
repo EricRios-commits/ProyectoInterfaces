@@ -12,6 +12,7 @@ namespace Combat
         private float _lifetime;
         private float _spawnTime;
         private Rigidbody _rb;
+        [SerializeField] private LayerMask blockingLayers;
         private LayerMask originalDamageableLayers;
 
         private void Awake()
@@ -51,8 +52,14 @@ namespace Combat
 
         protected override void OnCollisionEnter(Collision collision)
         {
-            base.OnCollisionEnter(collision);
-            ReturnToPool();
+            if (DealDamageOnCollision(collision))
+            {
+                ReturnToPool();
+            }
+            if (((1 << collision.gameObject.layer) & blockingLayers) != 0)
+            {
+                ReturnToPool();
+            }
         }
 
         private void ReturnToPool()

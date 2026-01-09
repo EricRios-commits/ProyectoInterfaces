@@ -55,19 +55,28 @@ namespace Combat
 
         protected virtual void OnCollisionEnter(Collision collision)
         {
+            DealDamageOnCollision(collision);
+        }
+
+        protected bool DealDamageOnCollision(Collision collision)
+        {
             if (!dealDamageOnCollision)
-                return;
+                return false;
             if (!IsInLayerMask(collision.gameObject.layer, damageableLayers))
-                return;
+                return false;
             IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
             if (damageable != null)
             {
-                Vector3 hitPoint = collision.contacts.Length > 0 ? collision.contacts[0].point : collision.transform.position;
+                Vector3 hitPoint = collision.contacts.Length > 0
+                    ? collision.contacts[0].point
+                    : collision.transform.position;
                 hitPoint.y += 1.0f;
                 Debug.Log("Golpe Collision:" + hitPoint);
                 Vector3 hitDirection = collision.contacts.Length > 0 ? collision.contacts[0].normal : Vector3.zero;
                 DealDamage(damageable, hitPoint, hitDirection);
+                return true;
             }
+            return false;
         }
 
         protected virtual void OnTriggerEnter(Collider other)

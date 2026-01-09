@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Behavior.Enemy
 {
-    public class ParriableProjectile : MonoBehaviour, IDamageable
+    public class ParryProjectile : MonoBehaviour, IDamageable
     {
         [SerializeField] private Projectile projectile;
         [SerializeField] private LayerMask damageableLayersAfterParry;
