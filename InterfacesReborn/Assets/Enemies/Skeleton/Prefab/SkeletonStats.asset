@@ -16,6 +16,7 @@ MonoBehaviour:
   description: Don't give up, skeleton!
   maxHealth: 20
   startsInvulnerable: 0
+  hitsToStagger: 2
   resistanceProfile: {fileID: 11400000, guid: c650972eb930de94badf16c432bbc170, type: 2}
   useCriticalHitModifier: 0
   criticalChance: 0.1

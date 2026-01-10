@@ -35,8 +35,10 @@ namespace Waves
         public void StartNextWave()
         {
             int nextWaveNumber = stateManager.CurrentWave + 1;
+            Debug.Log($"<color=cyan>🌊 [WaveManager] StartNextWave() llamado - Iniciando Wave {nextWaveNumber}</color>");
+            
             currentWave = waveGenerator.GenerateWave(nextWaveNumber, generationProfile);
-            Debug.Log($"Generated Wave {nextWaveNumber}: {currentWave.TotalEnemyCount} enemies, " +
+            Debug.Log($"[WaveManager] Generated Wave {nextWaveNumber}: {currentWave.TotalEnemyCount} enemies, " +
                       $"Type: {currentWave.Type}, Difficulty: {currentWave.DifficultyMultiplier:F2}x");
             spawnQueue = BuildSpawnQueue(currentWave);
             stateManager.StartWave(currentWave);
@@ -95,8 +97,17 @@ namespace Waves
         
         private void OnWaveCompleted(int waveNumber)
         {
-            Debug.Log($"Wave {waveNumber} completed!");
-            currentTrigger.Enable();
+            Debug.Log($"<color=green>✅ [WaveManager] Wave {waveNumber} completed!</color>");
+            
+            if (currentTrigger != null)
+            {
+                Debug.Log($"[WaveManager] Habilitando trigger: {currentTrigger.GetType().Name}");
+                currentTrigger.Enable();
+            }
+            else
+            {
+                Debug.LogError("[WaveManager] ❌ currentTrigger es null, no se puede habilitar");
+            }
         }
         
         public void SetWaveTrigger(WaveTrigger trigger)

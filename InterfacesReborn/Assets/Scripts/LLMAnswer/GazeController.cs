@@ -25,6 +25,7 @@ public class GazeController : MonoBehaviour
         timer = 0f;
         alreadySpoken = false;
         triggerNotifier.TriggerEnabled += RestartInteraction;
+        activatedTimer = false;
     }
 
     private void RestartInteraction()
@@ -41,6 +42,7 @@ public class GazeController : MonoBehaviour
         }
         if (timer >= holdTime && !alreadySpoken)
         {
+            Debug.Log("llamada al modelo");
             petitioner.RequestToModel();
             GazeAlert();
             timer = 0;
@@ -54,8 +56,8 @@ public class GazeController : MonoBehaviour
     /// <param name="args"></param>
     public void OnHoverEnter(HoverEnterEventArgs args)
     {
-        Debug.Log("On hover enter");
         if (args.interactorObject is XRGazeInteractor)
+        Debug.Log("Llamada a función Enter");
         {
             activatedTimer = true;
         }
@@ -67,8 +69,11 @@ public class GazeController : MonoBehaviour
     /// <param name="args"></param>
     public void OnHoverExit(HoverExitEventArgs args)
     {
-        Debug.Log("Llamada a función Exit");
-        activatedTimer = false;
-        timer = 0f;
+        if (args.interactorObject is XRGazeInteractor)
+        {
+            Debug.Log("Llamada a función Exit");
+            activatedTimer = false;
+            timer = 0f;   
+        }
     }
 }

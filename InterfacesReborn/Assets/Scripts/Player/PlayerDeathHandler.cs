@@ -13,7 +13,16 @@ namespace Player
     {
         [Header("Death UI")]
         [SerializeField] private GameObject deathPanel;
-        [Tooltip("Panel de muerte que se mostrará en la cara del jugador (debe estar como hijo de la cámara)")]
+        [Tooltip("Panel de muerte que se mostrará en la cara del jugador")]
+        
+        [SerializeField] private Transform cameraTransform;
+        [Tooltip("Transform de la cámara (Main Camera) para posicionar el panel")]
+        
+        [SerializeField] private float panelDistance = 2f;
+        [Tooltip("Distancia del panel respecto a la cámara")]
+        
+        [SerializeField] private float panelHeightOffset = 0f;
+        [Tooltip("Offset vertical del panel")]
         
         [Header("Teleport Settings")]
         [SerializeField] private bool resetRotation = true;
@@ -36,6 +45,21 @@ namespace Player
             healthComponent = GetComponent<HealthComponent>();
             characterController = GetComponent<CharacterController>();
             playerTransform = transform;
+            
+            // Buscar la cámara automáticamente si no está asignada
+            if (cameraTransform == null)
+            {
+                Camera mainCamera = Camera.main;
+                if (mainCamera != null)
+                {
+                    cameraTransform = mainCamera.transform;
+                    Debug.Log("[PlayerDeathHandler] Cámara encontrada automáticamente");
+                }
+                else
+                {
+                    Debug.LogError("[PlayerDeathHandler] No se encontró la cámara principal. Asigna cameraTransform manualmente.");
+                }
+            }
             
             // Asegurarse de que el panel de muerte esté desactivado al inicio
             if (deathPanel != null)
@@ -138,13 +162,14 @@ namespace Player
                 characterController.enabled = true;
             }
             
-            // Activar el panel de muerte
+            // Activar el panel de muerte y posicionarlo frente al jugador
             if (deathPanel != null)
             {
+                PositionDeathPanel();
                 deathPanel.SetActive(true);
                 if (showDebugLogs)
                 {
-                    Debug.Log("[PlayerDeathHandler] Panel de muerte activado");
+                    Debug.Log("[PlayerDeathHandler] Panel de muerte activado y posicionado frente al jugador");
                 }
             }
             else
@@ -153,6 +178,30 @@ namespace Player
             }
             
             Time.timeScale = 0; // Pausar el juego al morir
+        }
+        
+        /// <summary>
+        /// Posiciona el panel de muerte frente al jugador (similar a MenuManager)
+        /// </summary>
+        private void PositionDeathPanel()
+        {
+            if (cameraTransform == null || deathPanel == null)
+            {
+                Debug.LogWarning("[PlayerDeathHandler] No se puede posicionar el panel: cámara o panel no asignado");
+                return;
+            }
+            
+            // Calcular la dirección forward proyectada en el plano horizontal
+            Vector3 forward = Vector3.ProjectOnPlane(cameraTransform.forward, Vector3.up).normalized;
+            
+            // Posicionar el panel frente a la cámara
+            deathPanel.transform.position = 
+                cameraTransform.position + 
+                forward * panelDistance + 
+                Vector3.up * panelHeightOffset;
+            
+            // Rotar el panel para que mire hacia el jugador
+            deathPanel.transform.rotation = Quaternion.LookRotation(forward);
         }
         
         /// <summary>

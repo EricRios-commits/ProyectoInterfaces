@@ -16,6 +16,7 @@ MonoBehaviour:
   description: FIREBALL
   maxHealth: 50
   startsInvulnerable: 0
+  hitsToStagger: 1
   resistanceProfile: {fileID: 0}
   useCriticalHitModifier: 0
   criticalChance: 0.1
