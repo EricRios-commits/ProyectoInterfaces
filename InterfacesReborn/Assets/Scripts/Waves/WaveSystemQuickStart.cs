@@ -6,7 +6,8 @@ namespace Waves
     {
         [Header("Required Components")]
         [SerializeField] private WaveManager waveManager;
-        [SerializeField] private TimeBasedWaveTrigger waveTrigger;
+        [SerializeField] private WaveTrigger waveTrigger;
+        [Tooltip("Puede ser AlbertoTrigger, TimeBasedWaveTrigger, AutomaticWaveTrigger, etc.")]
         
         [Header("Settings")]
         [SerializeField] private bool startFirstWaveImmediately = true;
@@ -15,15 +16,18 @@ namespace Waves
         {
             if (waveManager == null)
             {
-                Debug.LogError("WaveSystemQuickStart: WaveManager not assigned!");
+                Debug.LogError("[WaveSystemQuickStart] WaveManager not assigned!");
                 return;
             }
             if (waveTrigger == null)
             {
-                Debug.LogError("WaveSystemQuickStart: WaveTrigger not assigned!");
+                Debug.LogError("[WaveSystemQuickStart] WaveTrigger not assigned!");
                 return;
             }
-            // waveManager.SetWaveTrigger(waveTrigger);
+            
+            Debug.Log($"[WaveSystemQuickStart] Configurando trigger: {waveTrigger.GetType().Name}");
+            waveManager.SetWaveTrigger(waveTrigger);
+            
             if (startFirstWaveImmediately)
             {
                 StartFirstWave();
@@ -32,7 +36,7 @@ namespace Waves
         
         private void StartFirstWave()
         {
-            Debug.Log("Starting first wave...");
+            Debug.Log("[WaveSystemQuickStart] Starting first wave...");
             waveManager.StartNextWave();
         }
     }
