@@ -19,8 +19,6 @@ public class SceneLoad : MonoBehaviour
         {
             screenFader.FadeIn(3f);
         }
-
-        StartCoroutine(WaitAndChange());
     }
 
     private IEnumerator WaitAndChange()
@@ -32,18 +30,18 @@ public class SceneLoad : MonoBehaviour
     public void Change()
     {
         Debug.Log("Cambiando a " + newScene);
-        
+
         // Verificar si la escena existe en Build Settings
         if (!SceneExistsInBuildSettings(newScene))
         {
             Debug.LogError($"[SceneLoad] La escena '{newScene}' no existe en Build Settings. Añádela en File > Build Settings.");
             return;
         }
-        
+
         Time.timeScale = 1; // Asegurarse de que el tiempo esté normalizado al cambiar de escena
         StartCoroutine(ChangeSceneWithFade());
     }
-    
+
     /// <summary>
     /// Verifica si una escena existe en Build Settings
     /// </summary>
@@ -54,30 +52,26 @@ public class SceneLoad : MonoBehaviour
             Debug.LogError("[SceneLoad] El nombre de la escena está vacío.");
             return false;
         }
-        
+
         // Verificar por nombre o por path
         for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
         {
             string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
             string sceneNameInBuild = System.IO.Path.GetFileNameWithoutExtension(scenePath);
-            
+
             if (sceneNameInBuild.Equals(sceneName, System.StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
         }
-        
+
         return false;
     }
 
     private IEnumerator ChangeSceneWithFade()
     {
-        screenFader.FadeOut(3f);
+        yield return screenFader.FadeOut(3f);
         AsyncOperation loadOperation = SceneManager.LoadSceneAsync(newScene);
-        yield return null;
-        while (!loadOperation.isDone)
-        {
-            yield return null;
-        }
+        yield return loadOperation;
     }
 }
