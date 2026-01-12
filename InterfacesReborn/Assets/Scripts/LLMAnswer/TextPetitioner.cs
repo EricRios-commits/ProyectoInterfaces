@@ -1,4 +1,5 @@
 using System.Collections;
+using LLMAnswer;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -8,6 +9,8 @@ namespace PTexto
     public class TextPetitioner : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI outputText;
+        [SerializeField] private TextAsset promptFile;       // optional .txt file assigned in Inspector
+        [SerializeField] private PromptSo promptSO;          // optional ScriptableObject containing prompt
         private static string apiUrl = "http://gpu1.esit.ull.es:4000/v1/chat/completions";
 
         [System.Serializable]
@@ -42,26 +45,20 @@ namespace PTexto
 
         public void RequestToModel()
         {
-            string message =
-            "Necesito que me ayudes para un videojuego, en donde serás un aldeano NPC llamado Thalendir. " +
-            "Funciona de la siguiente manera: Existe un sistema de oleadas de enemigos, en donde tenemos " +
-            "que ir matándolos y en cada ola aumenta la dificultad. Estamos en un coliseo y puede haber " +
-            "3 tipos de enemigos: Golem de piedra, esqueleto y mago. El gólem de piedra es pesado, lento " +
-            "y grande, pero pega MUY fuerte. El esqueleto es más ágil pero tiene menos vida. El mago ataca " +
-            "con bolas de fuego a distancia, por lo que puede ser díficil acercarnos a él. Nuestro jugador " +
-            "tiene 4 armas: Espada, Mazo, Lanza y Hacha, que podemos ir cambiando. El mazo puede ser " +
-            "especialmente eficaz contra el gólem.\n\n" +
-            "Desde hace 100 años, vivimos en un pueblo rodeado de monstruos y el jugador se está enfrentando " +
-            "a todos ellos. Buscamos liberar a la aldea. Las armas que tengo han sido forjadas en las montañas " +
-            "más altas con el metal más puro, y llevas tiempo sin ver a tu familia ni amigos por los monstruos.\n\n" +
-            "Quiero que escojas uno de los siguientes 3 apartados aleatoriamente:\n" +
-            "- Dime algún consejo de cómo superar a algún enemigo de este juego.\n" +
-            "- Dame trivia ficticia de toda la historia que te he contado: Por qué estamos aquí, quién eres, etc.\n" +
-            "- Dime otros monstruos que estén azotando al pueblo pero que no te he comentado en las reglas (easter egg o futura adición como enemigo)\n\n" +
-            "Responde como si fueses un aldeano triste/aburrido por estar en el Coliseo y te quisieses ir a tu hogar. " +
-            "Hazlo atractivo y conciso como comentario entre rondas. Quiero que me respondas como si fueses el NPC. No agregues comillas a tus mensajes. No digas que estás en un videojuego" +
-            "Haz que tu respuesta sea de entre 30 y 35 palabras.";
-
+            // Prefer the ScriptableObject prompt if assigned, then a TextAsset, otherwise fall back to the inline prompt
+            string message = null;
+            if (promptSO != null && !string.IsNullOrWhiteSpace(promptSO.prompt))
+            {
+                message = promptSO.prompt;
+            }
+            else if (promptFile != null && !string.IsNullOrEmpty(promptFile.text))
+            {
+                message = promptFile.text;
+            }
+            else
+            {
+                message = "You're a dungeon master in a roman collosseum. Taunt the gladiators";
+            }
             SendMessageFromString(message);
         }
 
