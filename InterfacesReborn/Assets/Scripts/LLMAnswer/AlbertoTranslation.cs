@@ -18,6 +18,8 @@ public class AlbertoTranslation : MonoBehaviour
     [SerializeField]
     private Animator animator;
 
+    [SerializeField] private GameObject textBox;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -33,13 +35,20 @@ public class AlbertoTranslation : MonoBehaviour
         transform.position = targetPosition.position;
         transform.LookAt(playerTransform);
         animator.SetTrigger(idleAnimationTrigger);
+        ToggleTextBox(true);
     }
 
     private void TranslateAlbertoToThrone()
     {
-        Debug.Log("Me piden enviarlo de vuelta al trono");
         transform.position = originalPosition;
         transform.rotation = originalRotation;
         animator.SetTrigger(sitAnimationTrigger);
+        ToggleTextBox(false);
+    }
+    
+    private void ToggleTextBox(bool state)
+    {
+        if (textBox != null)
+            textBox.SetActive(state);
     }
 }

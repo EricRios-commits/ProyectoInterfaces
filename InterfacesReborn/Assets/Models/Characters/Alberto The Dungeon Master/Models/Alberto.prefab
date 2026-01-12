@@ -37,7 +37,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 703}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3958651667052020226
@@ -95,14 +95,14 @@ MonoBehaviour:
     m_Right: 3
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 7
   m_Spacing: 0
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 1
-  m_ChildControlHeight: 1
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 1
+  m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
 --- !u!114 &303288636002203835
 MonoBehaviour:
@@ -275,7 +275,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 350, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3789881904896977199
 CanvasRenderer:
@@ -305,7 +305,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: You've beaten a round...
+  m_text: You've beaten a round... It seems you even had some fun doing it... Well...
+    Let's see how you like what's up next
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -398,15 +399,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d3be2383560c8bd4cbdb3bd3a02b3dc0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -25.76
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d3be2383560c8bd4cbdb3bd3a02b3dc0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.147
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d3be2383560c8bd4cbdb3bd3a02b3dc0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.489
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d3be2383560c8bd4cbdb3bd3a02b3dc0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -478,6 +479,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d3be2383560c8bd4cbdb3bd3a02b3dc0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1563079295342732477}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d3be2383560c8bd4cbdb3bd3a02b3dc0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3947038577699143566}
   m_SourcePrefab: {fileID: 100100000, guid: d3be2383560c8bd4cbdb3bd3a02b3dc0, type: 3}
 --- !u!95 &193974588979120225 stripped
 Animator:
@@ -528,6 +532,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outputText: {fileID: 1491567040737673736}
+  promptFile: {fileID: 0}
+  promptSO: {fileID: 11400000, guid: 1ce31d9d96cf5b744815bd0558034bda, type: 2}
+  useContextProviders: 1
+  contextProviderComponents:
+  - {fileID: 3947038577699143566}
 --- !u!114 &1683622039201394530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -669,3 +678,20 @@ MonoBehaviour:
   targetPosition: {fileID: 0}
   playerTransform: {fileID: 0}
   animator: {fileID: 193974588979120225}
+  textBox: {fileID: 5113062229446561256}
+--- !u!114 &3947038577699143566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6853034580971096225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3544dd8369ca477787a86fcc74c8f00d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waveManager: {fileID: 0}
+  includeEnemyDetails: 1
+  includeWaveType: 1
+  includeDifficulty: 1

@@ -1,4 +1,7 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using LLMAnswer;
 using TMPro;
 using UnityEngine;
@@ -11,6 +14,9 @@ namespace PTexto
         [SerializeField] private TextMeshProUGUI outputText;
         [SerializeField] private TextAsset promptFile;       // optional .txt file assigned in Inspector
         [SerializeField] private PromptSo promptSO;          // optional ScriptableObject containing prompt
+        [SerializeField] private bool useContextProviders = true;
+        [SerializeField] private List<MonoBehaviour> contextProviderComponents;
+        private List<IPromptContextProvider> contextProviders;
         private static string apiUrl = "http://gpu1.esit.ull.es:4000/v1/chat/completions";
 
         [System.Serializable]
@@ -35,9 +41,25 @@ namespace PTexto
         }
 
         void Start() {
-            RequestToModel();
+            InitializeContextProviders();
+            // RequestToModel();
         }
 
+        private void InitializeContextProviders()
+        {
+            contextProviders = new List<IPromptContextProvider>();
+            if (contextProviderComponents != null)
+            {
+                foreach (var component in contextProviderComponents)
+                {
+                    if (component is IPromptContextProvider provider)
+                    {
+                        contextProviders.Add(provider);
+                    }
+                }
+            }
+        }
+        
         public void SendMessageFromString(string message)
         {
             StartCoroutine(SendMessageToChatbot(message));
@@ -45,21 +67,47 @@ namespace PTexto
 
         public void RequestToModel()
         {
-            // Prefer the ScriptableObject prompt if assigned, then a TextAsset, otherwise fall back to the inline prompt
-            string message = null;
+            string basePrompt = null;
             if (promptSO != null && !string.IsNullOrWhiteSpace(promptSO.prompt))
             {
-                message = promptSO.prompt;
+                basePrompt = promptSO.prompt;
             }
             else if (promptFile != null && !string.IsNullOrEmpty(promptFile.text))
             {
-                message = promptFile.text;
+                basePrompt = promptFile.text;
             }
             else
             {
-                message = "You're a dungeon master in a roman collosseum. Taunt the gladiators";
+                basePrompt = "You're a dungeon master in a roman collosseum. Taunt the gladiators";
             }
-            SendMessageFromString(message);
+            
+            // Build final message with context from all providers
+            string finalMessage = BuildPromptWithContext(basePrompt);
+            SendMessageFromString(finalMessage);
+        }
+        
+        /// <summary>
+        /// Builds the final prompt by appending context from all registered providers.
+        /// </summary>
+        private string BuildPromptWithContext(string basePrompt)
+        {
+            if (!useContextProviders || contextProviders == null || contextProviders.Count == 0)
+            {
+                return basePrompt;
+            }
+            var promptBuilder = new StringBuilder(basePrompt);
+            foreach (var provider in contextProviders)
+            {
+                if (provider == null) continue;
+                
+                string context = provider.GetContext();
+                if (!string.IsNullOrWhiteSpace(context))
+                {
+                    promptBuilder.Append("\n");
+                    promptBuilder.Append(context);
+                }
+            }
+            return promptBuilder.ToString();
         }
 
         private IEnumerator SendMessageToChatbot(string message)
@@ -113,6 +161,72 @@ namespace PTexto
                 }
             }
         }
+        
+        #region Debug Methods
+        
+        /// <summary>
+        /// Debug method to test a petition with a custom message.
+        /// Can be called from Unity Editor or during runtime for testing.
+        /// </summary>
+        [ContextMenu("Debug: Test Petition")]
+        public void DebugTestPetition()
+        {
+            string testMessage = "Tell me a joke about a skeleton warrior.";
+            Debug.Log($"[DEBUG] Testing petition with message: {testMessage}");
+            SendMessageFromString(testMessage);
+        }
+        
+        /// <summary>
+        /// Debug method to test a petition with current prompt and context.
+        /// Useful for testing how context providers affect the final prompt.
+        /// </summary>
+        [ContextMenu("Debug: Test Petition With Context")]
+        public void DebugTestPetitionWithContext()
+        {
+            Debug.Log("[DEBUG] Testing petition with full context...");
+            RequestToModel();
+        }
+        
+        /// <summary>
+        /// Debug method to test a petition with a custom message (public version).
+        /// </summary>
+        public void DebugTestPetitionWithMessage(string message)
+        {
+            Debug.Log($"[DEBUG] Testing petition with custom message: {message}");
+            SendMessageFromString(message);
+        }
+        
+        /// <summary>
+        /// Debug method to log the final prompt that would be sent (without actually sending it).
+        /// Useful for verifying context providers are working correctly.
+        /// </summary>
+        [ContextMenu("Debug: Log Current Prompt")]
+        public void DebugLogCurrentPrompt()
+        {
+            if (contextProviders == null)
+                InitializeContextProviders();
+                
+            string basePrompt = null;
+            if (promptSO != null && !string.IsNullOrWhiteSpace(promptSO.prompt))
+            {
+                basePrompt = promptSO.prompt;
+            }
+            else if (promptFile != null && !string.IsNullOrEmpty(promptFile.text))
+            {
+                basePrompt = promptFile.text;
+            }
+            else
+            {
+                basePrompt = "You're a dungeon master in a roman collosseum. Taunt the gladiators";
+            }
+            
+            string finalPrompt = BuildPromptWithContext(basePrompt);
+            Debug.Log($"[DEBUG] Base Prompt:\n{basePrompt}");
+            Debug.Log($"[DEBUG] Final Prompt with Context:\n{finalPrompt}");
+            Debug.Log($"[DEBUG] Context Providers Count: {(contextProviders != null ? contextProviders.Count : 0)}");
+        }
+        
+        #endregion
 
     }
 }
