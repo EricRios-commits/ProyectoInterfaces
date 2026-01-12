@@ -248,22 +248,22 @@ public void OnHoverEnter(HoverEnterEventArgs args)
 
 #### Tareas Individuales
 
-**Fabián González Lence (alu0101549491):**
+**Fabián González Lence:**
 - Reconocimiento de voz.
 - Sistema de armas y hitboxes de las mismas.
 - Implementación de sensores XR.
 
-**Eric Ríos Hamilton (alu):**
+**Eric Ríos Hamilton:**
 - Sistema de combate y oleadas.
 - Sistema de salud.
 - IA de enemigos con Behavior Trees.
 
-**Enmanuel Vegas Acosta (alu):**
+**Enmanuel Vegas Acosta:**
 - Integración con LLM.
 - Transiciones de escenas.
 - Efectos visuales y audio.
 
-**Diego Hernández Chico (alu):**
+**Diego Hernández Chico:**
 - Integración de modelado 3D y animaciones.
 - Configuración de hitboxes de los entornos de escenas.
 - UI/UX en VR.
