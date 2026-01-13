@@ -25,7 +25,8 @@ InterfacesReborn es un prototipo de juego VR desarrollado para Meta Quest 2 que 
 - Meta Quest 2
 - Unity 6000.0.58f2 o superior
 - XR Interaction Toolkit
-- Whisper (para reconocimiento de voz)
+- API Key de Groq (reconocimiento de voz - gratuita en https://console.groq.com)
+- Conexión a Internet (para transcripción de audio)
 
 ### Controles
 - **Botón A (controlador derecho)**: Mantener presionado para grabar comando de voz.
@@ -41,8 +42,11 @@ InterfacesReborn es un prototipo de juego VR desarrollado para Meta Quest 2 que 
 - "Hand" / "Mano" (desequipar arma)
 
 ### Configuración Inicial
-1. Seleccionar tipo de locomoción en el Main Menu.
-2. Calibrar el reconocimiento de voz manteniendo presionado el botón A por primera vez.
+1. Obtener API Key gratuita de Groq en https://console.groq.com/keys
+2. Configurar API Key en el componente `WhisperServerClient` del Inspector de Unity.
+3. Asegurar que el Quest 2 tenga conexión a Internet.
+4. Seleccionar tipo de locomoción en el Main Menu.
+5. Probar reconocimiento de voz manteniendo presionado el botón A.
 
 ## Hitos de Programación Logrados
 
@@ -75,7 +79,8 @@ _currentVelocity = velocityXZ.magnitude;
 ```
 
 ### 3. **Reconocimiento de Voz con IA (Relacionado con interfaces multimodales)**
-- Integración de Whisper para speech-to-text.
+- Integración con API de Groq (Whisper Large V3) para speech-to-text en la nube.
+- Procesamiento remoto para mejor velocidad (2-3s vs 15s local).
 - Amplificación de audio con normalización automática.
 - Sistema de similitud de Levenshtein para tolerancia a errores.
 - Comandos de voz con detección fuzzy matching.
@@ -128,10 +133,13 @@ int enemyCount = Mathf.RoundToInt(profile.baseEnemyCount + curveValue);
 ## Aspectos Destacables de la Aplicación
 
 ### 1. **Sistema de Reconocimiento de Voz Robusto**
+- Procesamiento en la nube mediante API de Groq (Whisper Large V3).
+- Transcripción rápida (2-3 segundos) sin sobrecarga del Quest 2.
 - Amplificación adaptativa de audio con normalización automática.
 - Algoritmo de similitud de Levenshtein para tolerar errores de pronunciación.
 - Múltiples patrones por palabra para mejorar precisión.
 - Umbral de similitud ajustable (50% por defecto).
+- 14,400 requests gratuitos por día (suficiente para uso extensivo).
 
 ### 2. **Arquitectura Extensible y Mantenible**
 - Uso extensivo de interfaces para desacoplar componentes.
@@ -181,15 +189,21 @@ if (_controllerDevice.TryGetFeatureValue(CommonUsages.deviceVelocity, out device
 }
 ```
 
-### 2. **Sensor de Voz (Whisper Speech Recognition)**
-- **Ubicación**: `MicrophoneController.cs`
-- **Función**: Reconocimiento de comandos de voz para cambio de armas.
-- **Tecnología**: Whisper AI (modelo local)
+### 2. **Sensor de Voz (Groq Whisper Large V3 API)**
+- **Ubicación**: `MicrophoneController.cs` + `WhisperServerClient.cs`
+- **Función**: Reconocimiento de comandos de voz para cambio de armas mediante API en la nube.
+- **Tecnología**: Groq API con modelo Whisper Large V3 (https://console.groq.com)
+- **Ventajas**:
+  - Procesamiento remoto ultra-rápido (2-3 segundos)
+  - Sin carga de procesamiento en Quest 2
+  - Modelo de última generación (mejor precisión)
+  - Gratuito con límite de 14,400 requests/día
 - **Configuración**:
+  - Endpoint: `https://api.groq.com/openai/v1/audio/transcriptions`
+  - Modelo: `whisper-large-v3`
   - Tiempo mínimo de grabación: 0.5s
-  - Volumen mínimo: 0.01
-  - Amplificación: 4.0x
-  - Idioma: Inglés (forzado)
+  - Amplificación de audio: 4.0x
+  - Formato de audio: WAV (16kHz, mono)
 
 ### 3. **Sensor de Luz Ambiental (Light Sensor)**
 - **Ubicación**: `LightController.cs`
@@ -382,8 +396,9 @@ InterfacesReborn/
 │   │   │   ├── WaveManager.cs
 │   │   │   ├── WaveGenerator.cs
 │   │   │   └── WaveTrigger.cs
-│   │   ├── VoiceController/        # Reconocimiento de voz
+│   │   ├── VoiceController/        # Reconocimiento de voz con Groq API
 │   │   │   ├── MicrophoneController.cs
+│   │   │   ├── WhisperServerClient.cs
 │   │   │   └── WeaponSwitching.cs
 │   │   ├── LLMAnswer/              # Integración con LLM
 │   │   ├── UI/                     # Interfaces de usuario
@@ -406,7 +421,7 @@ InterfacesReborn/
 - **Unity 6000.0.5.8f2** - Motor de juego
 - **XR Interaction Toolkit** - Framework de interacción VR
 - **Unity Behavior** - Sistema de behavior trees
-- **Whisper for Unity** - Reconocimiento de voz
+- **Groq API (Whisper Large V3)** - Reconocimiento de voz en la nube
 - **Meta XR SDK** - Integración específica de Quest
 - **TextMeshPro** - Renderizado de texto
 
@@ -414,7 +429,9 @@ InterfacesReborn/
 
 - [Unity XR Interaction Toolkit Documentation](https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@latest)
 - [Meta Quest Developer Documentation](https://developer.oculus.com/documentation/unity/)
-- [Whisper AI GitHub](https://github.com/openai/whisper)
+- [Groq API Documentation](https://console.groq.com/docs)
+- [Groq Console (API Keys)](https://console.groq.com/keys)
+- [Whisper AI (OpenAI)](https://github.com/openai/whisper)
 - [Unity Behavior Documentation](https://docs.unity.com/behavior/)
 
 ## Contribuciones

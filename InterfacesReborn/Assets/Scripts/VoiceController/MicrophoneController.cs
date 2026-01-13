@@ -72,18 +72,11 @@ namespace Whisper.Samples
             
             if (microphoneRecord == null)
             {
-                UnityEngine.Debug.LogError("[MicrophoneController] ❌ MicrophoneRecord no asignado. Asígnalo en el Inspector.");
+                UnityEngine.Debug.LogError("[MicrophoneController] ❌ MicrophoneRecord no asignado.");
                 return;
             }
             
             microphoneRecord.OnRecordStop += OnRecordStop;
-
-            // Configurar el micrófono para mejor captura
-            UnityEngine.Debug.Log($"[MicrophoneController] Micrófonos disponibles: {Microphone.devices.Length}");
-            foreach (var device in Microphone.devices)
-            {
-                UnityEngine.Debug.Log($"[MicrophoneController] - {device}");
-            }
         }
         
         private void TryFindRecordButtonAction()
@@ -151,44 +144,32 @@ namespace Whisper.Samples
 
         private async void Start()
         {
-            // Buscar automáticamente el input action si no está asignado
+            // Buscar Input Action si no está asignado
             if (recordButtonAction == null || recordButtonAction.action == null)
             {
-                UnityEngine.Debug.Log("[MicrophoneController] Buscando Input Action automáticamente...");
                 TryFindRecordButtonAction();
             }
 
-            // Habilitar el input action
+            // Habilitar input action
             if (recordButtonAction != null && recordButtonAction.action != null)
             {
                 recordButtonAction.action.Enable();
-                UnityEngine.Debug.Log("[MicrophoneController] Input Action habilitado");
             }
             else
             {
-                UnityEngine.Debug.LogWarning("[MicrophoneController] ⚠️ recordButtonAction no asignado. Asígnalo manualmente en el Inspector para usar comandos de voz.");
-                UnityEngine.Debug.LogWarning("[MicrophoneController] Si estás en el editor, asegúrate de que el XR Origin esté en la escena y XR Simulator esté activo.");
+                UnityEngine.Debug.LogWarning("[MicrophoneController] ⚠️ recordButtonAction no asignado. Configura manualmente en Inspector.");
             }
             
-            // Inicializar el modelo de Whisper
+            // Inicializar Whisper
             if (useRemoteServer)
             {
-                UnityEngine.Debug.Log("[MicrophoneController] Usando servidor remoto de Whisper. Listo para transcribir.");
+                UnityEngine.Debug.Log("[MicrophoneController] Modo: Servidor remoto");
             }
             else
             {
-                UnityEngine.Debug.Log("[MicrophoneController] Cargando modelo de Whisper local...");
+                UnityEngine.Debug.Log("[MicrophoneController] Cargando Whisper local...");
                 await whisper.InitModel();
-                UnityEngine.Debug.Log("[MicrophoneController] Modelo de Whisper cargado y listo.");
-            }
-            
-            if (recordButtonAction != null && recordButtonAction.action != null)
-            {
-                UnityEngine.Debug.Log("[MicrophoneController] Mantén presionado el botón asignado y habla cerca del micrófono de las Quest 2.");
-            }
-            else
-            {
-                UnityEngine.Debug.Log("[MicrophoneController] Asigna 'Record Button Action' en el Inspector para activar la grabación por voz.");
+                UnityEngine.Debug.Log("[MicrophoneController] Whisper local listo");
             }
         }
 
@@ -219,7 +200,7 @@ namespace Whisper.Samples
             {
                 _recordStartTime = Time.time;
                 microphoneRecord.StartRecord();
-                UnityEngine.Debug.Log("[MicrophoneController] 🎤 Grabación iniciada. Habla AHORA...");
+                UnityEngine.Debug.Log("[MicrophoneController] 🎤 Grabando...");
             }
         }
 
@@ -228,14 +209,8 @@ namespace Whisper.Samples
             if (microphoneRecord.IsRecording)
             {
                 float recordDuration = Time.time - _recordStartTime;
-                
-                if (recordDuration < minRecordTime)
-                {
-                    UnityEngine.Debug.LogWarning($"[MicrophoneController] ⚠️ Grabación muy corta ({recordDuration:F2}s). Mínimo requerido: {minRecordTime}s");
-                }
-                
                 microphoneRecord.StopRecord();
-                UnityEngine.Debug.Log($"[MicrophoneController] ⏹️ Grabación detenida ({recordDuration:F2}s). Procesando...");
+                UnityEngine.Debug.Log($"[MicrophoneController] ⏹️ Procesando audio ({recordDuration:F1}s)...");
             }
         }
         
@@ -243,23 +218,14 @@ namespace Whisper.Samples
         {
             _buffer = "";
 
-            // Verificar que hay datos de audio
             if (recordedAudio.Data == null || recordedAudio.Data.Length == 0)
             {
-                UnityEngine.Debug.LogError("[MicrophoneController] ❌ No hay datos de audio para procesar.");
+                UnityEngine.Debug.LogError("[MicrophoneController] ❌ No hay datos de audio.");
                 return;
             }
 
-            UnityEngine.Debug.Log("[MicrophoneController] ⏳ Iniciando procesamiento de audio... (esto puede tardar en Quest 2)");
-
-            // Calcular el volumen promedio del audio antes de amplificar
-            float avgVolumeBefore = CalculateAverageVolume(recordedAudio.Data);
-            
-            // Amplificar el audio para mejorar el reconocimiento
+            // Amplificar audio
             float[] amplifiedAudio = AmplifyAudio(recordedAudio.Data, audioGain);
-            
-            float avgVolumeAfter = CalculateAverageVolume(amplifiedAudio);
-            UnityEngine.Debug.Log($"[MicrophoneController] Volumen antes: {avgVolumeBefore:F4} | Después: {avgVolumeAfter:F4} (Ganancia: {audioGain}x)");
 
             var sw = new Stopwatch();
             sw.Start();
@@ -269,39 +235,26 @@ namespace Whisper.Samples
             
             if (useRemoteServer)
             {
-                // Usar servidor remoto
-                UnityEngine.Debug.Log("[MicrophoneController] 🌐 Enviando audio al servidor de Whisper...");
                 var serverResponse = await whisperServer.TranscribeAudioAsync(amplifiedAudio, recordedAudio.Frequency, recordedAudio.Channels);
                 
                 if (serverResponse == null || string.IsNullOrEmpty(serverResponse.text))
                 {
-                    UnityEngine.Debug.LogWarning("[MicrophoneController] ❌ No se pudo procesar el audio en el servidor.");
-                    UnityEngine.Debug.LogWarning("[MicrophoneController] Verifica que el servidor esté accesible desde Quest 2.");
+                    UnityEngine.Debug.LogWarning("[MicrophoneController] ❌ Error del servidor. Verifica conexión y API key.");
                     return;
                 }
                 
                 text = serverResponse.text.Trim();
                 detectedLanguage = !string.IsNullOrEmpty(serverResponse.language) ? serverResponse.language : "unknown";
-                
-                var time = sw.ElapsedMilliseconds;
-                UnityEngine.Debug.Log($"[MicrophoneController] ✅ Transcripción del servidor completada en {time}ms");
             }
             else
             {
-                // Usar Whisper local
-                UnityEngine.Debug.Log("[MicrophoneController] 🔄 Enviando audio a Whisper local para transcripción...");
                 var res = await whisper.GetTextAsync(amplifiedAudio, recordedAudio.Frequency, recordedAudio.Channels);
                 
                 if (res == null) 
                 {
-                    UnityEngine.Debug.LogWarning("[MicrophoneController] ❌ No se pudo procesar el audio localmente.");
+                    UnityEngine.Debug.LogWarning("[MicrophoneController] ❌ Error en procesamiento local.");
                     return;
                 }
-                
-                var time = sw.ElapsedMilliseconds;
-                UnityEngine.Debug.Log($"[MicrophoneController] ✅ Transcripción local completada en {time}ms");
-                var rate = recordedAudio.Length / (time * 0.001f);
-                UnityEngine.Debug.Log($"⚡ Velocidad: {rate:F1}x");
                 
                 text = res.Result.Trim();
                 detectedLanguage = res.Language;
@@ -309,41 +262,29 @@ namespace Whisper.Samples
             
             sw.Stop();
 
-            // Filtrar resultados no deseados
-            string[] invalidResults = { "[BLANK_AUDIO]", "(BLANK_AUDIO)", "BLANK_AUDIO", 
-                                       "[BELL_RINGING]", "BELL_RINGING", "(bell ringing)",
-                                       "click", "Click", "CLICK" };
+            // Filtrar resultados inválidos
+            string[] invalidResults = { "[BLANK_AUDIO]", "(BLANK_AUDIO)", "BLANK_AUDIO", "[BELL_RINGING]", "click" };
             
-            bool isInvalid = false;
             foreach (var invalid in invalidResults)
             {
-                if (text.Contains(invalid) || text.Equals(invalid, System.StringComparison.OrdinalIgnoreCase))
+                if (text.Contains(invalid, System.StringComparison.OrdinalIgnoreCase))
                 {
-                    isInvalid = true;
-                    break;
+                    UnityEngine.Debug.LogWarning($"[MicrophoneController] ⚠️ Audio inválido: '{text}'. Habla más cerca del micrófono.");
+                    return;
                 }
             }
 
-            if (isInvalid || string.IsNullOrWhiteSpace(text))
+            if (string.IsNullOrWhiteSpace(text))
             {
-                UnityEngine.Debug.LogWarning($"[MicrophoneController] ⚠️ Resultado inválido o vacío: '{text}'. Intenta hablar más alto y más cerca del micrófono.");
+                UnityEngine.Debug.LogWarning("[MicrophoneController] ⚠️ Transcripción vacía.");
                 return;
             }
             
-            // Imprimir resultado en consola
-            UnityEngine.Debug.Log("========== TRANSCRIPCIÓN ==========");
-            UnityEngine.Debug.Log($"✅ Texto: {text}");
-            if (printLanguage)
-                UnityEngine.Debug.Log($"🌐 Idioma detectado: {detectedLanguage}");
-            UnityEngine.Debug.Log($"⏱️ Tiempo de procesamiento: {sw.ElapsedMilliseconds} ms");
-            UnityEngine.Debug.Log($"🔊 Volumen: {avgVolumeAfter:F4}");
-            UnityEngine.Debug.Log($"🖥️ Modo: {(useRemoteServer ? "Servidor Remoto" : "Procesamiento Local")}");
-            UnityEngine.Debug.Log("===================================");
+            // Mostrar resultado
+            UnityEngine.Debug.Log($"[MicrophoneController] ✅ \"{text}\" ({sw.ElapsedMilliseconds}ms)");
             
-            // Invocar evento para otros scripts
+            // Invocar eventos
             onActionDetected?.Invoke(text);
-            
-            // Detectar comandos de armas
             DetectWeaponCommand(text);
         }
 
@@ -445,17 +386,17 @@ namespace Whisper.Samples
                 {
                     if (lowerText.Contains(pattern))
                     {
-                        UnityEngine.Debug.Log($"[MicrophoneController] ⚔️ Comando detectado (patrón exacto '{pattern}'): {weaponName}");
+                        UnityEngine.Debug.Log($"[MicrophoneController] ⚔️ {weaponName.ToUpper()}");
                         onWeaponCommand?.Invoke(weaponName);
                         return;
                     }
                 }
             }
             
-            // 2. Buscar similitudes palabra por palabra
+            // 2. Buscar similitudes palabra por palabra con fuzzy matching
             foreach (string word in words)
             {
-                if (word.Length < 2) continue; // Ignorar palabras muy cortas
+                if (word.Length < 2) continue;
                 
                 foreach (var weaponPattern in weaponPatterns)
                 {
@@ -470,21 +411,16 @@ namespace Whisper.Samples
                         {
                             bestSimilarity = similarity;
                             bestMatch = weaponName;
-                            UnityEngine.Debug.Log($"[MicrophoneController] 📊 '{word}' ~ '{pattern}' = {similarity:P0} (mejor hasta ahora: {weaponName})");
                         }
                     }
                 }
             }
             
-            // Si encontramos una similitud suficiente, usar esa arma
+            // Invocar comando si hay suficiente similitud
             if (bestMatch != null && bestSimilarity >= similarityThreshold)
             {
-                UnityEngine.Debug.Log($"[MicrophoneController] ⚔️ Comando detectado (similitud {bestSimilarity:P0}): {bestMatch}");
+                UnityEngine.Debug.Log($"[MicrophoneController] ⚔️ {bestMatch.ToUpper()} ({bestSimilarity:P0})");
                 onWeaponCommand?.Invoke(bestMatch);
-            }
-            else
-            {
-                UnityEngine.Debug.LogWarning($"[MicrophoneController] ❌ No se detectó ningún comando de arma válido. Mejor coincidencia: {bestMatch} ({bestSimilarity:P0})");
             }
         }
         

@@ -15,52 +15,38 @@ namespace Whisper.Samples
     public class WhisperServerClient : MonoBehaviour
     {
         [Header("Configuración del Servidor")]
-        [Tooltip("URL del endpoint de transcripción")]
+        [Tooltip("URL del endpoint. Groq: https://api.groq.com/openai/v1/audio/transcriptions")]
         public string serverUrl = "https://api.groq.com/openai/v1/audio/transcriptions";
         
-        [Tooltip("Nombre del modelo. Para Groq usar: whisper-large-v3")]
+        [Tooltip("Modelo a usar. Groq: whisper-large-v3")]
         public string modelName = "whisper-large-v3";
         
-        [Tooltip("API Key para autenticación. REQUERIDO para Groq y OpenAI")]
+        [Tooltip("API Key (obtener gratis en: https://console.groq.com/keys)")]
         public string apiKey = "";
         
-        [Tooltip("Timeout de la petición en segundos")]
+        [Tooltip("Timeout en segundos")]
         public int timeoutSeconds = 30;
         
-        [Header("Presets Rápidos")]
-        [Tooltip("Servidor de la universidad (requiere configuración)")]
+        [Header("Alternativa: Servidor Universidad")]
+        [Tooltip("Usar servidor ULL en lugar de Groq (requiere que esté configurado)")]
         public bool useUniversityServer = false;
-        
-        [Header("Información")]
-        [TextArea(3, 5)]
-        public string info = "GROQ (Recomendado):\n" +
-                             "- URL: https://api.groq.com/openai/v1/audio/transcriptions\n" +
-                             "- Model: whisper-large-v3\n" +
-                             "- API Key: Obtener en https://console.groq.com/keys\n" +
-                             "- Gratis: 14,400 requests/día";
         
         [Header("Configuración de Audio")]
         [SerializeField] private int sampleRate = 16000; // Whisper espera 16kHz típicamente
         
         private void Start()
         {
-            // Aplicar preset si está activado
             if (useUniversityServer)
             {
                 serverUrl = "http://gpu1.esit.ull.es:4000/v1/audio/transcriptions";
-                modelName = ""; // Sin modelo por defecto
-                apiKey = ""; // No requiere API key
-                UnityEngine.Debug.Log("[WhisperServerClient] Usando preset: Servidor Universidad");
+                modelName = "";
+                apiKey = "";
             }
             
-            // Validar configuración
-            if (string.IsNullOrEmpty(apiKey) && serverUrl.Contains("groq.com"))
+            // Validar API Key
+            if (string.IsNullOrEmpty(apiKey) && (serverUrl.Contains("groq.com") || serverUrl.Contains("openai.com")))
             {
-                UnityEngine.Debug.LogError("[WhisperServerClient] ⚠️ API Key de Groq no configurada. Obtén una gratis en: https://console.groq.com/keys");
-            }
-            else if (string.IsNullOrEmpty(apiKey) && serverUrl.Contains("openai.com"))
-            {
-                UnityEngine.Debug.LogError("[WhisperServerClient] ⚠️ API Key de OpenAI no configurada.");
+                UnityEngine.Debug.LogError("[WhisperServerClient] ⚠️ API Key requerida. Groq gratis: https://console.groq.com/keys");
             }
         }
         
@@ -75,42 +61,28 @@ namespace Whisper.Samples
         {
             try
             {
-                UnityEngine.Debug.Log($"[WhisperServerClient] Enviando audio al servidor: {audioData.Length} muestras, {frequency}Hz, {channels} canales");
-                
-                // Convertir el audio a WAV bytes
+                // Convertir audio a WAV
                 byte[] wavData = ConvertToWav(audioData, frequency, channels);
+                UnityEngine.Debug.Log($"[WhisperServerClient] Enviando {wavData.Length / 1024}KB de audio a servidor...");
                 
-                UnityEngine.Debug.Log($"[WhisperServerClient] WAV generado: {wavData.Length} bytes ({wavData.Length / 1024}KB)");
-                
-                // Crear formulario multipart/form-data (formato OpenAI)
+                // Crear formulario multipart/form-data
                 List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
-                
-                // Agregar el archivo de audio
                 formData.Add(new MultipartFormFileSection("file", wavData, "audio.wav", "audio/wav"));
                 
-                // Agregar el modelo solo si está especificado (algunos servidores lo requieren, otros usan uno por defecto)
                 if (!string.IsNullOrEmpty(modelName))
                 {
                     formData.Add(new MultipartFormDataSection("model", modelName));
-                    UnityEngine.Debug.Log($"[WhisperServerClient] Usando modelo: {modelName}");
-                }
-                else
-                {
-                    UnityEngine.Debug.Log($"[WhisperServerClient] Sin modelo especificado, usando modelo por defecto del servidor (si existe)");
                 }
                 
-                // Crear la petición HTTP con multipart/form-data
+                // Crear petición HTTP
                 UnityWebRequest request = UnityWebRequest.Post(serverUrl, formData);
                 request.timeout = timeoutSeconds;
                 
-                // Agregar API Key en headers si está configurada
+                // Agregar API Key si está configurada
                 if (!string.IsNullOrEmpty(apiKey))
                 {
                     request.SetRequestHeader("Authorization", $"Bearer {apiKey}");
-                    UnityEngine.Debug.Log($"[WhisperServerClient] Authorization header agregado");
                 }
-                
-                UnityEngine.Debug.Log($"[WhisperServerClient] Enviando petición a: {serverUrl}");
                 
                 // Enviar la petición de forma asíncrona
                 var operation = request.SendWebRequest();
