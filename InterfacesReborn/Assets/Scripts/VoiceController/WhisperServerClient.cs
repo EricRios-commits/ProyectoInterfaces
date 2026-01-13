@@ -8,9 +8,21 @@ using UnityEngine.Networking;
 namespace Whisper.Samples
 {
     /// <summary>
+    /// Configuración de Groq API cargada desde archivo JSON local.
+    /// </summary>
+    [System.Serializable]
+    public class GroqConfig
+    {
+        public string apiKey;
+        public string serverUrl;
+        public string modelName;
+    }
+
+    /// <summary>
     /// Cliente para enviar audio al servidor de Whisper remoto usando API compatible con OpenAI.
     /// Evita el procesamiento local lento en Quest 2.
     /// Compatible con LiteLLM y otros servidores que usan el formato de OpenAI.
+    /// Lee la API key automáticamente de Assets/Resources/groq_config.json
     /// </summary>
     public class WhisperServerClient : MonoBehaviour
     {
@@ -36,6 +48,9 @@ namespace Whisper.Samples
         
         private void Start()
         {
+            // Cargar configuración desde archivo JSON local (no subido a Git)
+            LoadConfigFromFile();
+            
             if (useUniversityServer)
             {
                 serverUrl = "http://gpu1.esit.ull.es:4000/v1/audio/transcriptions";
@@ -44,9 +59,44 @@ namespace Whisper.Samples
             }
             
             // Validar API Key
-            if (string.IsNullOrEmpty(apiKey) && (serverUrl.Contains("groq.com") || serverUrl.Contains("openai.com")))
+            if (string.IsNullOrEmpty(apiKey) && !useUniversityServer)
             {
-                UnityEngine.Debug.LogError("[WhisperServerClient] ⚠️ API Key requerida. Groq gratis: https://console.groq.com/keys");
+                UnityEngine.Debug.LogError("[WhisperServerClient] ⚠️ API Key no encontrada. Configura Assets/Resources/groq_config.json");
+            }
+        }
+        
+        /// <summary>
+        /// Carga la configuración desde el archivo JSON local.
+        /// </summary>
+        private void LoadConfigFromFile()
+        {
+            try
+            {
+                TextAsset configFile = Resources.Load<TextAsset>("groq_config");
+                if (configFile != null)
+                {
+                    GroqConfig config = JsonUtility.FromJson<GroqConfig>(configFile.text);
+                    
+                    if (!string.IsNullOrEmpty(config.apiKey) && config.apiKey != "PEGA_TU_API_KEY_AQUI")
+                    {
+                        apiKey = config.apiKey;
+                        UnityEngine.Debug.Log("[WhisperServerClient] ✅ API Key cargada desde groq_config.json");
+                    }
+                    
+                    if (!string.IsNullOrEmpty(config.serverUrl))
+                        serverUrl = config.serverUrl;
+                    
+                    if (!string.IsNullOrEmpty(config.modelName))
+                        modelName = config.modelName;
+                }
+                else
+                {
+                    UnityEngine.Debug.LogWarning("[WhisperServerClient] groq_config.json no encontrado. Copia groq_config.json.example y configúralo.");
+                }
+            }
+            catch (Exception e)
+            {
+                UnityEngine.Debug.LogError($"[WhisperServerClient] Error cargando config: {e.Message}");
             }
         }
         

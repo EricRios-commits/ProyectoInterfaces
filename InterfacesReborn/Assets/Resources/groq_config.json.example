@@ -1,0 +1,6 @@
+{
+  "apiKey": "PEGA_TU_API_KEY_AQUI",
+  "serverUrl": "https://api.groq.com/openai/v1/audio/transcriptions",
+  "modelName": "whisper-large-v3",
+  "_instructions": "1. Copia este archivo como 'groq_config.json' (sin .example), 2. Obtén tu API key gratis en https://console.groq.com/keys, 3. Reemplaza PEGA_TU_API_KEY_AQUI con tu key"
+}

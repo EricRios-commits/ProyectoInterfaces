@@ -77,3 +77,11 @@ Thumbs.db
 
 # =============== Unity Cloud Diagnostics ===============
 UnityCrashHandler64.exe
+
+# ==========================================
+# CONFIGURACIÓN SENSIBLE - NO SUBIR A GIT
+# ==========================================
+
+# API Keys y configuración de Groq
+InterfacesReborn/Assets/Resources/groq_config.json
+InterfacesReborn/Assets/Resources/groq_config.json.meta

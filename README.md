@@ -42,11 +42,37 @@ InterfacesReborn es un prototipo de juego VR desarrollado para Meta Quest 2 que 
 - "Hand" / "Mano" (desequipar arma)
 
 ### Configuración Inicial
-1. Obtener API Key gratuita de Groq en https://console.groq.com/keys
-2. Configurar API Key en el componente `WhisperServerClient` del Inspector de Unity.
-3. Asegurar que el Quest 2 tenga conexión a Internet.
-4. Seleccionar tipo de locomoción en el Main Menu.
-5. Probar reconocimiento de voz manteniendo presionado el botón A.
+
+#### 1. Configurar API Key de Groq (Reconocimiento de Voz)
+
+La API key NO está incluida en el repositorio por seguridad. Cada desarrollador debe configurarla localmente:
+
+**Paso 1: Obtener API Key**
+- Ve a https://console.groq.com/keys
+- Regístrate gratis (límite: 14,400 requests/día)
+- Crea una nueva API Key y cópiala
+
+**Paso 2: Configurar localmente**
+- Navega a `Assets/Resources/`
+- Abre el archivo `groq_config.json` (si no existe, copia `groq_config.json.example` y renómbralo)
+- Reemplaza `PEGA_TU_API_KEY_AQUI` con tu API key:
+```json
+{
+  "apiKey": "gsk_tu_key_aqui",
+  "serverUrl": "https://api.groq.com/openai/v1/audio/transcriptions",
+  "modelName": "whisper-large-v3"
+}
+```
+- **NO subas este archivo a Git** (ya está en .gitignore)
+
+**Paso 3: Verificar**
+- El script `WhisperServerClient` cargará automáticamente la configuración al iniciar
+- Verás en la consola: `✅ API Key cargada desde groq_config.json`
+
+#### 2. Configuración en Quest 2
+2. Asegurar que el Quest 2 tenga conexión a Internet.
+3. Seleccionar tipo de locomoción en el Main Menu.
+4. Probar reconocimiento de voz manteniendo presionado el botón A.
 
 ## Hitos de Programación Logrados
 
