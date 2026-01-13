@@ -19,6 +19,11 @@ namespace Whisper.Samples
         public event WeaponCommand onWeaponCommand;
         
         [Header("Whisper Settings")]
+        [Tooltip("Usar servidor remoto en lugar de procesamiento local")]
+        public bool useRemoteServer = true;
+        [Tooltip("Cliente para el servidor de Whisper (solo si useRemoteServer = true)")]
+        public WhisperServerClient whisperServer;
+        [Tooltip("Whisper local (solo si useRemoteServer = false)")]
         public WhisperManager whisper;
         public MicrophoneRecord microphoneRecord;
         public bool streamSegments = true;
@@ -43,10 +48,26 @@ namespace Whisper.Samples
         private void Awake()
         {
             // Validar que los componentes requeridos están asignados
-            if (whisper == null)
+            if (useRemoteServer)
             {
-                UnityEngine.Debug.LogError("[MicrophoneController] ❌ WhisperManager no asignado. Asígnalo en el Inspector.");
-                return;
+                if (whisperServer == null)
+                {
+                    UnityEngine.Debug.LogError("[MicrophoneController] ❌ WhisperServerClient no asignado. Asígnalo en el Inspector o desactiva 'useRemoteServer'.");
+                    return;
+                }
+            }
+            else
+            {
+                if (whisper == null)
+                {
+                    UnityEngine.Debug.LogError("[MicrophoneController] ❌ WhisperManager no asignado. Asígnalo en el Inspector o activa 'useRemoteServer'.");
+                    return;
+                }
+                
+                // Forzar idioma a inglés para Whisper local
+                whisper.language = "en";
+                whisper.OnNewSegment += OnNewSegment;
+                whisper.OnProgress += OnProgressHandler;
             }
             
             if (microphoneRecord == null)
@@ -55,11 +76,6 @@ namespace Whisper.Samples
                 return;
             }
             
-            // Forzar idioma a inglés
-            whisper.language = "en";
-            
-            whisper.OnNewSegment += OnNewSegment;
-            whisper.OnProgress += OnProgressHandler;
             microphoneRecord.OnRecordStop += OnRecordStop;
 
             // Configurar el micrófono para mejor captura
@@ -155,9 +171,16 @@ namespace Whisper.Samples
             }
             
             // Inicializar el modelo de Whisper
-            UnityEngine.Debug.Log("[MicrophoneController] Cargando modelo de Whisper...");
-            await whisper.InitModel();
-            UnityEngine.Debug.Log("[MicrophoneController] Modelo de Whisper cargado y listo.");
+            if (useRemoteServer)
+            {
+                UnityEngine.Debug.Log("[MicrophoneController] Usando servidor remoto de Whisper. Listo para transcribir.");
+            }
+            else
+            {
+                UnityEngine.Debug.Log("[MicrophoneController] Cargando modelo de Whisper local...");
+                await whisper.InitModel();
+                UnityEngine.Debug.Log("[MicrophoneController] Modelo de Whisper cargado y listo.");
+            }
             
             if (recordButtonAction != null && recordButtonAction.action != null)
             {
@@ -241,20 +264,50 @@ namespace Whisper.Samples
             var sw = new Stopwatch();
             sw.Start();
             
-            UnityEngine.Debug.Log("[MicrophoneController] 🔄 Enviando audio a Whisper para transcripción...");
-            var res = await whisper.GetTextAsync(amplifiedAudio, recordedAudio.Frequency, recordedAudio.Channels);
+            string text = "";
+            string detectedLanguage = "en";
             
-            if (res == null) 
+            if (useRemoteServer)
             {
-                UnityEngine.Debug.LogWarning("[MicrophoneController] ❌ No se pudo procesar el audio.");
-                return;
+                // Usar servidor remoto
+                UnityEngine.Debug.Log("[MicrophoneController] 🌐 Enviando audio al servidor de Whisper...");
+                var serverResponse = await whisperServer.TranscribeAudioAsync(amplifiedAudio, recordedAudio.Frequency, recordedAudio.Channels);
+                
+                if (serverResponse == null || string.IsNullOrEmpty(serverResponse.text))
+                {
+                    UnityEngine.Debug.LogWarning("[MicrophoneController] ❌ No se pudo procesar el audio en el servidor.");
+                    UnityEngine.Debug.LogWarning("[MicrophoneController] Verifica que el servidor esté accesible desde Quest 2.");
+                    return;
+                }
+                
+                text = serverResponse.text.Trim();
+                detectedLanguage = !string.IsNullOrEmpty(serverResponse.language) ? serverResponse.language : "unknown";
+                
+                var time = sw.ElapsedMilliseconds;
+                UnityEngine.Debug.Log($"[MicrophoneController] ✅ Transcripción del servidor completada en {time}ms");
             }
-
-            var time = sw.ElapsedMilliseconds;
-            UnityEngine.Debug.Log($"[MicrophoneController] ✅ Transcripción completada en {time}ms");
-            var rate = recordedAudio.Length / (time * 0.001f);
+            else
+            {
+                // Usar Whisper local
+                UnityEngine.Debug.Log("[MicrophoneController] 🔄 Enviando audio a Whisper local para transcripción...");
+                var res = await whisper.GetTextAsync(amplifiedAudio, recordedAudio.Frequency, recordedAudio.Channels);
+                
+                if (res == null) 
+                {
+                    UnityEngine.Debug.LogWarning("[MicrophoneController] ❌ No se pudo procesar el audio localmente.");
+                    return;
+                }
+                
+                var time = sw.ElapsedMilliseconds;
+                UnityEngine.Debug.Log($"[MicrophoneController] ✅ Transcripción local completada en {time}ms");
+                var rate = recordedAudio.Length / (time * 0.001f);
+                UnityEngine.Debug.Log($"⚡ Velocidad: {rate:F1}x");
+                
+                text = res.Result.Trim();
+                detectedLanguage = res.Language;
+            }
             
-            var text = res.Result.Trim();
+            sw.Stop();
 
             // Filtrar resultados no deseados
             string[] invalidResults = { "[BLANK_AUDIO]", "(BLANK_AUDIO)", "BLANK_AUDIO", 
@@ -281,10 +334,10 @@ namespace Whisper.Samples
             UnityEngine.Debug.Log("========== TRANSCRIPCIÓN ==========");
             UnityEngine.Debug.Log($"✅ Texto: {text}");
             if (printLanguage)
-                UnityEngine.Debug.Log($"🌐 Idioma detectado: {res.Language}");
-            UnityEngine.Debug.Log($"⏱️ Tiempo de procesamiento: {time} ms");
-            UnityEngine.Debug.Log($"⚡ Velocidad: {rate:F1}x");
+                UnityEngine.Debug.Log($"🌐 Idioma detectado: {detectedLanguage}");
+            UnityEngine.Debug.Log($"⏱️ Tiempo de procesamiento: {sw.ElapsedMilliseconds} ms");
             UnityEngine.Debug.Log($"🔊 Volumen: {avgVolumeAfter:F4}");
+            UnityEngine.Debug.Log($"🖥️ Modo: {(useRemoteServer ? "Servidor Remoto" : "Procesamiento Local")}");
             UnityEngine.Debug.Log("===================================");
             
             // Invocar evento para otros scripts

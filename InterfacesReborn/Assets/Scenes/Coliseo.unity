@@ -1388,7 +1388,113 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4015128326712939855, guid: fd28f23af44f73f4a95e33435872ad15, type: 3}
   m_PrefabInstance: {fileID: 129048348}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &158749863
+--- !u!1 &180055521
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 180055522}
+  - component: {fileID: 180055523}
+  m_Layer: 0
+  m_Name: WhisperTester
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &180055522
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 180055521}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1213147578}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &180055523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 180055521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 327742a94145bd84888d3bf21aec011e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseUrl: http://gpu1.esit.ull.es:4000
+  testAudioClip: {fileID: 0}
+  testResults: "=== INICIANDO PRUEBAS ===\n\n\U0001F4CB CONSULTANDO MODELOS DEL SERVIDOR...\n\n\u2705
+    Encontrados 2 modelos en el servidor:\n   - \n   - ollama/llama3.1:8b\n\n\U0001F50D
+    PROBANDO 5 endpoints x 2 modelos = 10 combinaciones\n\n\u274C FALLO | Endpoint:
+    /v1/audio/transcriptions | Modelo: (default)\n   \u2192 Error: HTTP 500: HTTP/1.1
+    500 Internal Server Error\n\n\u274C FALLO | Endpoint: /v1/audio/transcriptions
+    | Modelo: ollama/llama3.1:8b\n   \u2192 Error: HTTP 500: HTTP/1.1 500 Internal
+    Server Error\n\n\u274C FALLO | Endpoint: /audio/transcriptions | Modelo: (default)\n  
+    \u2192 Error: HTTP 500: HTTP/1.1 500 Internal Server Error\n\n\u274C FALLO |
+    Endpoint: /audio/transcriptions | Modelo: ollama/llama3.1:8b\n   \u2192 Error:
+    HTTP 500: HTTP/1.1 500 Internal Server Error\n\n\u274C FALLO | Endpoint: /openai/v1/audio/transcriptions
+    | Modelo: (default)\n   \u2192 Error: HTTP 500: HTTP/1.1 500 Internal Server
+    Error | Internal Server Error\n\n\u274C FALLO | Endpoint: /openai/v1/audio/transcriptions
+    | Modelo: ollama/llama3.1:8b\n   \u2192 Error: HTTP 500: HTTP/1.1 500 Internal
+    Server Error | Internal Server Error\n\n\u274C FALLO | Endpoint: /v1/audio/speech
+    | Modelo: (default)\n   \u2192 Error: HTTP 500: HTTP/1.1 500 Internal Server
+    Error | Internal Server Error\n\n\u274C FALLO | Endpoint: /v1/audio/speech |
+    Modelo: ollama/llama3.1:8b\n   \u2192 Error: HTTP 500: HTTP/1.1 500 Internal
+    Server Error | Internal Server Error\n\n\u274C FALLO | Endpoint: /audio/speech
+    | Modelo: (default)\n   \u2192 Error: HTTP 500: HTTP/1.1 500 Internal Server
+    Error | Internal Server Error\n\n\u274C FALLO | Endpoint: /audio/speech | Modelo:
+    ollama/llama3.1:8b\n   \u2192 Error: HTTP 500: HTTP/1.1 500 Internal Server Error
+    | Internal Server Error\n\n\n=== RESUMEN ===\nTotal de pruebas: 10\nExitosas:
+    0\nFallidas: 10\n"
+  fetchModelsFromServer: 1
+--- !u!224 &252945517 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4015128326712939851, guid: fd28f23af44f73f4a95e33435872ad15, type: 3}
+  m_PrefabInstance: {fileID: 129048348}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &293343375
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 293343376}
+  m_Layer: 0
+  m_Name: Spawn (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &293343376
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293343375}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -18.2, y: 0, z: -5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1666921728}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!21 &353155816
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -1432,47 +1538,54 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!224 &252945517 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4015128326712939851, guid: fd28f23af44f73f4a95e33435872ad15, type: 3}
-  m_PrefabInstance: {fileID: 129048348}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &293343375
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 293343376}
-  m_Layer: 0
-  m_Name: Spawn (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &293343376
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 293343375}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -18.2, y: 0, z: -5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1666921728}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &374507898 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2062969135633983234, guid: fa885795d1cf4dd4d9772e8adb6610a1, type: 3}
   m_PrefabInstance: {fileID: 1305222936}
   m_PrefabAsset: {fileID: 0}
+--- !u!21 &434635095
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Stencil Id:1, Op:Keep, Comp:Equal, WriteMask:0, ReadMask:1, ColorMask:All
+    AlphaClip:False (Stencil Id:1, Op:Keep, Comp:Equal, WriteMask:0, ReadMask:1,
+    ColorMask:All AlphaClip:False (Stencil Id:1, Op:Keep, Comp:Equal, WriteMask:0,
+    ReadMask:1, ColorMask:All AlphaClip:False (Default UI Material)))
+  m_Shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 1
+    - _StencilComp: 3
+    - _StencilOp: 0
+    - _StencilReadMask: 1
+    - _StencilWriteMask: 0
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &455566520
 GameObject:
   m_ObjectHideFlags: 0
@@ -1520,46 +1633,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &466439433
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Default UI Material
-  m_Shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!21 &575990524
 Material:
   serializedVersion: 8
@@ -1597,6 +1670,46 @@ Material:
     - _StencilOp: 0
     - _StencilReadMask: 1
     - _StencilWriteMask: 0
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
+--- !u!21 &592649882
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Default UI Material
+  m_Shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
     - _UseUIAlphaClip: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1669,10 +1782,20 @@ PrefabInstance:
     - target: {fileID: 9021000863314006682, guid: 9ef3f6ca4bb0d7f47bf23cd01ef45303, type: 3}
       propertyPath: whisper
       value: 
-      objectReference: {fileID: 1958319053}
+      objectReference: {fileID: 0}
+    - target: {fileID: 9021000863314006682, guid: 9ef3f6ca4bb0d7f47bf23cd01ef45303, type: 3}
+      propertyPath: whisperServer
+      value: 
+      objectReference: {fileID: 795867814}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 6408977820297396830, guid: 9ef3f6ca4bb0d7f47bf23cd01ef45303, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 795867813}
+    - targetCorrespondingSourceObject: {fileID: 6408977820297396830, guid: 9ef3f6ca4bb0d7f47bf23cd01ef45303, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 180055522}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ef3f6ca4bb0d7f47bf23cd01ef45303, type: 3}
 --- !u!1 &775713348
@@ -1804,6 +1927,59 @@ PrefabInstance:
       addedObject: {fileID: 1107111709}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa64f6c6756ed974f8fcd1ab8e6b59a0, type: 3}
+--- !u!1 &795867812
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 795867813}
+  - component: {fileID: 795867814}
+  m_Layer: 0
+  m_Name: WhisperServerClient
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &795867813
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795867812}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1213147578}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &795867814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795867812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3f5869ed43fa20408fef5cb8a47848e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serverUrl: https://api.groq.com/openai/v1/audio/transcriptions
+  modelName: whisper-large-v3
+  apiKey: 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
+  timeoutSeconds: 30
+  useUniversityServer: 0
+  info: "GROQ (Recomendado):\n- URL: https://api.groq.com/openai/v1/audio/transcriptions\n-
+    Model: whisper-large-v3\n- API Key: Obtener en https://console.groq.com/keys\n-
+    Gratis: 14,400 requests/d\xEDa"
+  sampleRate: 16000
 --- !u!114 &825216794 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1683622039201394530, guid: 41243f45215fcf444b9432ec179430f5, type: 3}
@@ -1907,6 +2083,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1666921728}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1213147578 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6408977820297396830, guid: 9ef3f6ca4bb0d7f47bf23cd01ef45303, type: 3}
+  m_PrefabInstance: {fileID: 656183286}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1215784269
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2932,7 +3113,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1958319053
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3012,49 +3193,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1666921728}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &2107107299
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Stencil Id:1, Op:Keep, Comp:Equal, WriteMask:0, ReadMask:1, ColorMask:All
-    AlphaClip:False (Stencil Id:1, Op:Keep, Comp:Equal, WriteMask:0, ReadMask:1,
-    ColorMask:All AlphaClip:False (Stencil Id:1, Op:Keep, Comp:Equal, WriteMask:0,
-    ReadMask:1, ColorMask:All AlphaClip:False (Default UI Material)))
-  m_Shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 1
-    - _StencilComp: 3
-    - _StencilOp: 0
-    - _StencilReadMask: 1
-    - _StencilWriteMask: 0
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1001 &3384759046418716818
 PrefabInstance:
   m_ObjectHideFlags: 0
