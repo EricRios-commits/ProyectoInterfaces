@@ -17,7 +17,9 @@ public class AlbertoTranslation : MonoBehaviour
     private Quaternion originalRotation;
     [SerializeField]
     private Animator animator;
-    
+
+    [SerializeField] private GameObject textBox;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -47,7 +49,7 @@ public class AlbertoTranslation : MonoBehaviour
     
     private void ToggleTextBox(bool state)
     {
-        // if (textBox != null)
-        //     textBox.SetActive(state);
+        if (textBox != null)
+            textBox.SetActive(state);
     }
 }

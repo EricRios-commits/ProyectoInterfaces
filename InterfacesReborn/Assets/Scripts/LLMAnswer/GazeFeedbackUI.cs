@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 /// <summary>
 /// Provides visual feedback for the gaze interaction by displaying a radial fill indicator
 /// that shows the progress of the gaze timer. This creates a "loading ring" effect
 /// that gives the player visual confirmation that their gaze is being registered.
+/// The UI automatically follows the gaze point in world space.
 /// </summary>
 [RequireComponent(typeof(Image))]
 public class GazeFeedbackUI : MonoBehaviour
@@ -13,6 +15,28 @@ public class GazeFeedbackUI : MonoBehaviour
     [SerializeField]
     [Tooltip("The GazeController to read progress from")]
     private GazeController gazeController;
+
+    [SerializeField]
+    [Tooltip("The XRGazeInteractor to track for positioning. If null, will attempt to find it automatically.")]
+    private XRGazeInteractor gazeInteractor;
+
+    [Header("Positioning Settings")]
+    [SerializeField]
+    [Tooltip("Distance from the camera/gaze origin where the UI appears")]
+    private float displayDistance = 2f;
+
+    [SerializeField]
+    [Tooltip("How smoothly the UI follows the gaze point")]
+    [Range(0f, 30f)]
+    private float followSpeed = 15f;
+
+    [SerializeField]
+    [Tooltip("Offset from the exact gaze point (useful for fine-tuning position)")]
+    private Vector3 positionOffset = Vector3.zero;
+
+    [SerializeField]
+    [Tooltip("If true, the UI will always face the camera")]
+    private bool faceCamera = true;
 
     [Header("Visual Settings")]
     [SerializeField]
@@ -53,12 +77,21 @@ public class GazeFeedbackUI : MonoBehaviour
     private Vector3 initialScale;
     private Color currentColor;
     private float currentScaleMultiplier = 1f;
+    private Camera mainCamera;
+    private Vector3 targetPosition;
 
     void Awake()
     {
         fillImage = GetComponent<Image>();
         initialScale = transform.localScale;
         currentColor = inactiveColor;
+
+        // Find main camera
+        mainCamera = Camera.main;
+        if (mainCamera == null)
+        {
+            Debug.LogWarning($"[GazeFeedbackUI] No main camera found. UI positioning may not work correctly.");
+        }
 
         // Ensure the Image component is configured correctly for radial fill
         if (fillImage.type != Image.Type.Filled)
@@ -84,6 +117,20 @@ public class GazeFeedbackUI : MonoBehaviour
         if (gazeController == null)
         {
             Debug.LogError($"[GazeFeedbackUI] GazeController not assigned on {gameObject.name}. Please assign it in the inspector.");
+        }
+
+        // Attempt to find the XRGazeInteractor if not assigned
+        if (gazeInteractor == null)
+        {
+            gazeInteractor = FindFirstObjectByType<XRGazeInteractor>();
+            if (gazeInteractor == null)
+            {
+                Debug.LogWarning($"[GazeFeedbackUI] XRGazeInteractor not found in scene. UI will not follow gaze point.");
+            }
+            else
+            {
+                Debug.Log($"[GazeFeedbackUI] XRGazeInteractor automatically found and assigned.");
+            }
         }
     }
 
@@ -116,6 +163,51 @@ public class GazeFeedbackUI : MonoBehaviour
             float targetScale = gazeController.IsGazing ? activeScale : 1f;
             currentScaleMultiplier = Mathf.Lerp(currentScaleMultiplier, targetScale, Time.deltaTime * scaleTransitionSpeed);
             transform.localScale = initialScale * currentScaleMultiplier;
+        }
+    }
+
+    void LateUpdate()
+    {
+        // Position the UI to follow the gaze point
+        UpdatePosition();
+    }
+
+    /// <summary>
+    /// Updates the position of the UI to follow the gaze interactor
+    /// </summary>
+    private void UpdatePosition()
+    {
+        if (gazeInteractor == null || mainCamera == null)
+            return;
+
+        // Get the gaze direction from the interactor's attach transform
+        Transform gazeTransform = gazeInteractor.attachTransform;
+        if (gazeTransform == null)
+        {
+            // Fallback to using the interactor's transform itself
+            gazeTransform = gazeInteractor.transform;
+        }
+
+        // Calculate target position along the gaze direction
+        Vector3 gazeDirection = gazeTransform.forward;
+        Vector3 gazeOrigin = gazeTransform.position;
+        targetPosition = gazeOrigin + gazeDirection * displayDistance + positionOffset;
+
+        // Smoothly move to target position
+        if (followSpeed > 0f)
+        {
+            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * followSpeed);
+        }
+        else
+        {
+            transform.position = targetPosition;
+        }
+
+        // Make the UI face the camera if enabled
+        if (faceCamera)
+        {
+            transform.LookAt(mainCamera.transform);
+            transform.Rotate(0, 180, 0); // Flip to face the camera correctly
         }
     }
 

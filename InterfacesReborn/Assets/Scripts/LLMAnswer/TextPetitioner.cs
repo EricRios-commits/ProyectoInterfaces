@@ -11,6 +11,7 @@ namespace PTexto
 {
     public class TextPetitioner : MonoBehaviour
     {
+        [SerializeField] private GameObject uiPanel;
         [SerializeField] private TextMeshProUGUI outputText;
         [SerializeField] private TextAsset promptFile;       // optional .txt file assigned in Inspector
         [SerializeField] private PromptSo promptSO;          // optional ScriptableObject containing prompt
@@ -143,20 +144,25 @@ namespace PTexto
                 {
                     Debug.Log(parsed.choices[0].message.content);
                     outputText.text = parsed.choices[0].message.content;
-                    if (outputText != null)
-                    {
-                        Debug.Log("FP");
-                        outputText.gameObject.SetActive(true);
-                    }
+                    ToggleUI(true);
                 }
                 else
                 {
                     outputText.text = jsonResponse;
-                    if (outputText != null)
-                    {
-                        outputText.gameObject.SetActive(true);
-                    }
+                    ToggleUI(true);
                 }
+            }
+        }
+        
+        private void ToggleUI(bool activate)
+        {
+            if (uiPanel != null)
+            {
+                uiPanel.SetActive(activate);
+            }
+            if (outputText != null)
+            {
+                outputText.gameObject.SetActive(activate);
             }
         }
         
