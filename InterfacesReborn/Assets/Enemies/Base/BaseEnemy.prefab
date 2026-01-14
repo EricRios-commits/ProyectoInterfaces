@@ -2910,6 +2910,7 @@ MonoBehaviour:
   combatEntity: {fileID: 350570309885154808}
   onDamagedEvent: {fileID: 11400000, guid: 0e0275cc9f3d5954f8c7d8093f9e8a6a, type: 2}
   onHealthThresholdEvent: {fileID: 0}
+  onStaggeredEvent: {fileID: 11400000, guid: b3d5448efd0380940831f3eaf309db95, type: 2}
   onDeathEvent: {fileID: 0}
   healthThreshold: 0.25
 --- !u!114 &6092897168815553393

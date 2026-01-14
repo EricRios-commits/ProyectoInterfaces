@@ -10,10 +10,9 @@ public class GazeController : MonoBehaviour
     public float holdTime;
     public delegate void message();
     public event message GazeAlert = delegate { };
-    public TextPetitioner petitioner;
 
     private float timer;
-    private bool activatedTimer;
+    private bool activatedTimer = false;
     private bool alreadySpoken;
 
     [SerializeField]
@@ -53,7 +52,6 @@ public class GazeController : MonoBehaviour
         if (timer >= holdTime && !alreadySpoken)
         {
             Debug.Log("llamada al modelo");
-            petitioner.RequestToModel();
             GazeAlert.Invoke();
             timer = 0;
             alreadySpoken = true;
@@ -79,7 +77,7 @@ public class GazeController : MonoBehaviour
     /// <param name="args"></param>
     public void OnHoverExit(HoverExitEventArgs args)
     {
-        if (args.interactorObject is XRGazeInteractor)
+        // if (args.interactorObject is XRGazeInteractor)
         {
             Debug.Log("Llamada a función Exit");
             activatedTimer = false;

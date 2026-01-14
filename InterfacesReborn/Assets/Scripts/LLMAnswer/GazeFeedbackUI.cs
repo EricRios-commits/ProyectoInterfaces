@@ -116,7 +116,11 @@ public class GazeFeedbackUI : MonoBehaviour
         // Validate the reference
         if (gazeController == null)
         {
-            Debug.LogError($"[GazeFeedbackUI] GazeController not assigned on {gameObject.name}. Please assign it in the inspector.");
+            gazeController = FindFirstObjectByType<GazeController>();
+            if (gazeController == null)
+            {
+                Debug.LogError($"[GazeFeedbackUI] GazeController not assigned on {gameObject.name}. Please assign it in the inspector.");
+            }
         }
 
         // Attempt to find the XRGazeInteractor if not assigned
@@ -141,14 +145,8 @@ public class GazeFeedbackUI : MonoBehaviour
 
         // Update fill amount based on gaze progress
         fillImage.fillAmount = gazeController.GazeProgress;
-
-        // Determine target color based on gazing state
         Color targetColor = gazeController.IsGazing ? activeColor : inactiveColor;
-        
-        // Smoothly transition color
         currentColor = Color.Lerp(currentColor, targetColor, Time.deltaTime * colorTransitionSpeed);
-        
-        // Apply alpha modulation based on fill amount if actively gazing
         if (gazeController.IsGazing)
         {
             float alpha = Mathf.Lerp(minAlpha, maxAlpha, gazeController.GazeProgress);

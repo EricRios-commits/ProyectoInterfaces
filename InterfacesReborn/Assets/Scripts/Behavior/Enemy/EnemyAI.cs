@@ -51,8 +51,6 @@ namespace Behavior.Enemy
         {
             var damageData = new ActorDamageEventData(info, current, max);
             onDamagedEvent?.SendEventMessage(gameObject, gameObject);
-            
-            // Track hits and trigger stagger if threshold reached
             if (combatEntity != null && combatEntity.StatsProfile != null)
             {
                 int hitsToStagger = combatEntity.StatsProfile.HitsToStagger;

@@ -30,11 +30,7 @@ namespace Waves
         public override void Enable()
         {
             isEnabled = true;
-            gazeNotifier.GazeAlert += () =>
-            {
-                Debug.Log("Looked at");
-                StartTimer();
-            };
+            gazeNotifier.GazeAlert += StartTimer;
             TriggerEnabled?.Invoke();
             if (autoStartTimerOnEnable)
             {

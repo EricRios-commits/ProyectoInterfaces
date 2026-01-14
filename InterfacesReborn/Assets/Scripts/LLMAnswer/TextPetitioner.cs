@@ -19,6 +19,7 @@ namespace PTexto
         [SerializeField] private List<MonoBehaviour> contextProviderComponents;
         private List<IPromptContextProvider> contextProviders;
         private static string apiUrl = "http://gpu1.esit.ull.es:4000/v1/chat/completions";
+        private GazeController gazeController;
 
         [System.Serializable]
         public class ChatMessage
@@ -43,9 +44,22 @@ namespace PTexto
 
         void Start() {
             InitializeContextProviders();
-            // RequestToModel();
         }
 
+        void OnEnable()
+        {
+            gazeController = FindFirstObjectByType<GazeController>();
+            gazeController.GazeAlert += RequestToModel;
+        }
+
+        void OnDisable()
+        {
+            if (gazeController != null)
+            {
+                gazeController.GazeAlert -= RequestToModel;
+            }
+        }
+        
         private void InitializeContextProviders()
         {
             contextProviders = new List<IPromptContextProvider>();
@@ -68,6 +82,7 @@ namespace PTexto
 
         public void RequestToModel()
         {
+            Debug.Log("Requesting to model...");
             string basePrompt = null;
             if (promptSO != null && !string.IsNullOrWhiteSpace(promptSO.prompt))
             {
@@ -82,6 +97,7 @@ namespace PTexto
                 basePrompt = "You're a dungeon master in a roman collosseum. Taunt the gladiators";
             }
             string finalMessage = BuildPromptWithContext(basePrompt);
+            Debug.Log("Final prompt built, sending to model...");
             SendMessageFromString(finalMessage);
         }
         
