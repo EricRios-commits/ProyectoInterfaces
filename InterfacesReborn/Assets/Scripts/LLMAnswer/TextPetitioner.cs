@@ -80,8 +80,6 @@ namespace PTexto
             {
                 basePrompt = "You're a dungeon master in a roman collosseum. Taunt the gladiators";
             }
-            
-            // Build final message with context from all providers
             string finalMessage = BuildPromptWithContext(basePrompt);
             SendMessageFromString(finalMessage);
         }
@@ -99,7 +97,6 @@ namespace PTexto
             foreach (var provider in contextProviders)
             {
                 if (provider == null) continue;
-                
                 string context = provider.GetContext();
                 if (!string.IsNullOrWhiteSpace(context))
                 {
@@ -148,6 +145,7 @@ namespace PTexto
                     outputText.text = parsed.choices[0].message.content;
                     if (outputText != null)
                     {
+                        Debug.Log("FP");
                         outputText.gameObject.SetActive(true);
                     }
                 }

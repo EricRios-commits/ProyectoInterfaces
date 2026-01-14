@@ -17,9 +17,7 @@ public class AlbertoTranslation : MonoBehaviour
     private Quaternion originalRotation;
     [SerializeField]
     private Animator animator;
-
-    [SerializeField] private GameObject textBox;
-
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -28,6 +26,7 @@ public class AlbertoTranslation : MonoBehaviour
         originalRotation = transform.rotation;
         notifier.TriggerEnabled += TranslateAlbertoToArena;
         notifier.OnTriggerActivated += TranslateAlbertoToThrone;
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     private void TranslateAlbertoToArena()
@@ -48,7 +47,7 @@ public class AlbertoTranslation : MonoBehaviour
     
     private void ToggleTextBox(bool state)
     {
-        if (textBox != null)
-            textBox.SetActive(state);
+        // if (textBox != null)
+        //     textBox.SetActive(state);
     }
 }

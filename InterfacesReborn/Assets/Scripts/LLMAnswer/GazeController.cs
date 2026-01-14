@@ -54,7 +54,7 @@ public class GazeController : MonoBehaviour
         {
             Debug.Log("llamada al modelo");
             petitioner.RequestToModel();
-            GazeAlert();
+            GazeAlert.Invoke();
             timer = 0;
             alreadySpoken = true;
         }
@@ -85,5 +85,15 @@ public class GazeController : MonoBehaviour
             activatedTimer = false;
             timer = 0f;   
         }
+    }
+
+    /// <summary>
+    /// Debug function to manually trigger the GazeAlert event from the Inspector
+    /// </summary>
+    [ContextMenu("Trigger GazeAlert")]
+    public void DebugTriggerGazeAlert()
+    {
+        Debug.Log("Debug: Manually triggering GazeAlert event");
+        GazeAlert.Invoke();
     }
 }

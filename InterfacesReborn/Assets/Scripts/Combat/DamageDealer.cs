@@ -71,7 +71,6 @@ namespace Combat
                     ? collision.contacts[0].point
                     : collision.transform.position;
                 hitPoint.y += 1.0f;
-                Debug.Log("Golpe Collision:" + hitPoint);
                 Vector3 hitDirection = collision.contacts.Length > 0 ? collision.contacts[0].normal : Vector3.zero;
                 DealDamage(damageable, hitPoint, hitDirection);
                 return true;

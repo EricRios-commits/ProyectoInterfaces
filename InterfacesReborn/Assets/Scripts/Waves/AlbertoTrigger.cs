@@ -30,10 +30,15 @@ namespace Waves
         public override void Enable()
         {
             isEnabled = true;
-            gazeNotifier.GazeAlert += StartTimer;
+            gazeNotifier.GazeAlert += () =>
+            {
+                Debug.Log("Looked at");
+                StartTimer();
+            };
             TriggerEnabled?.Invoke();
             if (autoStartTimerOnEnable)
             {
+                Debug.Log("[AlbertoTrigger] Trigger habilitado. Iniciando timer automáticamente...");
                 StartTimer();
             }
             else
