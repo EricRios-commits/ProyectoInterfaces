@@ -31,9 +31,7 @@ namespace Waves
         {
             isEnabled = true;
             gazeNotifier.GazeAlert += StartTimer;
-            TriggerEnabled?.Invoke(); // Usar ?. para evitar null reference si no hay suscriptores
-            
-            // Si autoStartTimerOnEnable está activado, iniciar el timer inmediatamente
+            TriggerEnabled?.Invoke();
             if (autoStartTimerOnEnable)
             {
                 StartTimer();
@@ -56,15 +54,12 @@ namespace Waves
             {
                 return false;
             }
-            
             if (!timerStarted)
             {
                 return false;
             }
-            
             float timeElapsed = Time.time - startedTime;
             bool canTrigger = timeElapsed >= triggerDelay;
-            
             return canTrigger;
         }
 
@@ -77,16 +72,6 @@ namespace Waves
         
         private void Update()
         {
-            if (isEnabled && timerStarted)
-            {
-                float timeRemaining = triggerDelay - (Time.time - startedTime);
-                
-                if (timeRemaining <= 5f && timeRemaining > 4.9f)
-                {
-                    Debug.Log($"[AlbertoTrigger] ⏱️ {timeRemaining:F1}s para siguiente oleada");
-                }
-            }
-            
             if (CanTrigger())
             {
                 Debug.Log("<color=yellow>⚡ [AlbertoTrigger] Trigger activado - Iniciando siguiente oleada</color>");

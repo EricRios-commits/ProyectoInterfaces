@@ -50,14 +50,12 @@ namespace Whisper.Samples
         {
             // Cargar configuración desde archivo JSON local (no subido a Git)
             LoadConfigFromFile();
-            
             if (useUniversityServer)
             {
                 serverUrl = "http://gpu1.esit.ull.es:4000/v1/audio/transcriptions";
                 modelName = "";
                 apiKey = "";
             }
-            
             // Validar API Key
             if (string.IsNullOrEmpty(apiKey) && !useUniversityServer)
             {

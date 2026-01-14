@@ -19,6 +19,16 @@ public class GazeController : MonoBehaviour
     [SerializeField]
     private AlbertoTrigger triggerNotifier;
 
+    /// <summary>
+    /// Returns the current gaze progress as a value between 0 and 1
+    /// </summary>
+    public float GazeProgress => holdTime > 0 ? Mathf.Clamp01(timer / holdTime) : 0f;
+
+    /// <summary>
+    /// Returns true if the gaze timer is currently active
+    /// </summary>
+    public bool IsGazing => activatedTimer;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -57,8 +67,8 @@ public class GazeController : MonoBehaviour
     public void OnHoverEnter(HoverEnterEventArgs args)
     {
         if (args.interactorObject is XRGazeInteractor)
-        Debug.Log("Llamada a función Enter");
         {
+            Debug.Log("Llamada a función Enter");
             activatedTimer = true;
         }
     }
