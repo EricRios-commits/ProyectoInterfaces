@@ -6,7 +6,7 @@ namespace Waves
     public class AlbertoTrigger : WaveTrigger
     {
         
-        public GazeController gazeNotifier;
+        public GazeNotifier gazeNotifier;
         public delegate void  message();
         public event message TriggerEnabled;
         [SerializeField] private float triggerDelay = 15f;
@@ -31,7 +31,7 @@ namespace Waves
         public override void Enable()
         {
             isEnabled = true;
-            gazeNotifier.GazeAlert += StartTimer;
+            gazeNotifier.gazeAlert.AddListener(StartTimer);
             TriggerEnabled?.Invoke();
             if (autoStartTimerOnEnable)
             {
@@ -47,7 +47,7 @@ namespace Waves
         public override void Disable()
         {
             isEnabled = false;
-            gazeNotifier.GazeAlert -= StartTimer;
+            gazeNotifier.gazeAlert.AddListener(StartTimer);
         }
         
         public override bool CanTrigger()

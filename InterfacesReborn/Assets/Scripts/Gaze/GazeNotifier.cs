@@ -1,16 +1,16 @@
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 using Waves;
 
 namespace Gaze
 {
-    public class GazeController : MonoBehaviour, IGazeProgressProvider
+    public class GazeNotifier : MonoBehaviour, IGazeProgressProvider
     {
         public float holdTime;
-        public delegate void message();
-        public event message GazeAlert = delegate { };
-
+        public UnityEvent gazeAlert;
         private float timer;
         private bool activatedTimer = false;
         private bool alreadySpoken;
@@ -51,8 +51,7 @@ namespace Gaze
             }
             if (timer >= holdTime && !alreadySpoken)
             {
-                Debug.Log("llamada al modelo");
-                GazeAlert.Invoke();
+                gazeAlert.Invoke();
                 timer = 0;
                 alreadySpoken = true;
             }
@@ -92,7 +91,7 @@ namespace Gaze
         public void DebugTriggerGazeAlert()
         {
             Debug.Log("Debug: Manually triggering GazeAlert event");
-            GazeAlert.Invoke();
+            gazeAlert.Invoke();
         }
     }
 }

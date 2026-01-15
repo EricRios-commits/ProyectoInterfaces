@@ -18,7 +18,7 @@ namespace LLMAnswer
         [SerializeField] private List<MonoBehaviour> contextProviderComponents;
         private List<IPromptContextProvider> contextProviders;
         private static string apiUrl = "http://gpu1.esit.ull.es:4000/v1/chat/completions";
-        private GazeController gazeController;
+        private GazeNotifier gazeNotifier;
 
         [System.Serializable]
         public class ChatMessage
@@ -47,15 +47,15 @@ namespace LLMAnswer
 
         void OnEnable()
         {
-            gazeController = FindFirstObjectByType<GazeController>();
-            gazeController.GazeAlert += RequestToModel;
+            gazeNotifier = FindFirstObjectByType<GazeNotifier>();
+            gazeNotifier.gazeAlert.AddListener(RequestToModel);
         }
 
         void OnDisable()
         {
-            if (gazeController != null)
+            if (gazeNotifier != null)
             {
-                gazeController.GazeAlert -= RequestToModel;
+                gazeNotifier.gazeAlert.RemoveListener(RequestToModel);
             }
         }
         
@@ -73,13 +73,13 @@ namespace LLMAnswer
                 }
             }
         }
-        
-        public void SendMessageFromString(string message)
+
+        private void SendMessageFromString(string message)
         {
             StartCoroutine(SendMessageToChatbot(message));
         }
 
-        public void RequestToModel()
+        private void RequestToModel()
         {
             Debug.Log("Requesting to model...");
             string basePrompt = null;
@@ -126,13 +126,11 @@ namespace LLMAnswer
         private IEnumerator SendMessageToChatbot(string message)
         {
             Debug.Log("Entering send message function");
-            // Escapar caracteres especiales en el mensaje
             string escapedMessage = message.Replace("\\", "\\\\")
                                            .Replace("\"", "\\\"")
                                            .Replace("\n", "\\n")
                                            .Replace("\r", "\\r")
                                            .Replace("\t", "\\t");
-
             string jsonPayload = "{"
                                  + "\"model\": \"ollama/llama3.1:8b\"," // Debe coincidir con el modelo cargado en Ollama
                                  + "\"messages\": [{\"role\": \"user\", \"content\": \"" + escapedMessage + "\"}]"

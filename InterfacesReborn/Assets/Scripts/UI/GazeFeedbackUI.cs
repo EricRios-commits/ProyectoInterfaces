@@ -86,7 +86,6 @@ namespace UI
         {
             if (mainCamera == null || targetTransform == null) return;
             Vector3 targetPosition = targetTransform.position + offset;
-            // Vector3 directionFromCamera = (targetPosition - mainCamera.transform.position).normalized;
             Vector3 desiredPosition = targetPosition;
             transform.position = Vector3.Lerp(transform.position, desiredPosition, Time.deltaTime * followSpeed);
             if (faceCamera)
@@ -99,7 +98,7 @@ namespace UI
         {
             if (progressProvider == null)
             {
-                progressProvider = FindFirstObjectByType<GazeController>();
+                progressProvider = FindFirstObjectByType<GazeNotifier>();
                 if (progressProvider == null)
                 {
                     Debug.LogError(
@@ -122,7 +121,6 @@ namespace UI
 
         private void OnGazingAtTarget(HoverEnterEventArgs args)
         {
-            Debug.Log("[GazeFeedbackUI] OnGazingAtTarget called.");
             var gazedObject = args.interactableObject.transform.gameObject;
             targetTransform = gazedObject.transform;
             var progressProviderComponent = gazedObject.GetComponent<IGazeProgressProvider>();
