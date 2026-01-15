@@ -1,3 +1,4 @@
+using Gaze;
 using UnityEngine;
 
 namespace Waves

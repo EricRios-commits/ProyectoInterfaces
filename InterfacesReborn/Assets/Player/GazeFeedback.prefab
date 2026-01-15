@@ -15,7 +15,8 @@ GameObject:
   - component: {fileID: 3103866916907149777}
   - component: {fileID: 8913316042084146693}
   - component: {fileID: 1811145110140584181}
-  m_Layer: 6
+  - component: {fileID: 8103776048259567611}
+  m_Layer: 5
   m_Name: GazeFeedback
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31,7 +32,7 @@ RectTransform:
   m_GameObject: {fileID: 5529826419305117200}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: -0}
-  m_LocalScale: {x: 0.0011457829, y: 0.0011457825, z: 0.0011457829}
+  m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -125,7 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -137,7 +138,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 0
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -154,11 +155,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a21bd489f40c48a9b62d41398a1b22fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gazeController: {fileID: 0}
   gazeInteractor: {fileID: 0}
-  displayDistance: 1.2
+  offset: {x: 0, y: 0.5, z: 0}
   followSpeed: 15
-  positionOffset: {x: 0, y: 0, z: 0}
   faceCamera: 1
   activeColor: {r: 0, g: 1, b: 0.9750788, a: 0.8}
   inactiveColor: {r: 1, g: 1, b: 1, a: 0}
@@ -168,3 +167,18 @@ MonoBehaviour:
   useScaleAnimation: 1
   activeScale: 1.1
   scaleTransitionSpeed: 8
+--- !u!114 &8103776048259567611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5529826419305117200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79fe70b69e00468db4be91dfda894158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  desiredUIComparison: 8
+  uiElementsToApplyTo:
+  - {fileID: 8913316042084146693}
